@@ -15,17 +15,3 @@ spring:
   output:
     ansi:
       enabled: always
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://${EUREKA_SERVER:localhost}:8085/eureka/
-
-logging:
-  pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} [%X{traceId:-},%X{spanId:-}] ${LOG_LEVEL_PATTERN:-%5p} %m%n"
-
-management:
-  tracing:
-    sampling:
-      probability: 1.0

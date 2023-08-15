@@ -1,7 +1,7 @@
 package demo.aws.backend.post.api.controller;
 
 
-import demo.aws.backend.post.domain.entity.Post;
+import demo.aws.backend.post.api.response.PostCommentDto;
 import demo.aws.backend.post.service.PostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class PostController {
     PostService postService;
 
     @GetMapping("/get-all")
-    public ResponseEntity<List<Post>> getAllPosts() {
+    public ResponseEntity<List<PostCommentDto>> getAllPosts() {
         return new ResponseEntity<>(postService.getAllPosts(), HttpStatus.OK);
     }
 }

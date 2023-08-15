@@ -12,3 +12,6 @@ spring:
       password: ${CONFIG_ACCESS_PASSWORD:s3cr3t}
       name: global, service-post
       profile: default
+management:
+  tracing:
+    enabled: false

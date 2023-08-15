@@ -1,0 +1,17 @@
+mvn package -Dmaven.test.skip
+docker build --tag longdd90jp/aws-esc:zenblog-api-server.1.0 .
+
+docker build --tag longdd90jp/aws-esc:zenblog-api.1.0 .
+docker run --name ecs-api -it --rm -p 8080:8080 longdd90jp/aws-esc:zenblog-api.1.0
+
+-----
+docker build --tag longdd90jp/aws-esc:aws-config-server.0.1 .
+docker build --tag longdd90jp/aws-esc:aws-service-discovery.0.1 .
+docker build --tag longdd90jp/aws-esc:aws-api-gateway.0.1 .
+docker build --tag longdd90jp/aws-esc:aws-service-post.0.1 .
+
+
+sudo aws s3 cp s3://dangtit90/config_server-0.1.jar config_server-0.1.jar
+sudo aws s3 cp s3://dangtit90/service-discovery-0.1.jar service-discovery-0.1.jar
+sudo aws s3 cp s3://dangtit90/api_gateway-0.1.jar api_gateway-0.1.jar
+sudo aws s3 cp s3://dangtit90/service-post-0.1.jar service-post-0.1.jar
