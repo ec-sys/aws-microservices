@@ -1,4 +1,4 @@
-package demo.aws.backend.post.rest;
+package demo.aws.backend.comment.rest;
 
 import org.springframework.cloud.openfeign.FeignClient;
 

@@ -35,7 +35,7 @@ spring:
           filters:
             - StripPrefix=2
         - id: comment
-          uri: lb://service-coomment
+          uri: lb://service-comment
           predicates:
             - Path=/api/comment/**
           filters:
