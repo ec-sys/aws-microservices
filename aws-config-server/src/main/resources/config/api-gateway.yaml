@@ -1,0 +1,47 @@
+server:
+  port: ${HTTP_SERVER_PORT:8080}
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${EUREKA_SERVER:localhost}:8085/eureka/
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%X{traceId:-},%X{spanId:-}] ${LOG_LEVEL_PATTERN:-%5p} %m%n"
+
+spring:
+  application:
+    name: api-gateway
+  output:
+    ansi:
+      enabled: always
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: uaa
+          uri: lb://service-uaa
+          predicates:
+            - Path=/api/uaa/**
+          filters:
+            - StripPrefix=2
+        - id: post
+          uri: lb://service-post
+          predicates:
+            - Path=/api/post/**
+          filters:
+            - StripPrefix=2
+        - id: comment
+          uri: lb://service-coomment
+          predicates:
+            - Path=/api/comment/**
+          filters:
+            - StripPrefix=2
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0

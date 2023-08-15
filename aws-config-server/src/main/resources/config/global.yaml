@@ -1,0 +1,46 @@
+jwt:
+  issuer: ${JWT_ISSUER:ec.sys}
+  algorithm-name: ${JWT_ALGORITH_NAME:HS512}
+  access-token-expire-in-second: ${ACCESS_TOKEN_EXPIRE_IN_SECOND:864000}
+  refresh-token-expire-in-second: ${REFRESH_TOKEN_EXPIRE_IN_SECOND:1728000}
+  secret: ${JWT_SECRET:123@abc}
+
+rest-api:
+  client:
+    uaa:
+      address: ${GRPC_CLIENT_UAA_HOST_PORT:static://localhost:9001}
+    post:
+      address: ${GRPC_CLIENT_PRDUCT_HOST_PORT:static://localhost:9002}
+    commnent:
+      address: ${GRPC_CLIENT_ORDER_HOST_PORT:static://localhost:9003}
+spring:
+  zipkin:
+    enabled: false
+    discoveryClientEnabled: false
+  data:
+    mongodb:
+      auto-index-creation: true
+  kafka:
+    bootstrap-servers: localhost:9092
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+    port: ${RABBITMQ_PORT:5672}
+  redis:
+    host: ${REDIS_HOST:localhost}
+    password: ${REDIS_PASSWORD:root123}
+    port: 6379
+
+#spring actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+    enabled-by-default: 'false'
+  endpoint:
+    health:
+      enabled: 'true'
+      show-details: never

@@ -1,0 +1,14 @@
+spring:
+  profiles:
+    active: ${ACTIVE_PROFILE:local}
+  application:
+    name: service-post
+  config:
+    import: "configserver:"
+  cloud:
+    config:
+      uri: ${CONFIG_SERVER:http://localhost:9000}
+      username: ${CONFIG_ACCESS_USERNAME:root}
+      password: ${CONFIG_ACCESS_PASSWORD:s3cr3t}
+      name: global, service-post
+      profile: default
