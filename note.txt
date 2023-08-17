@@ -15,3 +15,6 @@ sudo aws s3 cp s3://dangtit90/config_server-0.1.jar config_server-0.1.jar
 sudo aws s3 cp s3://dangtit90/service-discovery-0.1.jar service-discovery-0.1.jar
 sudo aws s3 cp s3://dangtit90/api_gateway-0.1.jar api_gateway-0.1.jar
 sudo aws s3 cp s3://dangtit90/service-post-0.1.jar service-post-0.1.jar
+
+
+java -jar D:\\soft\\zipkin-server-2.24.3-exec.jar
