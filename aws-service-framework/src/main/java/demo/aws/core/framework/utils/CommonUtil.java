@@ -32,4 +32,8 @@ public class CommonUtil {
         if(Objects.isNull(loginInfo)) return 0;
         return loginInfo.getUserId();
     }
+
+    public static String getFullName(String firstName, String lastName) {
+        return firstName + " " + lastName;
+    }
 }

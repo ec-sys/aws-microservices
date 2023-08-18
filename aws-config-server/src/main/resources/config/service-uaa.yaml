@@ -2,10 +2,16 @@ server:
   port: ${REST_SERVER_PORT:9001}
 
 spring:
-  data:
-    mongodb:
-      uri: ${MONGO_URL:mongodb://localhost:27017/ec_uaa}
-
-grpc:
-  server:
-    port: ${GRPC_SERVER_PORT:12085}
+  application:
+    name: service-uaa
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/db_zenblog
+    username: ${DB_USER_NAME:root}
+    password: ${DB_PASSWORD:root123}
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: none
+  output:
+    ansi:
+      enabled: always

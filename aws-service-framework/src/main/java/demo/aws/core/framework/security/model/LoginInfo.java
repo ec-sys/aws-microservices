@@ -1,9 +1,14 @@
 package demo.aws.core.framework.security.model;
 
 import lombok.Data;
+import java.util.List;
 
 @Data
 public class LoginInfo {
+
     private long userId;
-    private RequestInfo requestInfo;
+    private String firstName;
+    private String lastName;
+    private String fullName;
+    private List<String> roleName;
 }

@@ -1,6 +1,6 @@
 package demo.aws.core.framework.constant;
 
-public class ErrorCode {
+public class ErrorConstant {
     /**
      * System Exception
      */

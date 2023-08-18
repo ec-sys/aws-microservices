@@ -26,6 +26,7 @@
         <module>aws-service-discovery</module>
         <module>aws-service-post</module>
         <module>aws-service-comment</module>
+        <module>aws-service-uaa</module>
     </modules>
 
     <dependencyManagement>

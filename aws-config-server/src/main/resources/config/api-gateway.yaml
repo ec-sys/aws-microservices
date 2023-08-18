@@ -31,3 +31,6 @@ spring:
             - Path=/api/comment/**
           filters:
             - StripPrefix=2
+
+api:
+  non-auth: /api/test1, /api/test2

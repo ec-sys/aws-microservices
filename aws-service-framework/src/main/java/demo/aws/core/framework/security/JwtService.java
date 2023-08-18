@@ -1,4 +1,4 @@
-package demo.aws.core.framework.utils;
+package demo.aws.core.framework.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -7,25 +7,33 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import demo.aws.core.framework.constant.ErrorCode;
+import demo.aws.core.framework.constant.ErrorConstant;
 import demo.aws.core.framework.constant.JwtAlgorithm;
 import demo.aws.core.framework.dto.GeneratedTokenDto;
 import demo.aws.core.framework.dto.JWTPayloadDto;
+import demo.aws.core.framework.security.model.LoginInfo;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
+import java.security.Key;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@Component
-public class JwtTokenUtil {
+@Service
+public class JwtService {
+
     @Value("${jwt.issuer}")
     private String issuer;
 
@@ -62,7 +70,7 @@ public class JwtTokenUtil {
         }
     }
 
-    public GeneratedTokenDto generateAccessToken(JWTPayloadDto payloadDto, long targetTime) {
+    public GeneratedTokenDto generatedTokenDto(LoginInfo loginInfo, long targetTime) {
         GeneratedTokenDto tokenDto = new GeneratedTokenDto();
         long expireTime = targetTime + (accessTokenExpireInSecond * 1000);
         tokenDto.setExpireTime(expireTime);
@@ -70,7 +78,25 @@ public class JwtTokenUtil {
 
         String generatedToken = JWT.create()
                 .withIssuer(issuer)
+                .withClaim("userId", loginInfo.getUserId())
+                .withClaim("roleNames", loginInfo.getRoleName())
+                .withExpiresAt(expireDate)
+                .sign(algorithm);
+        tokenDto.setGeneratedToken(generatedToken);
+        return tokenDto;
+    }
+
+    public GeneratedTokenDto generateAccessToken(JWTPayloadDto payloadDto, long targetTime, String tokenId) {
+        GeneratedTokenDto tokenDto = new GeneratedTokenDto();
+        long expireTime = targetTime + (accessTokenExpireInSecond * 1000);
+        tokenDto.setExpireTime(expireTime);
+        Date expireDate = new Date(expireTime);
+
+        String generatedToken = JWT.create()
+                .withJWTId(tokenId)
+                .withIssuer(issuer)
                 .withClaim("userId", payloadDto.getUserId())
+                .withClaim("roleNames", payloadDto.getRoleNames())
                 .withExpiresAt(expireDate)
                 .sign(algorithm);
         tokenDto.setGeneratedToken(generatedToken);
@@ -120,9 +146,9 @@ public class JwtTokenUtil {
                     .build();
             verifier.verify(token);
         } catch (TokenExpiredException ex) {
-            errorCode = ErrorCode.ERR_TOKEN_001;
+            errorCode = ErrorConstant.ERR_TOKEN_001;
         } catch (JWTVerificationException ex) {
-            errorCode = ErrorCode.ERR_TOKEN_002;
+            errorCode = ErrorConstant.ERR_TOKEN_002;
         }
         return errorCode;
     }
@@ -135,21 +161,14 @@ public class JwtTokenUtil {
         fields.forEach(field -> field.setAccessible(true));
         // set field
         JWTPayloadDto jwtPayloadDto = new JWTPayloadDto();
-        for (Field field : fields) {
-            Claim claim = decodedJWT.getClaim(field.getName());
-            if (claim != null) {
-                field.set(jwtPayloadDto, claim.asString());
-            }
+        Claim claim = decodedJWT.getClaim("userId");
+        if (claim != null) {
+            jwtPayloadDto.setUserId(claim.asInt());
+        }
+        claim = decodedJWT.getClaim("roleNames");
+        if (claim != null) {
+            jwtPayloadDto.setRoleNames(claim.asList(String.class));
         }
         return jwtPayloadDto;
-    }
-
-    public String convertPayloadToString(JWTPayloadDto jwtPayload) {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.writeValueAsString(jwtPayload);
-        } catch (JsonProcessingException ex) {
-            return StringUtils.EMPTY;
-        }
     }
 }

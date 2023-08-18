@@ -1,0 +1,42 @@
+package demo.aws.backend.uaa;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.core.env.Environment;
+
+@Slf4j
+@SpringBootApplication(exclude = {
+        org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class,
+        org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration.class}
+)
+@ComponentScan(
+        basePackages = {
+                "demo.aws.backend.uaa"
+        },
+        basePackageClasses = {
+                demo.aws.core.framework.security.JwtService.class
+        })
+public class UaaApplication implements CommandLineRunner {
+
+    public static void main(String[] args) {
+        SpringApplication.run(UaaApplication.class, args);
+    }
+
+    @Autowired
+    private Environment env;
+
+    @Override
+    public void run(String... args) throws Exception {
+        showEnvironmentVars();
+    }
+
+    private void showEnvironmentVars() {
+        log.info("DB_URL: {}", env.getProperty("spring.datasource.url"));
+        log.info("DB_USER_NAME: {}", env.getProperty("spring.datasource.username"));
+        log.info("DB_PASSWORD: {}", env.getProperty("spring.datasource.password"));
+    }
+}
