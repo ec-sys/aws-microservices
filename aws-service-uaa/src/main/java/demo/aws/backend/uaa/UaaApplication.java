@@ -9,10 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 
 @Slf4j
-@SpringBootApplication(exclude = {
-        org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class,
-        org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration.class}
-)
+@SpringBootApplication
 @ComponentScan(
         basePackages = {
                 "demo.aws.backend.uaa"
