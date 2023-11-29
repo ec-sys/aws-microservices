@@ -37,6 +37,7 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
     @SneakyThrows
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        jwtService.testJWT();
         ServerHttpRequest request = exchange.getRequest();
 
         // skip check auth with some specific uri
