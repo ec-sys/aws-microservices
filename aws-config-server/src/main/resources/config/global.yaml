@@ -11,8 +11,9 @@ rest-api:
       address: ${GRPC_CLIENT_UAA_HOST_PORT:static://localhost:9001}
     post:
       address: ${GRPC_CLIENT_PRDUCT_HOST_PORT:static://localhost:9002}
-    commnent:
+    comment:
       address: ${GRPC_CLIENT_ORDER_HOST_PORT:static://localhost:9003}
+
 spring:
   zipkin:
     enabled: false

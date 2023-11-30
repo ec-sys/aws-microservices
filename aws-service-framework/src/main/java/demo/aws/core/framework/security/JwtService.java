@@ -104,7 +104,7 @@ public class JwtService {
     public String generateJwtToken(PrivateKey privateKey) {
         String token = Jwts.builder().setSubject("adam")
                 .setExpiration(new Date(2018, 1, 1))
-                .setIssuer("info@wstutorial.com")
+                .setIssuer(issuer)
                 .claim("groups", new String[] { "user", "admin" })
                 // RS256 with privateKey
                 .signWith(SignatureAlgorithm.RS256, privateKey).compact();
@@ -161,18 +161,25 @@ public class JwtService {
     }
 
     public GeneratedTokenDto generateAccessToken(JWTPayloadDto payloadDto, long targetTime, String tokenId) {
+        KeyPairGenerator keyGenerator = KeyPairGenerator.getInstance("RSA");
+        keyGenerator.initialize(2048);
+
+        KeyPair kp = keyGenerator.genKeyPair();
+        PublicKey publicKey = kp.getPublic();
+        PrivateKey privateKey = kp.getPrivate();
+
         GeneratedTokenDto tokenDto = new GeneratedTokenDto();
         long expireTime = targetTime + (accessTokenExpireInSecond * 1000);
         tokenDto.setExpireTime(expireTime);
         Date expireDate = new Date(expireTime);
 
-        String generatedToken = JWT.create()
-                .withJWTId(tokenId)
-                .withIssuer(issuer)
-                .withClaim("userId", payloadDto.getUserId())
-                .withClaim("roleNames", payloadDto.getRoleNames())
-                .withExpiresAt(expireDate)
-                .sign(algorithm);
+        String generatedToken = Jwts.builder()
+                .setSubject(payloadDto.getLoginId())
+                .setExpiration(expireDate)
+                .setIssuer(issuer)
+                .claim("userId", payloadDto.getUserId())
+                .claim("roleNames", payloadDto.getRoleNames())
+                .signWith(SignatureAlgorithm.RS256, privateKey).compact();
         tokenDto.setGeneratedToken(generatedToken);
         return tokenDto;
     }

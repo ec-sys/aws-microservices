@@ -11,5 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 public class JWTPayloadDto {
     private long userId;
+    private String loginId;
     private List<String> roleNames;
 }
