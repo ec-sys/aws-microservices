@@ -24,7 +24,7 @@ public class AuthController {
     private final LoginService loginService;
 
     @PostMapping(value = "/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) throws Exception {
         try {
             log.info("container ip: {}", InetAddress.getLocalHost().getHostName());
         } catch (Exception ex) {

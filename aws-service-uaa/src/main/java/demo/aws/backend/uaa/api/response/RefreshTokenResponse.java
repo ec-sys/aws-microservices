@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class RefreshTokenResponse {
     private String errorCode;
+    private String tokenId;
     private String accessToken;
     private Long accessTokenExpireTime;
     private String refreshToken;
