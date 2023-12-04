@@ -16,7 +16,7 @@ services:
     ports:
       - 3306:3306
   redis:
-    image: 'bitnami/redis:latest'
+    image: 'bitnami/redis:6.2'
     environment:
       - REDIS_PASSWORD=root123
     networks:
