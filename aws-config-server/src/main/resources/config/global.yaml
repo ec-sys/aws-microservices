@@ -21,6 +21,10 @@ spring:
   data:
     mongodb:
       auto-index-creation: true
+    redis:
+      host: ${REDIS_HOST:localhost}
+      password: ${REDIS_PASSWORD:root123}
+      port: ${REDIS_PORT:6379}
   kafka:
     bootstrap-servers: localhost:9092
   rabbitmq:
@@ -28,10 +32,6 @@ spring:
     username: ${RABBITMQ_USERNAME:guest}
     password: ${RABBITMQ_PASSWORD:guest}
     port: ${RABBITMQ_PORT:5672}
-  redis:
-    host: ${REDIS_HOST:localhost}
-    password: ${REDIS_PASSWORD:root123}
-    port: 6379
 
 #management
 management:

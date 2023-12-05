@@ -30,7 +30,7 @@ public class AuthController {
         } catch (Exception ex) {
             log.info("exception : {}", ex.getMessage());
         }
-        LoginResponse response = loginService.login(request);
+         LoginResponse response = loginService.login(request);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

@@ -25,12 +25,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -55,13 +50,14 @@ public class LoginService {
         LoginResponse response = new LoginResponse();
         User loginUser = userRepository.findFirstByLoginId(request.getLoginId());
         if (Objects.isNull(loginUser) || !passwordEncoder.matches(request.getPassword(), loginUser.getPassword())) {
+            log.error("{}-{} invalid user name or password", request.getLoginId(), request.getPassword());
             throw new IllegalArgumentException("Invalid user name or password");
         }
-        log.info("{} pass valid login user", request.getLoginId());
+        log.info("{} pass valid login", request.getLoginId());
 
         JWTPayloadDto payloadDto = new JWTPayloadDto();
         payloadDto.setUserId(loginUser.getId());
-        payloadDto.setRoleNames(roleService.getRoleOfUser(loginUser.getId()));
+         payloadDto.setRoleNames(roleService.getRoleOfUser(loginUser.getId()));
         response.setToken(buildTokenInfo(payloadDto));
 
         // user data
@@ -75,15 +71,15 @@ public class LoginService {
     private TokenInfo buildTokenInfo(JWTPayloadDto payloadDto) throws Exception {
         long targetTime = new Date().getTime();
         TokenInfo tokenInfo = new TokenInfo();
-        tokenInfo.setIdToken(UUID.randomUUID().toString());
+         tokenInfo.setIdToken(UUID.randomUUID().toString());
 
         // access token
         GeneratedAccessTokenDto accessToken = jwtService.generateAccessToken(payloadDto, targetTime, tokenInfo.getIdToken());
         tokenInfo.setAccessToken(accessToken.getGeneratedToken());
-        tokenInfo.setAccessTokenExpireTime(accessToken.getExpireTime());
+         tokenInfo.setAccessTokenExpireTime(accessToken.getExpireTime());
 
         // refresh token
-        GeneratedRefreshTokenDto refreshToken = jwtService.generateRefreshToken(payloadDto.getLoginId(), targetTime, accessToken.getGeneratedPublicKey());
+        GeneratedRefreshTokenDto refreshToken = jwtService.generateRefreshToken(payloadDto.getLoginId(), targetTime, accessToken.getGeneratedPrivateKey());
         tokenInfo.setRefreshToken(refreshToken.getGeneratedToken());
         tokenInfo.setRefreshTokenExpireTime(refreshToken.getExpireTime());
 
