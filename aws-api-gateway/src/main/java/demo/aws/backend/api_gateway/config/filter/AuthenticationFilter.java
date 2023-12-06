@@ -6,6 +6,7 @@ import demo.aws.backend.api_gateway.service.TokenService;
 import demo.aws.core.framework.constant.CommonConstant;
 import demo.aws.core.framework.constant.URLConstant;
 import demo.aws.core.framework.dto.JWTPayloadDto;
+import demo.aws.core.framework.security.model.AuthInfo;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -50,7 +51,7 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
             ServerWebExchange modifiedExchange = exchange.mutate()
                     // modify the original request:
                     .request(originalRequest -> {
-                        originalRequest.header(CommonConstant.HEADER_LOGIN_INFO, createLoginInfoStr(payload, request)).build();
+                        originalRequest.header(CommonConstant.HEADER_AUTH_INFO, createAuthInfoStr(payload, request)).build();
                     })
                     .build();
             return chain.filter(modifiedExchange);
@@ -60,10 +61,14 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
         }
     }
 
-    private String createLoginInfoStr(JWTPayloadDto jwtPayload, ServerHttpRequest request) {
+    private String createAuthInfoStr(JWTPayloadDto jwtPayload, ServerHttpRequest request) {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            return mapper.writeValueAsString(jwtPayload);
+            AuthInfo authInfo = new AuthInfo();
+            authInfo.setUserId(jwtPayload.getUserId());
+            authInfo.setLoginId(jwtPayload.getLoginId());
+            authInfo.setRoleName(jwtPayload.getRoleNames());
+            return mapper.writeValueAsString(authInfo);
         } catch (JsonProcessingException ex) {
             return StringUtils.EMPTY;
         }

@@ -10,7 +10,7 @@ public class CommonConstant {
     public static final String HEADER_USER_ID = "user-id";
     public static final String HEADER_CUSTOMER_ID = "customer-id";
     public static final String HEADER_TOKEN_PAYLOAD = "token-pay-load";
-    public static final String HEADER_LOGIN_INFO = "login-info";
+    public static final String HEADER_AUTH_INFO = "auth-info";
     // common
     public static final List<String> GENDER = Arrays.asList("MALE", "FEMALI", "OTHER");
 }

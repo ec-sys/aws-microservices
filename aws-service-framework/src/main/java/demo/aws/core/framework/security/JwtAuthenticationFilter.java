@@ -1,4 +1,4 @@
-package demo.aws.backend.uaa.config;
+package demo.aws.core.framework.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import demo.aws.core.framework.constant.CommonConstant;
@@ -8,7 +8,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -41,7 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         String authInfo = request.getHeader(CommonConstant.HEADER_AUTH_INFO);
-        if(StringUtils.isEmpty(authInfo)) {
+        if(Objects.isNull(authInfo) || authInfo.trim().isEmpty()) {
             filterChain.doFilter(request, response);
             return;
         }

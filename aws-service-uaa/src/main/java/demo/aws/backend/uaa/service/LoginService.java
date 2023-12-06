@@ -57,6 +57,7 @@ public class LoginService {
 
         JWTPayloadDto payloadDto = new JWTPayloadDto();
         payloadDto.setUserId(loginUser.getId());
+        payloadDto.setLoginId(loginUser.getLoginId());
         payloadDto.setRoleNames(roleService.getRoleOfUser(loginUser.getId()));
         response.setToken(buildTokenInfo(payloadDto));
 
@@ -71,7 +72,6 @@ public class LoginService {
     private TokenInfo buildTokenInfo(JWTPayloadDto payloadDto) throws Exception {
         long targetTime = new Date().getTime();
         TokenInfo tokenInfo = new TokenInfo();
-        tokenInfo.setIdToken(UUID.randomUUID().toString());
 
         // access token
         GeneratedAccessTokenDto accessToken = jwtService.generateAccessToken(payloadDto, targetTime, tokenInfo.getIdToken());
@@ -94,6 +94,8 @@ public class LoginService {
         userToken.setRefreshToken(refreshToken.getGeneratedToken());
         userToken.setCreatedDate(new Date());
         userTokenRepository.save(userToken);
+
+        tokenInfo.setIdToken(userToken.getId());
         return tokenInfo;
     }
 

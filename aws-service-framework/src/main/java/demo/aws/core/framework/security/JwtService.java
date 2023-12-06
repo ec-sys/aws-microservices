@@ -124,7 +124,7 @@ public class JwtService {
         JWTPayloadDto payloadDto = new JWTPayloadDto();
         DefaultClaims body = (DefaultClaims) parseClaims.getBody();
         payloadDto.setLoginId((String) body.get(LOGIN_ID));
-        payloadDto.setUserId((Long) body.get(USER_ID));
+        payloadDto.setUserId(((Integer) body.get(USER_ID)).longValue());
         payloadDto.setRoleNames((ArrayList<String>) body.get(ROLE_NAMES));
         return payloadDto;
     }

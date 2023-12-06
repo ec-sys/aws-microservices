@@ -25,6 +25,22 @@ create table if not exists posts
 	view_count int null
 );
 
+create table if not exists comments
+(
+    id int auto_increment
+    primary key,
+    parent_id int null,
+    post_id int not null,
+    user_id int not null,
+    content text not null,
+    is_public bit not null,
+    created datetime(6) null,
+    creator varchar(255) null,
+    updated datetime(6) null,
+    updater varchar(255) null
+);
+
+
 create table if not exists roles
 (
 	id int auto_increment

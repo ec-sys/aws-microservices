@@ -3,6 +3,7 @@ package demo.aws.backend.comment.api.controller;
 
 import demo.aws.backend.comment.domain.entity.Comment;
 import demo.aws.backend.comment.service.CommentService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ public class PostCommentController {
     CommentService commentService;
 
     @GetMapping("/{postId}")
-    public ResponseEntity<List<Comment>> getOfPost(@PathVariable long postId) {
+    public ResponseEntity<List<Comment>> getOfPost(HttpServletRequest request, @PathVariable long postId) {
         return new ResponseEntity<>(commentService.getCommentsOfPost(postId), HttpStatus.OK);
     }
 }

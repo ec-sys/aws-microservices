@@ -22,7 +22,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if(!CommonUtil.getPublicUrlPaths().contains(request.getRequestURI())) {
-            String loginInfoStr = request.getHeader(CommonConstant.HEADER_LOGIN_INFO);
+            String loginInfoStr = request.getHeader(CommonConstant.HEADER_AUTH_INFO);
             if(StringUtils.isNotEmpty(loginInfoStr)) {
                 ObjectMapper objectMapper = new ObjectMapper();
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
