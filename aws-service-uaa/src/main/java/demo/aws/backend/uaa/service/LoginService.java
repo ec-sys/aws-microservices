@@ -57,7 +57,7 @@ public class LoginService {
 
         JWTPayloadDto payloadDto = new JWTPayloadDto();
         payloadDto.setUserId(loginUser.getId());
-         payloadDto.setRoleNames(roleService.getRoleOfUser(loginUser.getId()));
+        payloadDto.setRoleNames(roleService.getRoleOfUser(loginUser.getId()));
         response.setToken(buildTokenInfo(payloadDto));
 
         // user data
@@ -71,12 +71,12 @@ public class LoginService {
     private TokenInfo buildTokenInfo(JWTPayloadDto payloadDto) throws Exception {
         long targetTime = new Date().getTime();
         TokenInfo tokenInfo = new TokenInfo();
-         tokenInfo.setIdToken(UUID.randomUUID().toString());
+        tokenInfo.setIdToken(UUID.randomUUID().toString());
 
         // access token
         GeneratedAccessTokenDto accessToken = jwtService.generateAccessToken(payloadDto, targetTime, tokenInfo.getIdToken());
         tokenInfo.setAccessToken(accessToken.getGeneratedToken());
-         tokenInfo.setAccessTokenExpireTime(accessToken.getExpireTime());
+        tokenInfo.setAccessTokenExpireTime(accessToken.getExpireTime());
 
         // refresh token
         GeneratedRefreshTokenDto refreshToken = jwtService.generateRefreshToken(payloadDto.getLoginId(), targetTime, accessToken.getGeneratedPrivateKey());
@@ -119,16 +119,15 @@ public class LoginService {
     public RefreshTokenResponse refreshToken(RefreshTokenRequest request) throws Exception {
         RefreshTokenResponse response = new RefreshTokenResponse();
         Optional<UserToken> userTokenOpt = userTokenRepository.findById(request.getTokenId());
-        if(userTokenOpt.isEmpty()) {
+        if (userTokenOpt.isEmpty()) {
             log.error("token isn't exits : {}", request.getTokenId());
             throw new IllegalArgumentException("invalid token");
         }
 
         UserToken userToken = userTokenOpt.get();
-        if(request.getUserId() != userToken.getUserId() ||
+        if (request.getUserId() != userToken.getUserId() ||
                 !userToken.getAccessToken().equals(request.getAccessToken()) ||
-                !userToken.getRefreshToken().equals(request.getRefreshToken()))
-        {
+                !userToken.getRefreshToken().equals(request.getRefreshToken())) {
             log.error("token isn't valid with database : {}-{}-{}", request.getTokenId(), request.getAccessToken(), request.getRefreshToken());
             throw new IllegalArgumentException("invalid token");
         }

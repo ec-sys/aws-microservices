@@ -1,6 +1,5 @@
 package demo.aws.backend.uaa.config;
 
-import demo.aws.core.framework.security.JwtService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.RedisPassword;
@@ -13,17 +12,7 @@ import org.springframework.stereotype.Component;
 import java.time.Duration;
 
 @Component
-public class BeanConfiguration {
-    @Value("${jwt.issuer}")
-    private String issuer;
-    @Value("${jwt.access-token-expire-in-second}")
-    private long accessTokenExpireInSecond;
-    @Value("${jwt.refresh-token-expire-in-second}")
-    private long refreshTokenExpireInSecond;
-    @Bean
-    public JwtService jwtService() {
-        return new JwtService(issuer, accessTokenExpireInSecond, refreshTokenExpireInSecond);
-    }
+public class RedisConfig {
 
     @Value("${spring.data.redis.host}")
     private String redisHost;
@@ -31,6 +20,7 @@ public class BeanConfiguration {
     private int redisPort;
     @Value("${spring.data.redis.password}")
     private String redisPassword;
+
     @Bean
     public JedisConnectionFactory jedisConnectionFactory() {
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();

@@ -1,4 +1,4 @@
-package demo.aws.backend.uaa.domain.entity.redis;
+package demo.aws.backend.api_gateway.redis;
 
 import lombok.Data;
 import org.springframework.data.redis.core.RedisHash;

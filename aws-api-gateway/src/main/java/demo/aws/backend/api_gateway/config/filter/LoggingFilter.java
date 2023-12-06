@@ -1,4 +1,4 @@
-package demo.aws.backend.api_gateway.config;
+package demo.aws.backend.api_gateway.config.filter;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -24,7 +24,7 @@ public class LoggingFilter implements GlobalFilter {
         String originalUri = (uris.isEmpty()) ? "Unknown" : uris.iterator().next().toString();
         Route route = exchange.getAttribute(GATEWAY_ROUTE_ATTR);
         URI routeUri = exchange.getAttribute(GATEWAY_REQUEST_URL_ATTR);
-        log.info("Incoming request {} is routed to id: {}, uri: ", originalUri, route.getId(), routeUri);
+        log.info("Incoming request {} is routed to id: {}, uri: {}", originalUri, route.getId(), routeUri);
         return chain.filter(exchange);
     }
 }

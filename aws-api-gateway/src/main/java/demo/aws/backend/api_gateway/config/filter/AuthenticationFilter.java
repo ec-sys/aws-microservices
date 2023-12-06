@@ -1,14 +1,14 @@
-package demo.aws.backend.api_gateway.config;
+package demo.aws.backend.api_gateway.config.filter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import demo.aws.backend.api_gateway.service.TokenService;
 import demo.aws.core.framework.constant.CommonConstant;
 import demo.aws.core.framework.constant.URLConstant;
 import demo.aws.core.framework.dto.JWTPayloadDto;
-import demo.aws.core.framework.security.JwtService;
-import demo.aws.core.framework.security.model.LoginInfo;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,7 +29,7 @@ import java.util.List;
 public class AuthenticationFilter implements GlobalFilter, Ordered {
 
     @Autowired
-    JwtService jwtService;
+    TokenService tokenService;
 
     @Value(value = "${api.non-auth}")
     List<String> nonAuthAPIs;
@@ -37,39 +37,33 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
     @SneakyThrows
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        jwtService.testJWT();
         ServerHttpRequest request = exchange.getRequest();
 
         // skip check auth with some specific uri
-        if(isSkipCheckAuth(request)) return chain.filter(exchange);
+        if (isSkipCheckAuth(request)) return chain.filter(exchange);
 
         String jwtToken = getJwtFromRequest(request);
+        String tokenId = getTokenIdFromRequest(request);
 
-        // validate jwt
-        String errorCode = jwtService.verifyJWTAccessToken(jwtToken);
-        if (StringUtils.isNotEmpty(errorCode)) {
-            return this.onError(exchange, errorCode, HttpStatus.UNAUTHORIZED);
+        try {
+            JWTPayloadDto payload = tokenService.getPayloadFromToken(tokenId, jwtToken);
+            ServerWebExchange modifiedExchange = exchange.mutate()
+                    // modify the original request:
+                    .request(originalRequest -> {
+                        originalRequest.header(CommonConstant.HEADER_LOGIN_INFO, createLoginInfoStr(payload, request)).build();
+                    })
+                    .build();
+            return chain.filter(modifiedExchange);
+        } catch (Exception ex) {
+            log.error("{}", ExceptionUtils.getFullStackTrace(ex));
+            return this.onError(exchange, "ERROR_001", HttpStatus.UNAUTHORIZED);
         }
-
-        // add data to header to down stream service
-        JWTPayloadDto payload = jwtService.getPayloadFromJWT(jwtToken);
-
-        ServerWebExchange modifiedExchange = exchange.mutate()
-                // modify the original request:
-                .request(originalRequest -> {
-                    originalRequest.header(CommonConstant.HEADER_LOGIN_INFO, createLoginInfoStr(payload, request)).build();
-                })
-                .build();
-        return chain.filter(modifiedExchange);
     }
 
     private String createLoginInfoStr(JWTPayloadDto jwtPayload, ServerHttpRequest request) {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            LoginInfo loginInfo = new LoginInfo();
-            loginInfo.setUserId(jwtPayload.getUserId());
-            loginInfo.setRoleName(jwtPayload.getRoleNames());
-            return mapper.writeValueAsString(loginInfo);
+            return mapper.writeValueAsString(jwtPayload);
         } catch (JsonProcessingException ex) {
             return StringUtils.EMPTY;
         }
@@ -82,19 +76,20 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
 
     private boolean isSkipCheckAuth(ServerHttpRequest request) {
         String urlPath = request.getPath().value();
-        if(URLConstant.LOGIN_URI.equals(urlPath) || URLConstant.REFRESH_TOKEN.equals(urlPath)) {
+        if (URLConstant.LOGIN_URI.equals(urlPath) || URLConstant.REFRESH_TOKEN.equals(urlPath)) {
             return true;
         }
-        if(URLConstant.WS_UPGRADE.equalsIgnoreCase(request.getHeaders().getUpgrade())) {
+        if (URLConstant.WS_UPGRADE.equalsIgnoreCase(request.getHeaders().getUpgrade())) {
             return true;
         }
 
-        if(urlPath.startsWith("/api/public")) return true;
+        if (urlPath.startsWith("/api/public")) return true;
 
-        if(nonAuthAPIs.contains(urlPath)) return true;
+        if (nonAuthAPIs.contains(urlPath)) return true;
 
         return false;
     }
+
     private Mono<Void> onError(ServerWebExchange exchange, String errorCode, HttpStatus httpStatus) {
         ServerHttpResponse response = exchange.getResponse();
         response.getHeaders().add("errorCode", errorCode);
@@ -109,5 +104,9 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
             return bearerToken.substring(7);
         }
         return StringUtils.EMPTY;
+    }
+
+    private String getTokenIdFromRequest(ServerHttpRequest request) {
+        return request.getHeaders().getFirst(URLConstant.HEADER_TOKEN_ID);
     }
 }

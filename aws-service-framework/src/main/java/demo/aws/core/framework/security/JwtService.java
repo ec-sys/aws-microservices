@@ -4,9 +4,11 @@ import demo.aws.core.framework.dto.GeneratedAccessTokenDto;
 import demo.aws.core.framework.dto.GeneratedRefreshTokenDto;
 import demo.aws.core.framework.dto.GeneratedTokenDto;
 import demo.aws.core.framework.dto.JWTPayloadDto;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.impl.DefaultClaims;
 
 import java.security.KeyFactory;
 import java.security.KeyPair;
@@ -16,10 +18,14 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 
 public class JwtService {
+    private final String USER_ID = "userId";
+    private final String ROLE_NAMES = "roleNames";
+    private final String LOGIN_ID = "loginId";
     private String issuer;
     private long accessTokenExpireInSecond;
     private long refreshTokenExpireInSecond;
@@ -63,8 +69,9 @@ public class JwtService {
                 .setIssuer(issuer)
                 .setSubject(payloadDto.getLoginId())
                 .setExpiration(expireDate)
-                .claim("userId", payloadDto.getUserId())
-                .claim("roleNames", payloadDto.getRoleNames())
+                .claim(LOGIN_ID, payloadDto.getLoginId())
+                .claim(USER_ID, payloadDto.getUserId())
+                .claim(ROLE_NAMES, payloadDto.getRoleNames())
                 .signWith(privateKey, SignatureAlgorithm.RS256).compact();
         tokenDto.setGeneratedToken(generatedToken);
         tokenDto.setGeneratedPublicKey(Base64.getEncoder().encodeToString(publicKey.getEncoded()));
@@ -115,7 +122,10 @@ public class JwtService {
         PublicKey publicKey = getPublicKeyFromString(pubKeyStr);
         Jws parseClaims = Jwts.parserBuilder().setSigningKey(publicKey).build().parseClaimsJws(token);
         JWTPayloadDto payloadDto = new JWTPayloadDto();
-        parseClaims.getBody();
+        DefaultClaims body = (DefaultClaims) parseClaims.getBody();
+        payloadDto.setLoginId((String) body.get(LOGIN_ID));
+        payloadDto.setUserId((Long) body.get(USER_ID));
+        payloadDto.setRoleNames((ArrayList<String>) body.get(ROLE_NAMES));
         return payloadDto;
     }
 }

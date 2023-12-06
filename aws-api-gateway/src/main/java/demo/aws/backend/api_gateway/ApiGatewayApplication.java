@@ -12,13 +12,6 @@ import org.springframework.context.annotation.ComponentScan;
         DataSourceAutoConfiguration.class,
         DataSourceTransactionManagerAutoConfiguration.class,
 })
-@ComponentScan(
-        basePackages = {
-                "demo.aws.backend.api_gateway"
-        },
-        basePackageClasses = {
-                demo.aws.core.framework.security.JwtService.class
-        })
 public class ApiGatewayApplication {
 
     public static void main(String[] args) {

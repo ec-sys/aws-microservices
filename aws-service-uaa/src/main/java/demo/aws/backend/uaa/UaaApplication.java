@@ -19,12 +19,12 @@ import org.springframework.core.env.Environment;
         })
 public class UaaApplication implements CommandLineRunner {
 
+    @Autowired
+    private Environment env;
+
     public static void main(String[] args) {
         SpringApplication.run(UaaApplication.class, args);
     }
-
-    @Autowired
-    private Environment env;
 
     @Override
     public void run(String... args) throws Exception {
