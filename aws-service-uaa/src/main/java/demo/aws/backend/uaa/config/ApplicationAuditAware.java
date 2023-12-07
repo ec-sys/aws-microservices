@@ -1,4 +1,4 @@
-package demo.aws.core.framework.config;
+package demo.aws.backend.uaa.config;
 
 import demo.aws.core.framework.security.model.AuthInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -10,9 +10,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import java.util.Optional;
 
 @Slf4j
-public class ApplicationAuditAware implements AuditorAware<Long> {
+public class ApplicationAuditAware implements AuditorAware<String> {
     @Override
-    public Optional<Long> getCurrentAuditor() {
+    public Optional<String> getCurrentAuditor() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated() || authentication instanceof AnonymousAuthenticationToken) {
             return Optional.empty();
@@ -20,6 +20,6 @@ public class ApplicationAuditAware implements AuditorAware<Long> {
 
         AuthInfo authInfo = (AuthInfo) authentication.getPrincipal();
         System.out.println("user id - " + authInfo.getUserId());
-        return Optional.ofNullable(authInfo.getUserId());
+        return Optional.ofNullable(String.valueOf(authInfo.getUserId()));
     }
 }

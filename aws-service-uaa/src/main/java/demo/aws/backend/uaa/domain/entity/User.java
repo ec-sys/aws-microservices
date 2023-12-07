@@ -3,12 +3,14 @@ package demo.aws.backend.uaa.domain.entity;
 import demo.aws.core.framework.security.model.Auditable;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.envers.Audited;
 
 import java.util.Date;
 
 @Entity
 @Data
 @Table(name = "users")
+@Audited
 public class User extends Auditable<String> {
 
     @Id
