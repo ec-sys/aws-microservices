@@ -9,14 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static demo.aws.core.framework.security.model.Permission.ADMIN_READ;
-import static demo.aws.core.framework.security.model.Permission.ADMIN_CREATE;
-import static demo.aws.core.framework.security.model.Permission.ADMIN_DELETE;
-import static demo.aws.core.framework.security.model.Permission.ADMIN_UPDATE;
-import static demo.aws.core.framework.security.model.Permission.MANAGER_CREATE;
-import static demo.aws.core.framework.security.model.Permission.MANAGER_DELETE;
-import static demo.aws.core.framework.security.model.Permission.MANAGER_READ;
-import static demo.aws.core.framework.security.model.Permission.MANAGER_UPDATE;
+import static demo.aws.core.framework.security.model.Permission.*;
 
 @RequiredArgsConstructor
 public enum Role {

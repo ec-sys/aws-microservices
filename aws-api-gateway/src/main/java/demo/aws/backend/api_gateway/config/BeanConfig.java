@@ -7,15 +7,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class BeanConfig {
-    @Value("${jwt.issuer}")
-    private String issuer;
-    @Value("${jwt.access-token-expire-in-second}")
-    private long accessTokenExpireInSecond;
-    @Value("${jwt.refresh-token-expire-in-second}")
-    private long refreshTokenExpireInSecond;
-
-    @Bean
-    public JwtService jwtService() {
+    public JwtService jwtService(@Value("${jwt.issuer}") String issuer,
+                                 @Value("${jwt.access-token-expire-in-second}") long accessTokenExpireInSecond,
+                                 @Value("${jwt.refresh-token-expire-in-second}") long refreshTokenExpireInSecond) {
         return new JwtService(issuer, accessTokenExpireInSecond, refreshTokenExpireInSecond);
     }
 }
