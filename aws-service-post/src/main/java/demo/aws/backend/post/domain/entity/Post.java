@@ -1,5 +1,6 @@
 package demo.aws.backend.post.domain.entity;
 
+import demo.aws.core.framework.auditing.Auditable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,7 +12,7 @@ import java.util.Date;
 @Entity
 @Data
 @Table(name = "posts")
-public class Post {
+public class Post extends Auditable<String> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

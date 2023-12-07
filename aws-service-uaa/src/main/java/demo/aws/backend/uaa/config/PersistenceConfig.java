@@ -1,5 +1,6 @@
 package demo.aws.backend.uaa.config;
 
+import demo.aws.core.framework.auditing.ApplicationAuditAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.auditing.CurrentDateTimeProvider;

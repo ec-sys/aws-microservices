@@ -1,25 +1,26 @@
 package demo.aws.backend.uaa.config;
 
 import demo.aws.core.framework.security.model.AuthInfo;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.AuditorAware;
+import demo.aws.core.framework.utils.CommonUtil;
+import feign.RequestInterceptor;
+import feign.RequestTemplate;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 
-import java.util.Optional;
+import static demo.aws.core.framework.constant.CommonConstant.HEADER_AUTH_INFO;
 
-@Slf4j
-public class ApplicationAuditAware implements AuditorAware<String> {
+@Component
+public class RestfulRequestInterceptor implements RequestInterceptor {
     @Override
-    public Optional<String> getCurrentAuditor() {
+    public void apply(RequestTemplate template) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated() || authentication instanceof AnonymousAuthenticationToken) {
-            return Optional.empty();
+            throw new IllegalArgumentException("non authenticated when call rest template");
         }
 
         AuthInfo authInfo = (AuthInfo) authentication.getPrincipal();
-        System.out.println("user id - " + authInfo.getUserId());
-        return Optional.ofNullable(String.valueOf(authInfo.getUserId()));
+        template.header(HEADER_AUTH_INFO, CommonUtil.createAuthInfoStr(authInfo));
     }
 }

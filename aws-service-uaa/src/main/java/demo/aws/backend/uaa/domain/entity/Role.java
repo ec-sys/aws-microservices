@@ -1,6 +1,6 @@
 package demo.aws.backend.uaa.domain.entity;
 
-import demo.aws.core.framework.security.model.Auditable;
+import demo.aws.core.framework.auditing.Auditable;
 import jakarta.persistence.*;
 import lombok.Data;
 

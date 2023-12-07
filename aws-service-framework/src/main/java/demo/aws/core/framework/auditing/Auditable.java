@@ -1,4 +1,4 @@
-package demo.aws.core.framework.security.model;
+package demo.aws.core.framework.auditing;
 
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
