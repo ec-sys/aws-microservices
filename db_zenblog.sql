@@ -246,3 +246,10 @@ INSERT INTO db_zenblog.tags (id, name, created_by, created_date, last_modified_b
 INSERT INTO db_zenblog.tags (id, name, created_by, created_date, last_modified_by, last_modified_date) VALUES (161, 'X5', '1', '2023-01-15 13:03:49.382000', '1', '2023-01-15 13:03:49.382000');
 
 INSERT INTO db_zenblog.user_roles (id, role_id, user_id, created_by, created_date, last_modified_by, last_modified_date) VALUES (1, 1, 1, null, '2023-08-03 08:34:17', '1', '2023-08-03 08:34:25');
+
+INSERT INTO db_zenblog.posts (id, title, content, created, creator, description, is_public, updated, updater, view_count) VALUES (1, 'Java 8', 'Demo Java 8', '2023-12-07 02:16:24', '1', 'Basic Level', true, '2023-12-07 02:16:18', '1', 1);
+INSERT INTO db_zenblog.posts (id, title, content, created, creator, description, is_public, updated, updater, view_count) VALUES (2, 'Java 17', 'Demo Java 17', '2023-12-07 02:16:24', '1', 'Basic Advanced', true, '2023-12-07 02:16:18', '1', 1);
+
+INSERT INTO db_zenblog.comments (id, parent_id, post_id, user_id, content, is_public, created, creator, updated, updater) VALUES (1, null, 1, 1, 'Test 1', true, '2023-12-07 02:17:57', '1', '2023-12-07 02:18:00', '1');
+INSERT INTO db_zenblog.comments (id, parent_id, post_id, user_id, content, is_public, created, creator, updated, updater) VALUES (2, null, 1, 1, 'Test 2', true, '2023-12-07 02:18:17', '1', '2023-12-07 02:18:20', '1');
+INSERT INTO db_zenblog.comments (id, parent_id, post_id, user_id, content, is_public, created, creator, updated, updater) VALUES (3, null, 2, 1, 'Test 1', false, '2023-12-07 02:18:35', '1', '2023-12-07 02:18:37', '1');

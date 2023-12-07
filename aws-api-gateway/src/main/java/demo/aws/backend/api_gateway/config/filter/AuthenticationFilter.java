@@ -7,6 +7,7 @@ import demo.aws.core.framework.constant.CommonConstant;
 import demo.aws.core.framework.constant.URLConstant;
 import demo.aws.core.framework.dto.JWTPayloadDto;
 import demo.aws.core.framework.security.model.AuthInfo;
+import demo.aws.core.framework.utils.CommonUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -51,26 +52,13 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
             ServerWebExchange modifiedExchange = exchange.mutate()
                     // modify the original request:
                     .request(originalRequest -> {
-                        originalRequest.header(CommonConstant.HEADER_AUTH_INFO, createAuthInfoStr(payload, request)).build();
+                        originalRequest.header(CommonConstant.HEADER_AUTH_INFO, CommonUtil.createAuthInfoStr(payload)).build();
                     })
                     .build();
             return chain.filter(modifiedExchange);
         } catch (Exception ex) {
             log.error("{}", ExceptionUtils.getFullStackTrace(ex));
             return this.onError(exchange, "ERROR_001", HttpStatus.UNAUTHORIZED);
-        }
-    }
-
-    private String createAuthInfoStr(JWTPayloadDto jwtPayload, ServerHttpRequest request) {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            AuthInfo authInfo = new AuthInfo();
-            authInfo.setUserId(jwtPayload.getUserId());
-            authInfo.setLoginId(jwtPayload.getLoginId());
-            authInfo.setRoleName(jwtPayload.getRoleNames());
-            return mapper.writeValueAsString(authInfo);
-        } catch (JsonProcessingException ex) {
-            return StringUtils.EMPTY;
         }
     }
 

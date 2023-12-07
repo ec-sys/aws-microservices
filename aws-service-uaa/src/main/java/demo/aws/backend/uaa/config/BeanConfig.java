@@ -4,17 +4,10 @@ import demo.aws.core.framework.security.JwtAuthenticationFilter;
 import demo.aws.core.framework.security.JwtService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 public class BeanConfig {
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
     @Bean
     public JwtAuthenticationFilter jwtAuthFilter() {
         return new JwtAuthenticationFilter();
