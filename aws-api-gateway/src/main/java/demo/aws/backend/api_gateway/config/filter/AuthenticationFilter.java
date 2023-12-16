@@ -1,17 +1,14 @@
 package demo.aws.backend.api_gateway.config.filter;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import demo.aws.backend.api_gateway.service.TokenService;
 import demo.aws.core.framework.constant.CommonConstant;
 import demo.aws.core.framework.constant.URLConstant;
 import demo.aws.core.framework.dto.JWTPayloadDto;
-import demo.aws.core.framework.security.model.AuthInfo;
 import demo.aws.core.framework.utils.CommonUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -57,7 +54,7 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
                     .build();
             return chain.filter(modifiedExchange);
         } catch (Exception ex) {
-            log.error("{}", ExceptionUtils.getFullStackTrace(ex));
+            log.error("{}", ExceptionUtils.getStackTrace(ex));
             return this.onError(exchange, "ERROR_001", HttpStatus.UNAUTHORIZED);
         }
     }
