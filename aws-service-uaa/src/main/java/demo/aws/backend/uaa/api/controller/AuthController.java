@@ -33,6 +33,11 @@ public class AuthController {
 
     @GetMapping(value = "/get-public-key")
     public ResponseEntity<String> getPublicKey() throws Exception {
-        return new ResponseEntity<>("DONE", HttpStatus.OK);
+        try {
+            log.info("container ip: {}", InetAddress.getLocalHost().getHostName());
+        } catch (Exception ex) {
+            log.info("exception : {}", ex.getMessage());
+        }
+        return new ResponseEntity<>("DONE-" + InetAddress.getLocalHost().getHostName(), HttpStatus.OK);
     }
 }

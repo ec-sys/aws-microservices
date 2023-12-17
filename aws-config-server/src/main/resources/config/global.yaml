@@ -16,7 +16,7 @@ rest-api:
 
 spring:
   zipkin:
-    enabled: false
+    enabled: ${ENABLED_ZIPKIN:false}
     discoveryClientEnabled: false
   data:
     mongodb:

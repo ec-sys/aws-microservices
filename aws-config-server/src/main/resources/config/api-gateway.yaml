@@ -14,7 +14,7 @@ spring:
           enabled: true
       routes:
         - id: uaa
-          uri: lb://service-uaa
+          uri: ${SERVICE_UAA_URL:http://localhost:9001/}
           predicates:
             - Path=/api/uaa/**
           filters:

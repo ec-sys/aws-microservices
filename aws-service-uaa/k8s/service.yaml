@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: api-gateway
+  name: service-uaa
   labels:
-    app: api-gateway
+    app: service-uaa
 spec:
   ports:
     - port: 8080
       protocol: TCP
   selector:
-    app: api-gateway
+    app: service-uaa
   type: ClusterIP

@@ -1,10 +1,10 @@
 apiVersion: skaffold/v4beta5
 kind: Config
 metadata:
-  name: aws-api-gateway
+  name: aws-service-uaa
 build:
   artifacts:
-    - image: longdd90jp/aws-api-gateway
+    - image: longdd90jp/aws-service-uaa
       jib:
         args:
           - -DskipTests
