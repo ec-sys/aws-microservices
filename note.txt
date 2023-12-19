@@ -18,3 +18,5 @@ sudo aws s3 cp s3://dangtit90/service-post-0.1.jar service-post-0.1.jar
 
 
 java -jar D:\\soft\\zipkin-server-2.24.3-exec.jar
+
+kubectl get secret admin-user -n kubernetes-dashboard -o jsonpath={".data.token"} | base64 -d

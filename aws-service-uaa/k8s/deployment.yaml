@@ -2,69 +2,67 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: service-uaa
-  labels:
-    app: service-uaa
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: service-uaa
+      component: service-uaa-pod
   template:
     metadata:
       labels:
-        app: service-uaa
+        component: service-uaa-pod
     spec:
       containers:
-      - name: service-uaa
-        image: longdd90jp/aws-service-uaa
-        ports:
-        - containerPort: 8080
-        env:
-          - name: REST_SERVER_PORT
-            valueFrom:
-              configMapKeyRef:
-                name: app-configmap
-                key: rest-api-server-port
-          # config-server evn
-          - name: CONFIG_SERVER
-            valueFrom:
-              configMapKeyRef:
-                name: app-configmap
-                key: config-server-url
-          - name: CONFIG_ACCESS_USERNAME
-            valueFrom:
-              secretKeyRef:
-                name: app-secret
-                key: config-server-user
-          # redis evn
-          - name: REDIS_HOST
-            valueFrom:
-              configMapKeyRef:
-                name: app-configmap
-                key: redis-host
-          - name: REDIS_PORT
-            valueFrom:
-              configMapKeyRef:
-                name: app-configmap
-                key: redis-port
-          - name: REDIS_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: db-secret
-                key: redis-password
-          # mysql evn
-          - name: MYSQL_URL
-            valueFrom:
-              configMapKeyRef:
-                name: app-configmap
-                key: mysql-url
-          - name: DB_USER_NAME
-            valueFrom:
-              secretKeyRef:
-                name: db-secret
-                key: mysql-user
-          - name: DB_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: db-secret
-                key: mysql-password
+        - name: service-uaa-ctn
+          image: longdd90jp/aws-service-uaa
+          ports:
+            - containerPort: 8080
+          env:
+            - name: REST_SERVER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: app-configmap
+                  key: rest-api-server-port
+            # config-server evn
+            - name: CONFIG_SERVER
+              valueFrom:
+                configMapKeyRef:
+                  name: app-configmap
+                  key: config-server-url
+            - name: CONFIG_ACCESS_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: config-server-user
+            # redis evn
+            - name: REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: app-configmap
+                  key: redis-host
+            - name: REDIS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: app-configmap
+                  key: redis-port
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: redis-password
+            # mysql evn
+            - name: MYSQL_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: app-configmap
+                  key: mysql-url
+            - name: DB_USER_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: mysql-user
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: mysql-password

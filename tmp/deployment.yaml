@@ -1,0 +1,84 @@
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  name: viet-aws-deployment
+#spec:
+#  replicas: 2
+#  selector:
+#    matchLabels:
+#      component: viet-aws-pod
+#  template:
+#    metadata:
+#      labels:
+#        component: viet-aws-pod
+#    spec:
+#      containers:
+#        - name: viet-aws-ctn
+#          image: vietaws/ecs:user
+#          ports:
+#            - containerPort: 8080
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: viet-aws
+#  labels:
+#    component: viet-aws
+#spec:
+#  type: NodePort
+#  selector:
+#    component: viet-aws-pod
+#  ports:
+#    - port: 8080
+#      targetPort: 8080
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-nginx
+spec:
+  selector:
+    matchLabels:
+      run: my-nginx
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        run: my-nginx
+    spec:
+      containers:
+        - name: my-nginx
+          image: vietaws/ecs:user
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-nginx
+  labels:
+    run: my-nginx
+spec:
+  ports:
+    - port: 8080
+      protocol: TCP
+  selector:
+    run: my-nginx
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /user
+            pathType: Exact
+            backend:
+              service:
+                name: my-nginx
+                port:
+                  number: 8080

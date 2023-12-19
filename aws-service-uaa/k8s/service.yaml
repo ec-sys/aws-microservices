@@ -3,11 +3,11 @@ kind: Service
 metadata:
   name: service-uaa
   labels:
-    app: service-uaa
+    component: service-uaa
 spec:
+  type: ClusterIP
+  selector:
+    component: service-uaa-pod
   ports:
     - port: 8080
-      protocol: TCP
-  selector:
-    app: service-uaa
-  type: ClusterIP
+      targetPort: 8080
