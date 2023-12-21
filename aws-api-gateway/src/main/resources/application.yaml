@@ -11,9 +11,6 @@ spring:
       enabled: always
   cloud:
     gateway:
-      discovery:
-        locator:
-          enabled: true
       routes:
         - id: uaa
           uri: ${SERVICE_UAA_URL:http://localhost:9001/}
@@ -22,13 +19,13 @@ spring:
           filters:
             - StripPrefix=2
         - id: post
-          uri: lb://service-post
+          uri: ${SERVICE_POST_URL:http://localhost:9002/}
           predicates:
             - Path=/api/post/**
           filters:
             - StripPrefix=2
         - id: comment
-          uri: lb://service-comment
+          uri: ${SERVICE_COMMENT_URL:http://localhost:9003/}
           predicates:
             - Path=/api/comment/**
           filters:
@@ -48,7 +45,7 @@ api:
 
 jwt:
   issuer: ${JWT_ISSUER:ec.sys}
-  algorithm-name: ${JWT_ALGORITH_NAME:HS512}
+  algorithm-name: ${JWT_ALGORITHM_NAME:HS512}
   access-token-expire-in-second: ${ACCESS_TOKEN_EXPIRE_IN_SECOND:864000}
   refresh-token-expire-in-second: ${REFRESH_TOKEN_EXPIRE_IN_SECOND:1728000}
   secret: ${JWT_SECRET:123@abc}
