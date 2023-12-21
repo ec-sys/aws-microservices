@@ -20,7 +20,6 @@
     </properties>
 
     <modules>
-        <module>aws-config-server</module>
         <module>aws-api-gateway</module>
         <module>aws-service-post</module>
         <module>aws-service-comment</module>
