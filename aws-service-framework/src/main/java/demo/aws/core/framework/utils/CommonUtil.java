@@ -2,12 +2,11 @@ package demo.aws.core.framework.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import demo.aws.core.framework.constant.URLConstant;
-import demo.aws.core.framework.dto.JWTPayloadDto;
+import demo.aws.core.common_util.constant.URLConstant;
+import demo.aws.core.common_util.dto.JWTPayloadDto;
 import demo.aws.core.framework.security.model.AuthInfo;
 import demo.aws.core.framework.security.model.LoginInfo;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package demo.aws.core.framework.utils;
+package demo.aws.core.common_util.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

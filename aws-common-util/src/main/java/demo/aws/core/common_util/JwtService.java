@@ -1,14 +1,19 @@
-package demo.aws.core.framework.security;
+package demo.aws.core.common_util;
 
-import demo.aws.core.framework.dto.GeneratedAccessTokenDto;
-import demo.aws.core.framework.dto.GeneratedRefreshTokenDto;
-import demo.aws.core.framework.dto.JWTPayloadDto;
+import demo.aws.core.common_util.dto.GeneratedAccessTokenDto;
+import demo.aws.core.common_util.dto.GeneratedRefreshTokenDto;
+import demo.aws.core.common_util.dto.JWTPayloadDto;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.DefaultClaims;
 
-import java.security.*;
+import java.security.KeyFactory;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;

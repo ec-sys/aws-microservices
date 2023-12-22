@@ -50,8 +50,8 @@
 
         <!-- core -->
         <dependency>
-            <groupId>demo.aws.core</groupId>
-            <artifactId>service-framework</artifactId>
+            <groupId>demo.aws</groupId>
+            <artifactId>common-util</artifactId>
             <version>0.1</version>
         </dependency>
 

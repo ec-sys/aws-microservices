@@ -1,9 +1,9 @@
-package demo.aws.core.framework.dto;
+package demo.aws.core.common_util.dto;
 
 import lombok.Data;
 
 @Data
-public class GeneratedAccessTokenDto {
+public class GeneratedTokenDto {
     private String generatedToken;
     private long expireTime;
     private String generatedPrivateKey;

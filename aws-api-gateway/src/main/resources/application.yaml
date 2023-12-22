@@ -31,8 +31,6 @@ spring:
           filters:
             - StripPrefix=2
   data:
-    mongodb:
-      auto-index-creation: true
     redis:
       host: ${REDIS_HOST:localhost}
       password: ${REDIS_PASSWORD:root123}

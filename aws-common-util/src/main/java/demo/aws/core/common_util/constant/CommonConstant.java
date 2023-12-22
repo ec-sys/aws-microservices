@@ -1,4 +1,4 @@
-package demo.aws.core.framework.constant;
+package demo.aws.core.common_util.constant;
 
 import java.util.Arrays;
 import java.util.List;

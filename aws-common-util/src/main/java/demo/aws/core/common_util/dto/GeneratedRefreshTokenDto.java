@@ -1,4 +1,4 @@
-package demo.aws.core.framework.dto;
+package demo.aws.core.common_util.dto;
 
 import lombok.Data;
 

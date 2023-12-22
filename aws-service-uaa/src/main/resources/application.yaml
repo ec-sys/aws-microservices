@@ -18,6 +18,11 @@ spring:
   output:
     ansi:
       enabled: always
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      password: ${REDIS_PASSWORD:root123}
+      port: ${REDIS_PORT:6379}
 
 jwt:
   issuer: ${JWT_ISSUER:ec.sys}

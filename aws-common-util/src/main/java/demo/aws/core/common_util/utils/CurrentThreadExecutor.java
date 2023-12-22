@@ -1,4 +1,4 @@
-package demo.aws.core.framework.utils;
+package demo.aws.core.common_util.utils;
 
 import jakarta.annotation.Nullable;
 

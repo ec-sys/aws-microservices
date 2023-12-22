@@ -1,4 +1,4 @@
-package demo.aws.core.framework.constant;
+package demo.aws.core.common_util.constant;
 
 public class URLConstant {
     public final static String PREFIX_UAA_URL = "/api/uaa";
