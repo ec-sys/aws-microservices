@@ -107,6 +107,26 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <configuration>
+                    <from>
+                        <image>openjdk:17-alpine</image>
+                        <auth>
+                            <username>longdd90jp</username>
+                            <password>Dangdinhlong90</password>
+                        </auth>
+                    </from>
+                    <to>
+                        <auth>
+                            <username>longdd90jp</username>
+                            <password>Dangdinhlong90</password>
+                        </auth>
+                    </to>
+                </configuration>
+                <version>3.4.0</version>
+            </plugin>
         </plugins>
     </build>
 </project>
