@@ -2,8 +2,8 @@ package demo.aws.backend.api_gateway.service;
 
 import demo.aws.backend.api_gateway.redis.UserToken;
 import demo.aws.backend.api_gateway.redis.UserTokenRepository;
-import demo.aws.core.framework.dto.JWTPayloadDto;
-import demo.aws.core.framework.security.JwtService;
+import demo.aws.core.common_util.JwtService;
+import demo.aws.core.common_util.dto.JWTPayloadDto;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -3,17 +3,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>demo.aws</groupId>
-        <artifactId>aws-microservices</artifactId>
-        <version>0.1</version>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.1.5</version>
+        <relativePath/>
     </parent>
 
+    <groupId>demo.aws.core</groupId>
     <artifactId>service-framework</artifactId>
     <version>0.1</version>
-    <name>service-framework</name>
-    <description>Module Service Framework</description>
+    <description>Module Common Utils</description>
 
-    <properties></properties>
+    <properties>
+        <java.version>17</java.version>
+    </properties>
 
     <dependencies>
         <!-- springframework -->
@@ -31,7 +34,7 @@
         </dependency>
 
         <dependency>
-            <groupId>demo.aws</groupId>
+            <groupId>demo.aws.core</groupId>
             <artifactId>common-util</artifactId>
             <version>0.1</version>
         </dependency>
@@ -98,12 +101,10 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <source>17</source>
-                    <target>17</target>
+                    <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>

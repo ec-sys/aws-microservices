@@ -5,18 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 
 @Slf4j
 @SpringBootApplication
-@ComponentScan(
-        basePackages = {
-                "demo.aws.backend.uaa"
-        },
-        basePackageClasses = {
-                demo.aws.core.framework.security.JwtService.class
-        })
 public class UaaApplication implements CommandLineRunner {
 
     @Autowired

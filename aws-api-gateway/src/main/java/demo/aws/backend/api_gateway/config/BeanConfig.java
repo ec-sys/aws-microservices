@@ -1,6 +1,6 @@
 package demo.aws.backend.api_gateway.config;
 
-import demo.aws.core.framework.security.JwtService;
+import demo.aws.core.common_util.JwtService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;

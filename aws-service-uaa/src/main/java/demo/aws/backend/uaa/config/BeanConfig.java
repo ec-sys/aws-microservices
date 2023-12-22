@@ -1,7 +1,7 @@
 package demo.aws.backend.uaa.config;
 
 import demo.aws.core.framework.security.JwtAuthenticationFilter;
-import demo.aws.core.framework.security.JwtService;
+import demo.aws.core.common_util.JwtService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

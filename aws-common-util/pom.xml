@@ -3,20 +3,22 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>demo.aws</groupId>
-        <artifactId>aws-microservices</artifactId>
-        <version>0.1</version>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.1.5</version>
+        <relativePath/>
     </parent>
 
+    <groupId>demo.aws.core</groupId>
     <artifactId>common-util</artifactId>
     <version>0.1</version>
-    <name>common-utils</name>
     <description>Module Common Utils</description>
 
-    <properties></properties>
+    <properties>
+        <java.version>17</java.version>
+    </properties>
 
     <dependencies>
-
         <!-- utils -->
         <dependency>
             <groupId>org.apache.commons</groupId>

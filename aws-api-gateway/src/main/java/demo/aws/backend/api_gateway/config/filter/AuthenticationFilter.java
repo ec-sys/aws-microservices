@@ -1,10 +1,10 @@
 package demo.aws.backend.api_gateway.config.filter;
 
 import demo.aws.backend.api_gateway.service.TokenService;
-import demo.aws.core.framework.constant.CommonConstant;
-import demo.aws.core.framework.constant.URLConstant;
-import demo.aws.core.framework.dto.JWTPayloadDto;
-import demo.aws.core.framework.utils.CommonUtil;
+import demo.aws.core.common_util.constant.CommonConstant;
+import demo.aws.core.common_util.constant.URLConstant;
+import demo.aws.core.common_util.dto.JWTPayloadDto;
+import demo.aws.core.common_util.utils.CommonUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;

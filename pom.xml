@@ -20,12 +20,12 @@
     </properties>
 
     <modules>
+        <module>aws-common-util</module>
+        <module>aws-service-framework</module>
         <module>aws-api-gateway</module>
+        <module>aws-service-uaa</module>
         <module>aws-service-post</module>
         <module>aws-service-comment</module>
-        <module>aws-service-uaa</module>
-        <module>aws-service-framework</module>
-		<module>aws-common-util</module>
     </modules>
 
     <dependencyManagement>

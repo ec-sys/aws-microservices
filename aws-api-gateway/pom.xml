@@ -50,7 +50,7 @@
 
         <!-- core -->
         <dependency>
-            <groupId>demo.aws</groupId>
+            <groupId>demo.aws.core</groupId>
             <artifactId>common-util</artifactId>
             <version>0.1</version>
         </dependency>
