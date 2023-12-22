@@ -113,17 +113,8 @@
                 <configuration>
                     <from>
                         <image>openjdk:17-alpine</image>
-                        <auth>
-                            <username>longdd90jp</username>
-                            <password>Dangdinhlong90</password>
-                        </auth>
                     </from>
-                    <to>
-                        <auth>
-                            <username>longdd90jp</username>
-                            <password>Dangdinhlong90</password>
-                        </auth>
-                    </to>
+                    <allowInsecureRegistries>true</allowInsecureRegistries>
                 </configuration>
                 <version>3.4.0</version>
             </plugin>
