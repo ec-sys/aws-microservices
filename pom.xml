@@ -22,6 +22,7 @@
     <modules>
         <module>aws-common-util</module>
         <module>aws-service-framework</module>
+        <module>aws-protobuf</module>
         <module>aws-api-gateway</module>
         <module>aws-service-uaa</module>
         <module>aws-service-post</module>

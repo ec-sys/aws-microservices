@@ -13,7 +13,10 @@
     <name>service-post</name>
     <description>Module Service Post</description>
 
-    <properties></properties>
+    <properties>
+        <grpc.server.version>2.15.0.RELEASE</grpc.server.version>
+        <grpc.client.version>2.15.0.RELEASE</grpc.client.version>
+    </properties>
 
     <dependencies>
         <!-- springframework -->
@@ -62,12 +65,28 @@
             <version>0.1</version>
         </dependency>
 
-
         <!-- domain-data -->
         <dependency>
             <groupId>demo.aws.backend</groupId>
             <artifactId>service-comment-data</artifactId>
             <version>0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>demo.aws.core</groupId>
+            <artifactId>protobuf-gen</artifactId>
+            <version>0.1</version>
+        </dependency>
+
+        <!-- grpc -->
+        <dependency>
+            <groupId>net.devh</groupId>
+            <artifactId>grpc-server-spring-boot-starter</artifactId>
+            <version>${grpc.server.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.devh</groupId>
+            <artifactId>grpc-client-spring-boot-starter</artifactId>
+            <version>${grpc.client.version}</version>
         </dependency>
 
         <!-- test -->

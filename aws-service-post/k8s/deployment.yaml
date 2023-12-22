@@ -23,6 +23,11 @@ spec:
                 configMapKeyRef:
                   name: app-configmap
                   key: rest-api-server-port
+            - name: GRPC_SERVER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: app-configmap
+                  key: grpc-server-port
             # mysql evn
             - name: MYSQL_URL
               valueFrom:
@@ -39,3 +44,9 @@ spec:
                 secretKeyRef:
                   name: db-secret
                   key: mysql-password
+            # grpc client
+            - name: GRPC_CLIENT_POST_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: app-configmap
+                  key: grpc-client-post-url

@@ -1,6 +1,7 @@
 package demo.aws.backend.comment.api.controller;
 
 
+import demo.aws.backend.comment.api.response.CommentPostItem;
 import demo.aws.backend.comment.domain.entity.Comment;
 import demo.aws.backend.comment.service.CommentService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,8 +24,13 @@ public class PostCommentController {
     @Autowired
     CommentService commentService;
 
-    @GetMapping("/{postId}")
-    public ResponseEntity<List<Comment>> getOfPost(HttpServletRequest request, @PathVariable long postId) {
+    @GetMapping("/posts/{postId}")
+    public ResponseEntity<List<Comment>> getOfPost(@PathVariable long postId) {
         return new ResponseEntity<>(commentService.getCommentsOfPost(postId), HttpStatus.OK);
+    }
+
+    @GetMapping("/comments/{commentId}")
+    public ResponseEntity<CommentPostItem> getComment(@PathVariable long commentId) {
+        return new ResponseEntity<>(commentService.getComment(commentId), HttpStatus.OK);
     }
 }

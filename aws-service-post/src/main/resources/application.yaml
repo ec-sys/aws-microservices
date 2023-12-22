@@ -19,6 +19,15 @@ spring:
     ansi:
       enabled: always
 
+#grpc
+grpc:
+  server:
+    port: ${GRPC_SERVER_PORT:1102}
+  client:
+    comment:
+      address: ${GRPC_CLIENT_COMMENT_URL:static://localhost:1103}
+      negotiationType: plaintext
+
 #management
 management:
   #spring actuator

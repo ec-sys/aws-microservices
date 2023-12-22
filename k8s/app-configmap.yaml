@@ -7,6 +7,10 @@ data:
   rest-api-server-port: "8080"
   config-server-url: "http://config-server:8080"
   mysql-url: "jdbc:mysql://mysql-svc:3306/db_zenblog"
+  # grpc
+  grpc-server-port: "8085"
+  grpc-client-post-url: "http://service-post:8085"
+  grpc-client-comment-url: "http://service-comment:8085"
   # redis
   redis-host: "redis-svc"
   redis-port: "6379"
