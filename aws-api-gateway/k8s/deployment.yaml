@@ -25,17 +25,6 @@ spec:
               configMapKeyRef:
                 name: app-configmap
                 key: rest-api-server-port
-          # config-server evn
-          - name: CONFIG_SERVER
-            valueFrom:
-              configMapKeyRef:
-                name: app-configmap
-                key: config-server-url
-          - name: CONFIG_ACCESS_USERNAME
-            valueFrom:
-              secretKeyRef:
-                name: app-secret
-                key: config-server-user
           # redis evn
           - name: REDIS_HOST
             valueFrom:
@@ -57,3 +46,13 @@ spec:
               configMapKeyRef:
                 name: app-configmap
                 key: service-uaa-url
+          - name: SERVICE_POST_URL
+            valueFrom:
+              configMapKeyRef:
+                name: app-configmap
+                key: service-post-url
+          - name: SERVICE_COMMENT_URL
+            valueFrom:
+              configMapKeyRef:
+                name: app-configmap
+                key: service-comment-url

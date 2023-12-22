@@ -1,13 +1,12 @@
 package demo.aws.backend.comment.domain.entity;
 
+import demo.aws.core.framework.auditing.Auditable;
 import jakarta.persistence.*;
 import lombok.Data;
-
-import java.util.Date;
 @Entity
 @Data
 @Table(name = "comments")
-public class Comment {
+public class Comment extends Auditable<String> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,9 +19,4 @@ public class Comment {
 
     private String content;
     private boolean isPublic;
-
-    private Date created;
-    private String creator;
-    private Date updated;
-    private String updater;
 }

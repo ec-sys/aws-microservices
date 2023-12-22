@@ -11,7 +11,7 @@
     <artifactId>service-uaa</artifactId>
     <version>0.1</version>
     <name>service-uaa</name>
-    <description>Module API Gateway</description>
+    <description>Module Service Uaa</description>
 
     <properties></properties>
 

@@ -1,11 +1,7 @@
 package demo.aws.backend.post.domain.entity;
 
 import demo.aws.core.framework.auditing.Auditable;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Date;
@@ -23,8 +19,4 @@ public class Post extends Auditable<String> {
     private boolean isPublic;
     private String description;
     private Integer viewCount;
-    private Date created;
-    private String creator;
-    private Date updated;
-    private String updater;
 }

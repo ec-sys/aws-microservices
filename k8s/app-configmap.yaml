@@ -12,3 +12,5 @@ data:
   redis-port: "6379"
   # service uaa
   service-uaa-url: "http://service-uaa:8080"
+  service-post-url: "http://service-post:8080"
+  service-comment-url: "http://service-comment:8080"

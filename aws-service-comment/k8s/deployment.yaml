@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: service-uaa
+  name: service-comment
 spec:
   replicas: 2
   selector:
     matchLabels:
-      component: service-uaa-pod
+      component: service-comment-pod
   template:
     metadata:
       labels:
-        component: service-uaa-pod
+        component: service-comment-pod
     spec:
       containers:
-        - name: service-uaa-ctn
-          image: longdd90jp/aws-service-uaa
+        - name: service-comment-ctn
+          image: longdd90jp/aws-service-comment
           ports:
             - containerPort: 8080
           env:
@@ -23,22 +23,6 @@ spec:
                 configMapKeyRef:
                   name: app-configmap
                   key: rest-api-server-port
-            # redis evn
-            - name: REDIS_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: app-configmap
-                  key: redis-host
-            - name: REDIS_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: app-configmap
-                  key: redis-port
-            - name: REDIS_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: db-secret
-                  key: redis-password
             # mysql evn
             - name: MYSQL_URL
               valueFrom:
