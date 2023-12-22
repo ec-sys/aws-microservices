@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+option java_package = "demo.aws.core.autogen.grpc.post";
+option java_multiple_files = true;
+
+package product;
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "common.proto";
+import "master.proto";
+
+
+
+service Post {
+  rpc getPostById (PSTPostByIdRequest) returns (PSTPostResponse);
+}
+
+message PSTPostByIdRequest {
+  int64 id = 1;
+}
+
+message PSTListPostResponse {
+  repeated PSTPostResponse posts = 1;
+}
+
+message PSTPostResponse {
+  int64 postId = 1;
+  string title = 2;
+}

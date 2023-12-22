@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+option java_package = "demo.aws.core.autogen.grpc.common";
+option java_multiple_files = true;
+
+package common;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+message OrderItem {
+  string productId = 1;
+  int32 productPrice = 2;
+  int32 quantity = 3;
+}
+
+message OrderRecipient {
+  string name = 1;
+  string phoneNumber = 2;
+  string address = 3;
+}
+
+message ProcessOrderRequest {
+  string orderId = 1;
+  string customerId = 2;
+  repeated OrderItem items = 3;
+  ProcessOrderStatus orderStatus = 4;
+}
+
+message ProcessOrderResponse {
+  string orderId = 1;
+  string customerId = 2;
+  ProcessOrderStatus orderStatus = 3;
+  ProcessOrderErrorCode errorCodes = 4;
+}
+
+enum ProcessOrderStatus {
+  NEW = 0;
+  CREATING = 1;
+  CREATED = 2;
+  SHIPPING = 3;
+  SHIPPED = 4;
+  PAID = 5;
+  COMPLETED = 6;
+  CANCELLED = 7;
+  INVALID = 8;
+}
+
+// 0000 -> 0099 error code of product
+// 0100 -> 0199 error code of inventory
+// 0200 -> 0299 error code of payment
+enum ProcessOrderErrorCode {
+  NONE = 0;     // none error
+  ERR_0000 = 1; // product out of date
+  ERR_0100 = 2;
+  ERR_0200 = 3;
+}

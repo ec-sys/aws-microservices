@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+option java_package = "demo.aws.core.autogen.grpc.comment";
+option java_multiple_files = true;
+
+package product;
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "common.proto";
+import "master.proto";
+
+
+
+service Comment {
+  rpc getCommentByPost (CMTCommentByPostRequest) returns (CMTCommentByPostResponse);
+}
+
+message CMTCommentByPostRequest {
+  int64 id = 1;
+}
+
+message CMTCommentByPostResponse {
+  repeated CMTCommentItem comments = 1;
+}
+
+message CMTCommentItem {
+  int64 id = 1;
+  string content = 2;
+}
