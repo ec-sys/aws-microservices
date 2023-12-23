@@ -2,7 +2,7 @@ package demo.aws.core.framework.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import demo.aws.core.common_util.constant.CommonConstant;
-import demo.aws.core.framework.security.model.LoginInfo;
+import demo.aws.core.common_util.model.LoginInfo;
 import demo.aws.core.framework.utils.CommonUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

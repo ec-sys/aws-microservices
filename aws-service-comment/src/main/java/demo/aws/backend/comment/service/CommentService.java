@@ -33,6 +33,7 @@ public class CommentService {
             item.setCommentId(commentId);
             PSTPostResponse post = postGrpcClient.getPostById(comment.getPostId());
             item.setPostId(post.getPostId());
+            item.setPostTitle(post.getTitle());
         } else {
             log.error("NOT EXIST COMMENT WITH ID: {}", commentId);
             throw new IllegalArgumentException("NOT EXIST COMMENT WITH ID");

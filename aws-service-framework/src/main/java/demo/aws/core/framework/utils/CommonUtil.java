@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import demo.aws.core.common_util.constant.URLConstant;
 import demo.aws.core.common_util.dto.JWTPayloadDto;
-import demo.aws.core.framework.security.model.AuthInfo;
-import demo.aws.core.framework.security.model.LoginInfo;
+import demo.aws.core.common_util.model.LoginInfo;
+import demo.aws.core.common_util.model.AuthInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 

@@ -5,12 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import demo.aws.core.common_util.constant.URLConstant;
 import demo.aws.core.common_util.dto.JWTPayloadDto;
 import demo.aws.core.common_util.model.AuthInfo;
-import demo.aws.core.common_util.model.LoginInfo;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class CommonUtil {
     public static List<String> getPublicUrlPaths() {

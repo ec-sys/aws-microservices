@@ -6,4 +6,5 @@ import lombok.Data;
 public class CommentPostItem {
     private long commentId;
     private long postId;
+    private String postTitle;
 }

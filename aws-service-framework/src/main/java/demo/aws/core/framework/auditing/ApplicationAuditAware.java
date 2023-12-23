@@ -1,6 +1,6 @@
 package demo.aws.core.framework.auditing;
 
-import demo.aws.core.framework.security.model.AuthInfo;
+import demo.aws.core.common_util.model.AuthInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;

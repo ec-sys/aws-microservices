@@ -11,7 +11,7 @@
  Target Server Version : 80035 (8.0.35)
  File Encoding         : 65001
 
- Date: 16/12/2023 20:28:26
+ Date: 22/12/2023 22:47:45
 */
 
 SET NAMES utf8mb4;
@@ -28,10 +28,10 @@ CREATE TABLE `comments`  (
   `user_id` int NOT NULL,
   `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `is_public` bit(1) NOT NULL,
-  `created` datetime(6) NULL DEFAULT NULL,
-  `creator` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `updated` datetime(6) NULL DEFAULT NULL,
-  `updater` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `created_date` datetime(6) NULL DEFAULT NULL,
+  `created_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `last_modified_date` datetime(6) NULL DEFAULT NULL,
+  `last_modified_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
@@ -69,21 +69,21 @@ CREATE TABLE `posts`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `title` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
-  `created` datetime(6) NULL DEFAULT NULL,
-  `creator` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `is_public` bit(1) NOT NULL,
-  `updated` datetime(6) NULL DEFAULT NULL,
-  `updater` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `view_count` int NULL DEFAULT NULL,
+  `created_date` datetime(6) NULL DEFAULT NULL,
+  `created_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `last_modified_date` datetime(6) NULL DEFAULT NULL,
+  `last_modified_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of posts
 -- ----------------------------
-INSERT INTO `posts` VALUES (1, 'Java 8', 'Demo Java 8', '2023-12-07 02:16:24.000000', '1', 'Basic Level', b'1', '2023-12-07 02:16:18.000000', '1', 1);
-INSERT INTO `posts` VALUES (2, 'Java 17', 'Demo Java 17', '2023-12-07 02:16:24.000000', '1', 'Basic Advanced', b'1', '2023-12-07 02:16:18.000000', '1', 1);
+INSERT INTO `posts` VALUES (1, 'Java 8', 'Demo Java 8', 'Basic Level', b'1', 1, '2023-12-07 02:16:24.000000', '1', '2023-12-07 02:16:18.000000', '1');
+INSERT INTO `posts` VALUES (2, 'Java 17', 'Demo Java 17', 'Basic Advanced', b'1', 1, '2023-12-07 02:16:24.000000', '1', '2023-12-07 02:16:18.000000', '1');
 
 -- ----------------------------
 -- Table structure for roles

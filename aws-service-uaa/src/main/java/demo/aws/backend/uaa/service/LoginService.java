@@ -15,7 +15,7 @@ import demo.aws.core.common_util.JwtService;
 import demo.aws.core.common_util.dto.GeneratedAccessTokenDto;
 import demo.aws.core.common_util.dto.GeneratedRefreshTokenDto;
 import demo.aws.core.common_util.dto.JWTPayloadDto;
-import demo.aws.core.framework.security.model.LoginInfo;
+import demo.aws.core.common_util.model.LoginInfo;
 import demo.aws.core.framework.utils.CommonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

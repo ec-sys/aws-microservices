@@ -65,7 +65,6 @@
             <version>0.1</version>
         </dependency>
 
-
         <!-- domain-data -->
         <dependency>
             <groupId>demo.aws.backend</groupId>

@@ -3,6 +3,7 @@ package demo.aws.backend.comment.rpc;
 import demo.aws.core.autogen.grpc.post.PSTPostByIdRequest;
 import demo.aws.core.autogen.grpc.post.PSTPostResponse;
 import demo.aws.core.autogen.grpc.post.PostGrpc;
+import demo.aws.core.framework.grpc.GrpcHeaderClientInterceptor;
 import io.grpc.Channel;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class PostGrpcClient {
-    @GrpcClient("post")
+    @GrpcClient(value = "post", interceptors = GrpcHeaderClientInterceptor.class)
     private Channel postChannel;
 
     public PSTPostResponse getPostById(long postId) {

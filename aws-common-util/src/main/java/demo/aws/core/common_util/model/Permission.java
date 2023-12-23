@@ -1,4 +1,4 @@
-package demo.aws.core.framework.security.model;
+package demo.aws.core.common_util.model;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
