@@ -9,8 +9,8 @@ data:
   mysql-url: "jdbc:mysql://mysql-svc:3306/db_zenblog"
   # grpc
   grpc-server-port: "8085"
-  grpc-client-post-url: "http://service-post:8085"
-  grpc-client-comment-url: "http://service-comment:8085"
+  grpc-client-post-url: "static://service-post:8085"
+  grpc-client-comment-url: "static://service-comment:8085"
   # redis
   redis-host: "redis-svc"
   redis-port: "6379"

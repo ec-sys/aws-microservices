@@ -1,7 +1,7 @@
-FROM eclipse-temurin:17-jre-alpine
+FROM openjdk:17-alpine
 
-COPY target/service-post-0.1.jar app.jar
+COPY target/service-comment-0.1.jar app.jar
 
-EXPOSE 9002
+EXPOSE 8080 8085
 
 CMD ["java", "-jar", "app.jar"]

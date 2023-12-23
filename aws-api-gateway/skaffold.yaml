@@ -5,9 +5,10 @@ metadata:
 build:
   artifacts:
     - image: longdd90jp/aws-api-gateway
-      jib:
-        args:
-          - -DskipTests
+      docker:
+        cacheFrom:
+          - longdd90jp/aws-api-gateway
+  local: {}
   tagPolicy:
     gitCommit: {}
 manifests:

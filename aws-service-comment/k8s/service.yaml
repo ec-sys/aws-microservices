@@ -10,4 +10,10 @@ spec:
     component: service-comment-pod
   ports:
     - port: 8080
+      protocol: TCP
+      name: rest-port
       targetPort: 8080
+    - port: 8085
+      protocol: TCP
+      name: grpc-port
+      targetPort: 8085

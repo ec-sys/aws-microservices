@@ -16,7 +16,10 @@ spec:
         - name: service-post-ctn
           image: longdd90jp/aws-service-post
           ports:
-            - containerPort: 8080
+          - containerPort: 8080
+            name: rest-port
+          - containerPort: 8085
+            name: grpc-port
           env:
             - name: NODE_NAME
               valueFrom:
@@ -53,8 +56,8 @@ spec:
                   name: db-secret
                   key: mysql-password
             # grpc client
-            - name: GRPC_CLIENT_POST_URL
+            - name: GRPC_CLIENT_COMMENT_URL
               valueFrom:
                 configMapKeyRef:
                   name: app-configmap
-                  key: grpc-client-post-url
+                  key: grpc-client-comment-url

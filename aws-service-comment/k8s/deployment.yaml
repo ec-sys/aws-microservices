@@ -17,6 +17,9 @@ spec:
           image: longdd90jp/aws-service-comment
           ports:
             - containerPort: 8080
+              name: rest-port
+            - containerPort: 8085
+              name: grpc-port
           env:
             - name: NODE_NAME
               valueFrom:

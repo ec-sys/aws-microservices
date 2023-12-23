@@ -5,35 +5,38 @@ metadata:
 build:
   artifacts:
     - image: longdd90jp/aws-api-gateway
-      jib:
-        project: aws-api-gateway
-        args:
-          - -DskipTests
+      context: aws-api-gateway
     - image: longdd90jp/aws-service-uaa
-      jib:
-        project: aws-service-uaa
-        args:
-          - -DskipTests
+      context: aws-service-uaa
     - image: longdd90jp/aws-service-post
-      jib:
-        project: aws-service-post
-        args:
-          - -DskipTests
+      context: aws-service-post
     - image: longdd90jp/aws-service-comment
-      jib:
-        project: aws-service-comment
-        args:
-          - -DskipTests
+      context: aws-service-comment
+#    - image: longdd90jp/aws-service-uaa
+#      jib:
+#        project: aws-service-uaa
+#        args:
+#          - -DskipTests
+#    - image: longdd90jp/aws-service-post
+#      jib:
+#        project: aws-service-post
+#        args:
+#          - -DskipTests
+#    - image: longdd90jp/aws-service-comment
+#      jib:
+#        project: aws-service-comment
+#        args:
+#          - -DskipTests
   tagPolicy:
     gitCommit: {}
 manifests:
   rawYaml:
     - k8s/app-*.yaml
-    - k8s/db-*.yaml
-#    - k8s/db-configmap.yaml
-#    - k8s/db-secret.yaml
-    - k8s/mysql-*.yaml
-    - k8s/redis-*.yaml
+#    - k8s/db-*.yaml
+    - k8s/db-configmap.yaml
+    - k8s/db-secret.yaml
+#    - k8s/mysql-*.yaml
+#    - k8s/redis-*.yaml
     - k8s/ingress.yaml
     #    - k8s/privileges.yaml
     - aws-api-gateway/k8s/*.yaml

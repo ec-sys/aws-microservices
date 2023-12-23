@@ -5,9 +5,9 @@ metadata:
 build:
   artifacts:
     - image: longdd90jp/aws-service-post
-      jib:
-        args:
-          - -DskipTests
+      docker:
+        cacheFrom:
+          - longdd90jp/aws-service-post
   tagPolicy:
     gitCommit: {}
 manifests:
