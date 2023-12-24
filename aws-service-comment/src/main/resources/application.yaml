@@ -18,6 +18,8 @@ spring:
   output:
     ansi:
       enabled: always
+  zipkin:
+    enabled: ${ENABLED_ZIPKIN:true}
 
 #grpc
 grpc:
@@ -43,7 +45,7 @@ management:
       show-details: never
   #tracing
   tracing:
-    enabled: 'false'
+    enabled: true
     sampling:
       probability: 1.0
   zipkin:
@@ -54,3 +56,5 @@ management:
 logging:
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%X{traceId:-},%X{spanId:-}] ${LOG_LEVEL_PATTERN:-%5p} %m%n"
+    # traceID and spanId are predefined MDC keys - we want the logs to include them
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
