@@ -18,8 +18,6 @@ spring:
   output:
     ansi:
       enabled: always
-  zipkin:
-    enabled: ${ENABLED_ZIPKIN:true}
 
 #grpc
 grpc:
@@ -45,7 +43,7 @@ management:
       show-details: never
   #tracing
   tracing:
-    enabled: true
+    enabled: ${ENABLED_TRACING:true}
     sampling:
       probability: 1.0
   zipkin:

@@ -23,8 +23,6 @@ spring:
       host: ${REDIS_HOST:localhost}
       password: ${REDIS_PASSWORD:root123}
       port: ${REDIS_PORT:6379}
-  zipkin:
-    enabled: ${ENABLED_ZIPKIN:true}
 
 jwt:
   issuer: ${JWT_ISSUER:ec.sys}
@@ -48,7 +46,7 @@ management:
       show-details: never
   #tracing
   tracing:
-    enabled: true
+    enabled: ${ENABLED_TRACING:true}
     sampling:
       probability: 1.0
   zipkin:

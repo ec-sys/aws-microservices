@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: app-configmap
 data:
-  enabled_zipkin: "false"
+  enabled_tracing: "false"
   rest-api-server-port: "8080"
   config-server-url: "http://config-server:8080"
   mysql-url: "jdbc:mysql://mysql-svc:3306/db_zenblog"
