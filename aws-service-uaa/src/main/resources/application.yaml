@@ -9,8 +9,8 @@ spring:
     name: service-uaa
   datasource:
     url: ${MYSQL_URL:jdbc:mysql://localhost:3306/db_zenblog}
-    username: ${DB_USER_NAME:root}
-    password: ${DB_PASSWORD:root123}
+    username: ${MYSQL_USER_NAME:root}
+    password: ${MYSQL_PASSWORD:root123}
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:

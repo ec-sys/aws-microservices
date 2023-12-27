@@ -12,6 +12,7 @@ build:
       context: aws-service-post
     - image: longdd90jp/aws-service-comment
       context: aws-service-comment
+
 #    - image: longdd90jp/aws-service-uaa
 #      jib:
 #        project: aws-service-uaa
@@ -31,7 +32,9 @@ build:
     gitCommit: {}
 manifests:
   rawYaml:
-    - k8s/app-*.yaml
+    - k8s/env-configmap.yaml
+    - k8s/env-secret.yaml
+#    - k8s/app-*.yaml
 #    - k8s/db-*.yaml
     - k8s/db-configmap.yaml
     - k8s/db-secret.yaml

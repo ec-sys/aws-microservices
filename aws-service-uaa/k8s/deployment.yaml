@@ -20,6 +20,11 @@ spec:
               name: rest-port
             - containerPort: 8085
               name: grpc-port
+          envFrom:
+            - configMapRef:
+                name: env-config
+            - secretRef:
+                name: env-secret
           env:
             - name: NODE_NAME
               valueFrom:
@@ -34,35 +39,3 @@ spec:
                 configMapKeyRef:
                   name: app-configmap
                   key: rest-api-server-port
-            # redis evn
-            - name: REDIS_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: app-configmap
-                  key: redis-host
-            - name: REDIS_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: app-configmap
-                  key: redis-port
-            - name: REDIS_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: db-secret
-                  key: redis-password
-            # mysql evn
-            - name: MYSQL_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: app-configmap
-                  key: mysql-url
-            - name: DB_USER_NAME
-              valueFrom:
-                secretKeyRef:
-                  name: db-secret
-                  key: mysql-user
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: db-secret
-                  key: mysql-password

@@ -19,6 +19,11 @@ spec:
         image: longdd90jp/aws-api-gateway
         ports:
         - containerPort: 8080
+        envFrom:
+          - configMapRef:
+              name: env-config
+          - secretRef:
+              name: env-secret
         env:
           - name: NODE_NAME
             valueFrom:
@@ -28,39 +33,3 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.name
-          - name: REST_SERVER_PORT
-            valueFrom:
-              configMapKeyRef:
-                name: app-configmap
-                key: rest-api-server-port
-          # redis evn
-          - name: REDIS_HOST
-            valueFrom:
-              configMapKeyRef:
-                name: app-configmap
-                key: redis-host
-          - name: REDIS_PORT
-            valueFrom:
-              configMapKeyRef:
-                name: app-configmap
-                key: redis-port
-          - name: REDIS_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: db-secret
-                key: redis-password
-          - name: SERVICE_UAA_URL
-            valueFrom:
-              configMapKeyRef:
-                name: app-configmap
-                key: service-uaa-url
-          - name: SERVICE_POST_URL
-            valueFrom:
-              configMapKeyRef:
-                name: app-configmap
-                key: service-post-url
-          - name: SERVICE_COMMENT_URL
-            valueFrom:
-              configMapKeyRef:
-                name: app-configmap
-                key: service-comment-url

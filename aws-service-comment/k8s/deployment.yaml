@@ -20,6 +20,11 @@ spec:
               name: rest-port
             - containerPort: 8085
               name: grpc-port
+          envFrom:
+            - configMapRef:
+                name: env-config
+            - secretRef:
+                name: env-secret
           env:
             - name: NODE_NAME
               valueFrom:
@@ -30,34 +35,3 @@ spec:
                 fieldRef:
                   fieldPath: metadata.name
             - name: REST_SERVER_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: app-configmap
-                  key: rest-api-server-port
-            - name: GRPC_SERVER_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: app-configmap
-                  key: grpc-server-port
-            # mysql evn
-            - name: MYSQL_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: app-configmap
-                  key: mysql-url
-            - name: DB_USER_NAME
-              valueFrom:
-                secretKeyRef:
-                  name: db-secret
-                  key: mysql-user
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: db-secret
-                  key: mysql-password
-            # grpc client
-            - name: GRPC_CLIENT_POST_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: app-configmap
-                  key: grpc-client-post-url
