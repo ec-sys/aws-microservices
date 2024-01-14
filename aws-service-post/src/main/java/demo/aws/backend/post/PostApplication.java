@@ -24,6 +24,8 @@ public class PostApplication implements CommandLineRunner {
     }
 
     private void showEnvironmentVars() {
+        log.info("ENABLED_TRACING: {}", env.getProperty("management.tracing.enabled"));
+        log.info("ZIPKIN_SERVER: {}", env.getProperty("management.zipkin.tracing.endpoint"));
         log.info("DB_URL: {}", env.getProperty("spring.datasource.url"));
         log.info("DB_USER_NAME: {}", env.getProperty("spring.datasource.username"));
         log.info("DB_PASSWORD: {}", env.getProperty("spring.datasource.password"));

@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: env-config
 data:
-  ENABLED_TRACING: "false"
+  ENABLED_TRACING: "true"
   ZIPKIN_SERVER: "http://zipkin-server:9411/api/v2/spans"
   MYSQL_URL: "jdbc:mysql://mysql-svc:3306/db_zenblog"
   # redis

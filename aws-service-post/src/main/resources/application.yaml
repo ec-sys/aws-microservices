@@ -43,7 +43,7 @@ management:
       show-details: never
   #tracing
   tracing:
-    enabled: ${ENABLED_TRACING:true}
+    enabled: ${ENABLED_TRACING:false}
     sampling:
       probability: 1.0
   zipkin:
