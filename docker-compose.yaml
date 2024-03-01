@@ -23,6 +23,12 @@ services:
       - app-tier
     ports:
       - 6379:6379
+  zipkin:
+    image: 'openzipkin/zipkin:2'
+    networks:
+      - app-tier
+    ports:
+      - 9411:9411
 #  app:
 #    build: ./app
 #    ports:

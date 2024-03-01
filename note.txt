@@ -40,3 +40,5 @@ kubectl label namespace default istio-injection-
 
 if you want to access through ingress then you need run (minikube tunnel)
 http://127.0.0.1/api/uaa/auth/login
+
+when use zippin with istio then need setting something for can work
