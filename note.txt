@@ -21,9 +21,12 @@ java -jar D:\\soft\\zipkin-server-2.24.3-exec.jar
 
 kubectl get secret admin-user -n kubernetes-dashboard -o jsonpath={".data.token"} | base64 -d
 
-
+docker context use default
 minikube start -p multi-node
 minikube dashboard -p multi-node
+minikube profile list
+minikube start -p minikube
+minikube dashboard -p minikube
 
 skaffold dev --no-prune=false --cache-artifacts=false
 
@@ -34,3 +37,6 @@ skaffold run --profile zenblog
 kubectl label namespace zenblog istio-injection=enabled
 kubectl get namespace -L istio-injection
 kubectl label namespace default istio-injection-
+
+if you want to access through ingress then you need run (minikube tunnel)
+http://127.0.0.1/api/uaa/auth/login

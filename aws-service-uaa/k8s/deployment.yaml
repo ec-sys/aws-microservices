@@ -34,8 +34,3 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
-            - name: REST_SERVER_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: app-configmap
-                  key: rest-api-server-port
