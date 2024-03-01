@@ -49,4 +49,4 @@ manifests:
     - aws-service-comment/k8s/*.yaml
 deploy:
   kubectl:
-    defaultNamespace: zenblog
+    defaultNamespace: dev-envoy

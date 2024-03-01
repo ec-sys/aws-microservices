@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mainapp-envoy-sidecar-deployment
+  labels:
+    app: mainapp-envoy-sidecar
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mainapp-envoy-sidecar
+  template:
+    metadata:
+      labels:
+        app: mainapp-envoy-sidecar
+    # The imp stuff
+    spec:
+      # Deployment has 2 containers!
+      containers:
+        - name: mainapp-envoy-sidecar
+          image: envoyproxy/envoy:distroless-dev
+          imagePullPolicy: Never
+          command:
+            - "/usr/local/bin/envoy"
+          args:
+            - "-c /etc/envoy/envoy.yaml"
+          ports:
+            - containerPort: 5199
+              name: envoy-port
+          volumeMounts:
+            - name: configs
+              mountPath: /etc/envoy
+        - name: livescores-microsvc
+          image: olliefr/docker-gs-ping:0
+          imagePullPolicy: Never
+          envFrom:
+            - configMapRef:
+                name: api-gateway-envs
+      volumes:
+        - name: configs
+          configMap:
+            name: api-gateway-files
