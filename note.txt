@@ -49,3 +49,7 @@ kubectl label namespace default istio-injection-
 https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/
 https://medium.com/@viggnah/how-to-deploy-envoy-as-a-sidecar-proxy-on-kubernetes-c3a3ad3935ee
 https://medium.com/@viggnah/how-to-deploy-envoy-as-an-edge-proxy-on-kubernetes-f1af78e1ebfb
+
+kubectl apply -k base
+
+kubectl port-forward svc/mainapp-envoy-sidecar-svc 5190:5199

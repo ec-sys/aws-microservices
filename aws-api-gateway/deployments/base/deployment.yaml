@@ -19,7 +19,7 @@ spec:
       containers:
         - name: mainapp-envoy-sidecar
           image: envoyproxy/envoy:distroless-dev
-          imagePullPolicy: Never
+          imagePullPolicy: IfNotPresent
           command:
             - "/usr/local/bin/envoy"
           args:
@@ -32,7 +32,7 @@ spec:
               mountPath: /etc/envoy
         - name: livescores-microsvc
           image: olliefr/docker-gs-ping:0
-          imagePullPolicy: Never
+          imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:
                 name: api-gateway-envs
