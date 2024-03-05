@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mainapp-envoy-sidecar-deployment
+  name: api-gateway
   labels:
-    app: mainapp-envoy-sidecar
+    app: api-gateway
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
-      app: mainapp-envoy-sidecar
+      app: api-gateway-pod
   template:
     metadata:
       labels:
-        app: mainapp-envoy-sidecar
+        app: api-gateway-pod
     # The imp stuff
     spec:
       # Deployment has 2 containers!
       containers:
-        - name: mainapp-envoy-sidecar
+        - name: api-gateway-envoy
           image: envoyproxy/envoy:distroless-dev
           imagePullPolicy: IfNotPresent
           command:
@@ -30,12 +30,25 @@ spec:
           volumeMounts:
             - name: configs
               mountPath: /etc/envoy
-        - name: livescores-microsvc
-          image: olliefr/docker-gs-ping:0
+        - name: api-gateway
+          image: longdd90jp/aws-api-gateway
           imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:
+                name: env-config
+            - configMapRef:
                 name: api-gateway-envs
+            - secretRef:
+                name: env-secret
+          env:
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
       volumes:
         - name: configs
           configMap:

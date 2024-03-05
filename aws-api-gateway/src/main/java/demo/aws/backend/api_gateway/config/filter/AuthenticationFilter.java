@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.net.InetAddress;
 import java.util.List;
 
 @Component
@@ -36,6 +37,11 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
     @SneakyThrows
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        try {
+            log.info("container ip: {}", InetAddress.getLocalHost().getHostName());
+        } catch (Exception ex) {
+            log.info("exception : {}", ex.getMessage());
+        }
         ServerHttpRequest request = exchange.getRequest();
 
         // skip check auth with some specific uri

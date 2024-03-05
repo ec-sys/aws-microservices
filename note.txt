@@ -52,4 +52,4 @@ https://medium.com/@viggnah/how-to-deploy-envoy-as-an-edge-proxy-on-kubernetes-f
 
 kubectl apply -k base
 
-kubectl port-forward svc/mainapp-envoy-sidecar-svc 5190:5199
+kubectl port-forward svc/mainapp-envoy-sidecar-svc -n dev-envoy 5190:5199
