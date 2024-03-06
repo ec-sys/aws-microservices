@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api-gateway
+  name: service-uaa
   labels:
-    app: api-gateway
+    app: service-uaa
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: api-gateway-pod
+      app: service-uaa-pod
   template:
     metadata:
       labels:
-        app: api-gateway-pod
+        app: service-uaa-pod
     # The imp stuff
     spec:
       # Deployment has 2 containers!
@@ -30,14 +30,14 @@ spec:
           volumeMounts:
             - name: configs
               mountPath: /etc/envoy
-        - name: api-gateway
-          image: longdd90jp/aws-api-gateway
+        - name: service-uaa
+          image: longdd90jp/aws-service-uaa
           imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:
                 name: env-config
             - configMapRef:
-                name: api-gateway-envs
+                name: service-uaa-envs
             - secretRef:
                 name: env-secret
           env:
@@ -52,4 +52,4 @@ spec:
       volumes:
         - name: configs
           configMap:
-            name: api-gateway-files
+            name: service-uaa-files
