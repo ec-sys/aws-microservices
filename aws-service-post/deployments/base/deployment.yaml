@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: service-uaa
+  name: service-post
 spec:
   replicas: 2
   selector:
     matchLabels:
-      component: service-uaa-pod
+      component: service-post-pod
   template:
     metadata:
       labels:
-        component: service-uaa-pod
+        component: service-post-pod
     spec:
       containers:
-        - name: service-uaa-ctn
-          image: longdd90jp/aws-service-uaa
+        - name: service-post-ctn
+          image: longdd90jp/aws-service-post
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
@@ -25,7 +25,7 @@ spec:
             - configMapRef:
                 name: env-config
             - configMapRef:
-                name: service-uaa-envs
+                name: service-post-envs
             - secretRef:
                 name: env-secret
           env:
@@ -43,23 +43,23 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: uaa-envoy-proxy
+  name: post-envoy-proxy
   labels:
-    app: uaa-envoy-proxy
+    app: post-envoy-proxy
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: uaa-envoy-proxy-pod
+      app: post-envoy-proxy-pod
   template:
     metadata:
       labels:
-        app: uaa-envoy-proxy-pod
+        app: post-envoy-proxy-pod
     # The imp stuff
     spec:
       # Deployment has 1 container!
       containers:
-        - name: uaa-envoy-proxy-ctn
+        - name: post-envoy-proxy-ctn
           image: envoyproxy/envoy:distroless-dev
           imagePullPolicy: IfNotPresent
           command:
@@ -68,11 +68,13 @@ spec:
             - "-c /etc/envoy/envoy.yaml"
           ports:
             - containerPort: 5199
-              name: envoy-port
+              name: rest-envoy-port
+            - containerPort: 5195
+              name: grpc-envoy-port
           volumeMounts:
             - name: configs
               mountPath: /etc/envoy
       volumes:
         - name: configs
           configMap:
-            name: service-uaa-files
+            name: service-post-files

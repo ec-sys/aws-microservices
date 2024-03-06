@@ -24,6 +24,12 @@ public class PostService {
     }
 
     public List<PostCommentDto> getAllPosts() {
+        try {
+            log.info("container ip: {}", InetAddress.getLocalHost().getHostName());
+        } catch (Exception ex) {
+            log.info("exception : {}", ex.getMessage());
+        }
+
         List<Post> allPosts = postRepository.findAll();
         List<PostCommentDto> dtoList = new ArrayList<>();
         allPosts.forEach(post -> {

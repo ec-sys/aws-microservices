@@ -8,10 +8,10 @@ build:
       context: aws-api-gateway
     - image: longdd90jp/aws-service-uaa
       context: aws-service-uaa
-#    - image: longdd90jp/aws-service-post
-#      context: aws-service-post
-#    - image: longdd90jp/aws-service-comment
-#      context: aws-service-comment
+    - image: longdd90jp/aws-service-comment
+      context: aws-service-comment
+    - image: longdd90jp/aws-service-post
+      context: aws-service-post
 
 #    - image: longdd90jp/aws-service-uaa
 #      jib:
@@ -51,6 +51,8 @@ manifests:
     paths:
       - aws-api-gateway/deployments/base
       - aws-service-uaa/deployments/base
+      - aws-service-comment/deployments/base
+      - aws-service-post/deployments/base
 deploy:
   kubectl:
     defaultNamespace: dev-envoy

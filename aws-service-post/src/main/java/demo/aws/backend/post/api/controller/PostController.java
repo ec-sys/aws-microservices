@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.InetAddress;
 import java.util.List;
 
 @RestController
@@ -23,6 +24,11 @@ public class PostController {
 
     @GetMapping("/get-all")
     public ResponseEntity<List<PostCommentDto>> getAllPosts() {
+        try {
+            log.info("container ip: {}", InetAddress.getLocalHost().getHostName());
+        } catch (Exception ex) {
+            log.info("exception : {}", ex.getMessage());
+        }
         return new ResponseEntity<>(postService.getAllPosts(), HttpStatus.OK);
     }
 }

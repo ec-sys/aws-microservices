@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.InetAddress;
 import java.util.List;
 
 @RestController
@@ -26,11 +27,21 @@ public class PostCommentController {
 
     @GetMapping("/posts/{postId}")
     public ResponseEntity<List<Comment>> getOfPost(@PathVariable long postId) {
+        try {
+            log.info("container ip: {}", InetAddress.getLocalHost().getHostName());
+        } catch (Exception ex) {
+            log.info("exception : {}", ex.getMessage());
+        }
         return new ResponseEntity<>(commentService.getCommentsOfPost(postId), HttpStatus.OK);
     }
 
     @GetMapping("/comments/{commentId}")
     public ResponseEntity<CommentPostItem> getComment(@PathVariable long commentId) {
+        try {
+            log.info("container ip: {}", InetAddress.getLocalHost().getHostName());
+        } catch (Exception ex) {
+            log.info("exception : {}", ex.getMessage());
+        }
         return new ResponseEntity<>(commentService.getComment(commentId), HttpStatus.OK);
     }
 }
