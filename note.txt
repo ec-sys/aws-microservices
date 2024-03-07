@@ -54,4 +54,4 @@ kubectl apply -k base
 
 kubectl port-forward svc/mainapp-envoy-sidecar-svc -n dev-envoy 5190:5199
 
-kubectl port-forward svc/mysql-svc -n dev-envoy 3306:3306
+kubectl port-forward svc/mysql-svc -n dev-envoy 3307:3306

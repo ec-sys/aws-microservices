@@ -25,9 +25,9 @@ public class PostService {
 
     public List<PostCommentDto> getAllPosts() {
         try {
-            log.info("container ip: {}", InetAddress.getLocalHost().getHostName());
+            log.info("x0-container ip: {}", InetAddress.getLocalHost().getHostName());
         } catch (Exception ex) {
-            log.info("exception : {}", ex.getMessage());
+            log.info("x0-exception : {}", ex.getMessage());
         }
 
         List<Post> allPosts = postRepository.findAll();
@@ -43,9 +43,9 @@ public class PostService {
 
     public PSTPostResponse getPostById(long postId) {
         try {
-            log.info("container ip: {}", InetAddress.getLocalHost().getHostName());
+            log.info("x1-container ip: {}", InetAddress.getLocalHost().getHostName());
         } catch (Exception ex) {
-            log.info("exception : {}", ex.getMessage());
+            log.info("x1-exception : {}", ex.getMessage());
         }
 
         Optional<Post> postOpt = postRepository.findById(postId);
