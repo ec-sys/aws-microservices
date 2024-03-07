@@ -52,7 +52,7 @@ static_resources:
     - name: rest_cluster
       connect_timeout: 0.25s
       type: STRICT_DNS
-      lb_policy: RANDOM
+      lb_policy: ROUND_ROBIN
       load_assignment:
         cluster_name: rest_cluster
         endpoints:
@@ -65,7 +65,7 @@ static_resources:
     - name: grpc_cluster
       connect_timeout: 0.25s
       type: STRICT_DNS
-      lb_policy: RANDOM
+      lb_policy: ROUND_ROBIN
       http2_protocol_options: {}
       load_assignment:
         cluster_name: grpc_cluster
