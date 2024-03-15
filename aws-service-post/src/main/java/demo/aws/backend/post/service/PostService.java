@@ -37,7 +37,7 @@ public class PostService {
 
     public PSTPostResponse getPostById(long postId) {
         try {
-            log.info("container ip: {}", InetAddress.getLocalHost().getHostName());
+            log.info("x1-container ip: {}", InetAddress.getLocalHost().getHostName());
         } catch (Exception ex) {
             log.info("exception : {}", ex.getMessage());
         }

@@ -42,3 +42,20 @@ if you want to access through ingress then you need run (minikube tunnel)
 http://127.0.0.1/api/uaa/auth/login
 
 when use zippin with istio then need setting something for can work
+
+disable
+kubectl label namespace default istio-injection-
+
+https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/
+https://medium.com/@viggnah/how-to-deploy-envoy-as-a-sidecar-proxy-on-kubernetes-c3a3ad3935ee
+https://medium.com/@viggnah/how-to-deploy-envoy-as-an-edge-proxy-on-kubernetes-f1af78e1ebfb
+
+kubectl apply -k base
+
+kubectl port-forward svc/mainapp-envoy-sidecar-svc -n dev-envoy 5190:5199
+
+kubectl port-forward svc/mysql-svc -n dev-envoy 3307:3306
+
+minikube addons enable metrics-server -p minikube
+
+kubectl create namespace dev-istio
