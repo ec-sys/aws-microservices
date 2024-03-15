@@ -55,3 +55,7 @@ kubectl apply -k base
 kubectl port-forward svc/mainapp-envoy-sidecar-svc -n dev-envoy 5190:5199
 
 kubectl port-forward svc/mysql-svc -n dev-envoy 3307:3306
+
+minikube addons enable metrics-server -p minikube
+
+kubectl create namespace envoy-grpc
