@@ -29,6 +29,16 @@ services:
       - app-tier
     ports:
       - 9411:9411
+  #  rabbitmq
+  rabbitmq:
+    image: 'longdd90jp/rabbitmq:1.0'
+    networks:
+      - app-tier
+    ports:
+      - '15672:15672'
+      - '61613:61613'
+      - '5672:5672'
+      - '5673:5673'
 #  app:
 #    build: ./app
 #    ports:

@@ -1,0 +1,93 @@
+package demo.aws.backend.rtm.config;
+
+import demo.aws.backend.rtm.config.interceptor.AuthChannelInterceptor;
+import demo.aws.backend.rtm.config.interceptor.MaintenanceHandshakeInterceptor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.LifecycleState;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.ChannelRegistration;
+import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.concurrent.DefaultManagedTaskScheduler;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
+import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
+
+@Configuration
+@EnableScheduling
+@EnableWebSocketMessageBroker
+@RequiredArgsConstructor
+@Slf4j
+public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+    /**
+     * StompBrokerProperties.
+     */
+    @NonNull
+    private final StompBrokerProperties brokerProperties;
+
+    @Autowired
+    AuthChannelInterceptor authChannelInterceptor;
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Override
+    public void configureMessageBroker(MessageBrokerRegistry registry) {
+        // Use Broker Relay?
+        if (brokerProperties.isEnableBrokerRelay()) {
+            registry.enableStompBrokerRelay("/topic", "/queue", "/exchange")
+                    .setRelayHost(brokerProperties.getRelayHost())
+                    .setUserRegistryBroadcast("/exchange/amq.direct/registry.broadcast")
+                    .setUserDestinationBroadcast("/exchange/amq.direct/unresolved.user.dest")
+                    .setSystemLogin(brokerProperties.getUsername())
+                    .setSystemPasscode(brokerProperties.getPassword())
+                    .setClientLogin(brokerProperties.getUsername())
+                    .setClientPasscode(brokerProperties.getPassword())
+                    .setVirtualHost(brokerProperties.getVirtualHost())
+                    .setSystemHeartbeatSendInterval(brokerProperties.getHeartbeatSendInterval())
+                    .setSystemHeartbeatReceiveInterval(brokerProperties.getHeartbeatReceiveInterval());
+        } else {
+            // For Unittest
+            registry.enableSimpleBroker("/topic", "/queue", "/exchange")
+                    .setHeartbeatValue(new long[]{ 15000, 15000 });
+        }
+        registry.setApplicationDestinationPrefixes("/app", "/chatroom");
+    }
+
+    /**
+     * {@inheritDoc}.
+     * https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/cors/CorsConfiguration.html#setAllowedOriginPatterns(java.util.List)
+     */
+    @Override
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry.addEndpoint(getStompEndpoints())
+                .setAllowedOriginPatterns("*")
+                .withSockJS()
+                .setInterceptors(new MaintenanceHandshakeInterceptor())
+                .setDisconnectDelay(Duration.ofSeconds(5).toMillis());
+    }
+
+    private String[] getStompEndpoints() {
+        return new String[]{"/ws/chat", "/ws/system", "/ws/user"};
+    }
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Override
+    public void configureClientInboundChannel(ChannelRegistration registration) {
+        registration.interceptors(
+                authChannelInterceptor
+        );
+    }
+}

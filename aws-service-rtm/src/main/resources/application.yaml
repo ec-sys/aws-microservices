@@ -17,6 +17,11 @@ spring:
   output:
     ansi:
       enabled: always
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+    port: ${RABBITMQ_PORT:5672}
 
 #grpc
 grpc:
@@ -48,6 +53,18 @@ management:
   zipkin:
     tracing:
       endpoint: ${ZIPKIN_SERVER:http://localhost:9411/api/v2/spans}
+
+#stomp
+stomp:
+  broker:
+    enable-broker-relay: ${STOMP_BROKER_ENABLE_BROKER_RELAY:true}
+    relay-host: ${STOMP_BROKER_HOST:localhost}
+    relay-port: ${STOMP_BROKER_PORT:61613}
+    username: ${STOMP_BROKER_USERNAME:guest}
+    password: ${STOMP_BROKER_PASSWORD:guest}
+    virtual-host: ${STOMP_BROKER_VIRTUAL_HOST:/}
+    heartbeat-send-interval: ${STOMP_BROKER_HEART_BEAT_SEND:15000}
+    heartbeat-receive-interval: ${STOMP_BROKER_HEART_BEAT_RECEIVE:15000}
 
 #logging
 logging:
