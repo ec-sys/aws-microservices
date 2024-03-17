@@ -10,12 +10,12 @@
     </parent>
 
     <groupId>demo.aws.backend</groupId>
-    <artifactId>service-comment-data</artifactId>
+    <artifactId>service-rtm-data</artifactId>
     <version>0.1</version>
     <packaging>jar</packaging>
 
-    <name>service-comment-data</name>
-    <description>Comment Service Module Data</description>
+    <name>service-rtm-data</name>
+    <description>Realtime Message Service Module Data</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -30,13 +30,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-
-        <!-- core -->
-        <dependency>
-            <groupId>demo.aws.core</groupId>
-            <artifactId>service-framework</artifactId>
-            <version>0.1</version>
         </dependency>
 
         <!-- utils -->
