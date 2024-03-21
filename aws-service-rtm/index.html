@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hello WebSocket</title>
+    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
+</head>
+<body>
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+    enabled. Please enable
+    Javascript and reload this page!</h2></noscript>
+<div class="container" id="main-content">
+    <div class="row">
+        <div class="col-md-6">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="connect">WebSocket connection:</label>
+                    <button class="btn btn-default" id="connect" type="submit">Connect</button>
+                    <button class="btn btn-default" disabled="disabled" id="disconnect" type="submit">Disconnect
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="name">What is your name?</label>
+                    <input class="form-control" id="name" placeholder="Your name here..." type="text">
+                </div>
+                <button class="btn btn-default" id="send" type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped" id="conversation">
+                <thead>
+                <tr>
+                    <th>Greetings</th>
+                </tr>
+                </thead>
+                <tbody id="greetings">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    const stompClient = new StompJs.Client({
+        brokerURL: 'ws://localhost:8080/ws/rtm/ws-system',
+        connectHeaders: {
+            'Id-Token': 'c8de26dc-196b-49b4-9173-1165d0564dd8',
+            'Access-Token': 'eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJlYy5zeXMiLCJzdWIiOiJhZG1pbiIsImV4cCI6MTcxMTg1MDAwMywibG9naW5JZCI6ImFkbWluIiwidXNlcklkIjoxLCJyb2xlTmFtZXMiOlsiQURNSU4iLCJNRU1CRVIiXX0.B5H4p7huWDsQfwBupPw13Obf-WoVqll-wnRgDfxU3XAPiZaHK8ZZvSBQ2gEBpAtb8IeQbmjN4o5IiUXcX96Q1pGcwoELQg2VFpZSvssizxUo7gdVJobsiVz1PRJ25rn_q0ev0u2FyqWul_bZxc8na6lin07KMekcuImgByS9CVg4VsZGHCpMVDwe3PgQsHRItAcP98jpXqSWut3m7ZvtSRXntJtwgV2HUIL-3DcDvIJXy_rBfmwrBI13CCVYyHAyZfiT5lW2rCQaTZrtMnFicV6mEws8ZHrYuiGNO-P_StmGTNaBsuq0MX55UA7DW9zQv-sHd_LHprNnAUcRuUBY-A',
+        },
+        debug: function (str) {
+            console.log(str);
+        },
+        reconnectDelay: 5000,
+        heartbeatIncoming: 15000,
+        heartbeatOutgoing: 15000
+    });
+
+    stompClient.onConnect = (frame) => {
+        setConnected(true);
+        console.log('Connected: ' + frame);
+        stompClient.subscribe('/topic/greetings', (greeting) => {
+            showGreeting(JSON.parse(greeting.body).content);
+        });
+    };
+
+    stompClient.onWebSocketError = (error) => {
+        console.error('Error with websocket', error);
+    };
+
+    stompClient.onStompError = (frame) => {
+        console.error('Broker reported error: ' + frame.headers['message']);
+        console.error('Additional details: ' + frame.body);
+    };
+
+    function setConnected(connected) {
+        $("#connect").prop("disabled", connected);
+        $("#disconnect").prop("disabled", !connected);
+        if (connected) {
+            $("#conversation").show();
+        }
+        else {
+            $("#conversation").hide();
+        }
+        $("#greetings").html("");
+    }
+
+    function connect() {
+        stompClient.activate();
+    }
+
+    function disconnect() {
+        stompClient.deactivate();
+        setConnected(false);
+        console.log("Disconnected");
+    }
+
+    function sendName() {
+        stompClient.publish({
+            destination: "/app/hello",
+            body: JSON.stringify({'name': $("#name").val()})
+        });
+    }
+
+    function showGreeting(message) {
+        $("#greetings").append("<tr><td>" + message + "</td></tr>");
+    }
+
+    $(function () {
+        $("form").on('submit', (e) => e.preventDefault());
+        $( "#connect" ).click(() => connect());
+        $( "#disconnect" ).click(() => disconnect());
+        $( "#send" ).click(() => sendName());
+    });
+</script>
+</html>

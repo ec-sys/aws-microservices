@@ -1,4 +1,4 @@
-package demo.aws.backend.rtm.config.interceptor;
+package demo.aws.backend.rtm.config.ws;
 
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;

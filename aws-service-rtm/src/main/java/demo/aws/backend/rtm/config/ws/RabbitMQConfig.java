@@ -1,4 +1,4 @@
-package demo.aws.backend.rtm.config;
+package demo.aws.backend.rtm.config.ws;
 
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;

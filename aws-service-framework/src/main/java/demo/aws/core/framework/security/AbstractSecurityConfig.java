@@ -1,5 +1,6 @@
 package demo.aws.core.framework.security;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -7,12 +8,27 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 public class AbstractSecurityConfig {
-    private static final String[] WHITE_LIST_URL = {
+    private String[] WHITE_LIST_URL = {
             "/auth/login"
     };
+    protected void addWhiteListUrl(List<String> whiteListUrls) {
+        if(CollectionUtils.isNotEmpty(whiteListUrls)) {
+            List<String> newUrls = new ArrayList<>();
+            newUrls.addAll(whiteListUrls);
+            for (String url : WHITE_LIST_URL) {
+                newUrls.add(url);
+            }
+            WHITE_LIST_URL = newUrls.toArray(String[]::new);
+        }
+    }
 
     @Autowired
     private JwtAuthenticationFilter jwtAuthFilter;

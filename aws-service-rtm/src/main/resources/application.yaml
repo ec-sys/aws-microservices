@@ -22,6 +22,11 @@ spring:
     username: ${RABBITMQ_USERNAME:guest}
     password: ${RABBITMQ_PASSWORD:guest}
     port: ${RABBITMQ_PORT:5672}
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      password: ${REDIS_PASSWORD:root123}
+      port: ${REDIS_PORT:6379}
 
 #grpc
 grpc:
@@ -72,3 +77,10 @@ logging:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%X{traceId:-},%X{spanId:-}] ${LOG_LEVEL_PATTERN:-%5p} %m%n"
     # traceID and spanId are predefined MDC keys - we want the logs to include them
     level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+
+jwt:
+  issuer: ${JWT_ISSUER:ec.sys}
+  algorithm-name: ${JWT_ALGORITHM_NAME:HS512}
+  access-token-expire-in-second: ${ACCESS_TOKEN_EXPIRE_IN_SECOND:864000}
+  refresh-token-expire-in-second: ${REFRESH_TOKEN_EXPIRE_IN_SECOND:1728000}
+  secret: ${JWT_SECRET:123@abc}

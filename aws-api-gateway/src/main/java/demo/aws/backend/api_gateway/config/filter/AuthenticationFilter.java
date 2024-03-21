@@ -103,6 +103,6 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
     }
 
     private String getTokenIdFromRequest(ServerHttpRequest request) {
-        return request.getHeaders().getFirst(URLConstant.HEADER_TOKEN_ID);
+        return request.getHeaders().getFirst(URLConstant.HEADER_ID_TOKEN);
     }
 }

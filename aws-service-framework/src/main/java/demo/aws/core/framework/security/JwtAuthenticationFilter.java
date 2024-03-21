@@ -16,25 +16,17 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private static final String[] WHITE_LIST_URL = {
-            "/auth/login"
-    };
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-        String path = request.getServletPath();
-        if (request.getServletPath().contains("/auth/login")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
         String authInfo = request.getHeader(CommonConstant.HEADER_AUTH_INFO);
         if(Objects.isNull(authInfo) || authInfo.trim().isEmpty()) {
             filterChain.doFilter(request, response);
