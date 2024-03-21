@@ -1,0 +1,1 @@
+const CONST_LOGIN_STORAGE = "login";

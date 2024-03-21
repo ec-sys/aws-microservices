@@ -11,16 +11,16 @@
     <div class="card card-container">
         <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
         <p id="profile-name" class="profile-name-card"></p>
-        <form class="form-signin">
+        <form>
             <span id="reauth-email" class="reauth-email"></span>
             <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-            <div id="remember" class="checkbox">
+            <input type="password" id="inputPassword" class="form-control mt-3" placeholder="Password" required>
+            <div id="remember" class="checkbox  mt-3">
                 <label>
                     <input type="checkbox" value="remember-me"> Remember me
                 </label>
             </div>
-            <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
+            <input class="btn btn-lg btn-primary btn-block btn-signin mt-3" type="button" value="Sign in" onclick="doLogin()" />
         </form><!-- /form -->
         <a href="#" class="forgot-password">
             Forgot the password?
@@ -28,4 +28,26 @@
     </div><!-- /card-container -->
 </div><!-- /container -->
 </body>
+<div th:replace="fragments/footer"></div>
+<script type="text/javascript">
+    function doLogin() {
+        let loginUrl = "http://localhost:8080/api/uaa/auth/login";
+        let data = {
+            loginId : $("#inputEmail").val(),
+            password : $("#inputPassword").val()
+        }
+        // post login
+        $.ajax({
+            type: "POST",
+            url: loginUrl,
+            data: data,
+            success: function(msg){
+                window.location.href = '/auth/login';
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert("some error");
+            }
+        });
+    }
+</script>
 </html>
