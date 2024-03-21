@@ -1,0 +1,15 @@
+apiVersion: skaffold/v4beta5
+kind: Config
+metadata:
+  name: aws-web-app
+build:
+  artifacts:
+    - image: longdd90jp/aws-web-app
+      docker:
+        cacheFrom:
+          - longdd90jp/aws-web-app
+  tagPolicy:
+    gitCommit: {}
+manifests:
+  rawYaml:
+    - k8s/**.yaml

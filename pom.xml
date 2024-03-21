@@ -28,6 +28,7 @@
         <module>aws-service-post</module>
         <module>aws-service-comment</module>
         <module>aws-service-rtm</module>
+        <module>aws-web-app</module>
     </modules>
 
     <dependencyManagement>
