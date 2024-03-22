@@ -3,51 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <div th:replace="fragments/header"></div>
-    <link th:href="@{/styles/auth/login-page.css}" rel="stylesheet" />
+    <div th:replace="~{fragments/header}"></div>
+    <link rel="stylesheet" th:href="@{/styles/auth/login-page.css}"/>
 </head>
 <body>
 <div class="container">
     <div class="card card-container">
-        <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
-        <p id="profile-name" class="profile-name-card"></p>
+        <img class="profile-img-card" id="profile-img" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"/>
+        <p class="profile-name-card" id="profile-name"></p>
         <form>
-            <span id="reauth-email" class="reauth-email"></span>
-            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-            <input type="password" id="inputPassword" class="form-control mt-3" placeholder="Password" required>
-            <div id="remember" class="checkbox  mt-3">
+            <span class="reauth-email" id="reauth-email"></span>
+            <input autofocus class="form-control" id="inputEmail" placeholder="Email address" required type="email">
+            <input class="form-control mt-3" id="inputPassword" placeholder="Password" required type="password">
+            <div class="checkbox  mt-3" id="remember">
                 <label>
                     <input type="checkbox" value="remember-me"> Remember me
                 </label>
             </div>
-            <input class="btn btn-lg btn-primary btn-block btn-signin mt-3" type="button" value="Sign in" onclick="doLogin()" />
+            <input class="btn btn-lg btn-primary btn-block btn-signin mt-3" onclick="doLogin()" type="button"
+                   value="Sign in"/>
         </form><!-- /form -->
-        <a href="#" class="forgot-password">
+        <a class="forgot-password mt-3" href="#">
             Forgot the password?
         </a>
     </div><!-- /card-container -->
 </div><!-- /container -->
 </body>
-<div th:replace="fragments/footer"></div>
+<div th:replace="~{fragments/footer}"></div>
 <script type="text/javascript">
     function doLogin() {
         let loginUrl = Util.getUaaAPIUrl("auth/login");
-        let data = {
-            loginId : $("#inputEmail").val(),
-            password : $("#inputPassword").val()
+        let params = {
+            loginId: $("#inputEmail").val(),
+            password: $("#inputPassword").val()
         }
         // post login
-        $.ajax({
-            type: "POST",
-            url: loginUrl,
-            data: data,
-            success: function(msg){
-                window.location.href = '/auth/login';
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                alert("some error");
-            }
-        });
+        Util.showLoading();
+        $.post(
+            loginUrl,
+            params,
+            function (data, status, xhr) {
+                Util.hideLoading();
+            })
+            .fail(function (jqxhr, settings, ex) {
+                Util.hideLoading();
+                alert("Login has some error");
+            });
     }
 </script>
 </html>

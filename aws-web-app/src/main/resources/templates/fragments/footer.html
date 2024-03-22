@@ -1,24 +1,25 @@
 <footer>
     <script type="text/javascript">
-        $( document ).ready(function() {
+        $(document).ready(function () {
             checkAuth();
         });
+
         function checkAuth() {
-            let isLogin = false;
-            if(isNeedCheckAuth()) {
+            let isLogin = true;
+            if (isNeedCheckAuth()) {
                 let login = localStorage.getItem(CONST_LOGIN_STORAGE);
-                if(Util.isUndefined(login)) isLogin = false;
+                if (Util.isUndefined(login)) isLogin = false;
             }
-            if(!isLogin) {
-                // window.location.href = '/auth/login';
+            if (!isLogin) {
+                window.location.href = '/auth/login';
             } else {
-                connectSystemNotified();
+                // connectSystemNotified();
             }
         }
 
         function isNeedCheckAuth() {
             let currentPath = window.location.pathname;
-            if(currentPath == "/auth/login" || currentPath == "/auth/register") return false;
+            if (currentPath == "/auth/login" || currentPath == "/auth/register") return false;
             return true;
         }
 

@@ -6,7 +6,7 @@ Util.isUndefined = function (obj) {
 };
 
 Util.trim = function (strObj) {
-    if(isUndefined(strObj)) return "";
+    if(Util.isUndefined(strObj)) return "";
     return strObj.trim();
 };
 
@@ -17,3 +17,9 @@ Util.getAPIUrl = function (pathName) {
 Util.getUaaAPIUrl = function (pathName) {
     return CONST_API_SERVER + "api/uaa/" + pathName;
 };
+
+Util.showLoading = function () {
+}
+
+Util.hideLoading = function () {
+}
