@@ -39,7 +39,6 @@ public class FakerChatService {
 
     public void fakerRoomGroupAndMembers() {
         List<Integer> roomSizes = Arrays.asList(5, 50, 100, 200, 500, 1000);
-        List<Room> roomList = new ArrayList<>();
         List<Member> memberList = chatRepository.findAllMember();
         for (Integer size : roomSizes) {// room
             Room room = new Room();
