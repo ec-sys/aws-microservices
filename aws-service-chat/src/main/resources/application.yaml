@@ -1,0 +1,53 @@
+
+server:
+  port: ${REST_SERVER_PORT:9005}
+
+spring:
+  profiles:
+    active: ${ACTIVE_PROFILE:local}
+  application:
+    name: service-chat
+  data:
+    mongodb:
+      uri: ${MONGO_URL:mongodb://localhost:27017/zenblog_chat}
+  output:
+    ansi:
+      enabled: always
+
+#grpc
+grpc:
+  server:
+    port: ${GRPC_SERVER_PORT:1105}
+  client:
+    post:
+      address: ${GRPC_CLIENT_POST_URL:static://localhost:1102}
+      negotiationType: plaintext
+
+#management
+management:
+  #spring actuator
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+    enabled-by-default: 'false'
+  endpoint:
+    health:
+      enabled: 'true'
+      show-details: never
+  #tracing
+  tracing:
+    enabled: ${ENABLED_TRACING:false}
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: ${ZIPKIN_SERVER:http://localhost:9411/api/v2/spans}
+
+#logging
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%X{traceId:-},%X{spanId:-}] ${LOG_LEVEL_PATTERN:-%5p} %m%n"
+    # traceID and spanId are predefined MDC keys - we want the logs to include them
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"

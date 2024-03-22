@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-uaa
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      component: service-uaa-pod
+  template:
+    metadata:
+      labels:
+        component: service-uaa-pod
+    spec:
+      containers:
+        - name: service-uaa-ctn
+          image: longdd90jp/aws-service-uaa
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              name: rest-port
+            - containerPort: 8085
+              name: grpc-port
+          envFrom:
+            - configMapRef:
+                name: env-config
+            - configMapRef:
+                name: service-uaa-envs
+            - secretRef:
+                name: env-secret
+          env:
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+
+---
+# envoy proxy
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uaa-envoy-proxy
+  labels:
+    app: uaa-envoy-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: uaa-envoy-proxy-pod
+  template:
+    metadata:
+      labels:
+        app: uaa-envoy-proxy-pod
+    # The imp stuff
+    spec:
+      # Deployment has 1 container!
+      containers:
+        - name: uaa-envoy-proxy-ctn
+          image: envoyproxy/envoy:distroless-dev
+          imagePullPolicy: IfNotPresent
+          command:
+            - "/usr/local/bin/envoy"
+          args:
+            - "-c /etc/envoy/envoy.yaml"
+          ports:
+            - containerPort: 5199
+              name: envoy-port
+          volumeMounts:
+            - name: configs
+              mountPath: /etc/envoy
+      volumes:
+        - name: configs
+          configMap:
+            name: service-uaa-files

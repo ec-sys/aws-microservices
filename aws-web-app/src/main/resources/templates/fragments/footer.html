@@ -7,10 +7,10 @@
             let isLogin = false;
             if(isNeedCheckAuth()) {
                 let login = localStorage.getItem(CONST_LOGIN_STORAGE);
-                if(isUndefined(login)) isLogin = false;
+                if(Util.isUndefined(login)) isLogin = false;
             }
             if(!isLogin) {
-                window.location.href = '/auth/login';
+                // window.location.href = '/auth/login';
             } else {
                 connectSystemNotified();
             }

@@ -31,7 +31,7 @@
 <div th:replace="fragments/footer"></div>
 <script type="text/javascript">
     function doLogin() {
-        let loginUrl = "http://localhost:8080/api/uaa/auth/login";
+        let loginUrl = Util.getUaaAPIUrl("auth/login");
         let data = {
             loginId : $("#inputEmail").val(),
             password : $("#inputPassword").val()
