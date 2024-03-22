@@ -20,7 +20,7 @@ public class FakerUserController {
     @Autowired
     FakerUserService fakerUserService;
 
-    @GetMapping(value = "/create-users/{userNumber}")
+    @GetMapping(value = "/fake-users/{userNumber}")
     public ResponseEntity<String> fakeUsers(@PathVariable int userNumber) throws Exception {
         fakerUserService.fakerInsertUsers(userNumber);
         return new ResponseEntity<>("DONE", HttpStatus.OK);

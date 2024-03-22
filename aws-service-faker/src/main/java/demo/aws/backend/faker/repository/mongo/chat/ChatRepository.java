@@ -1,9 +1,13 @@
 package demo.aws.backend.faker.repository.mongo.chat;
 
+import demo.aws.backend.chat.domain.entity.Member;
 import demo.aws.backend.faker.config.mongo.Mongo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +20,8 @@ public class ChatRepository {
     private MongoTemplate chatMongoTemplate;
     @Mongo(value = "rtm")
     private MongoTemplate rtmMongoTemplate;
-
-    public void save(Object document) {
-        chatMongoTemplate.save(document);
+    public <T> T save(T document) {
+        return chatMongoTemplate.insert(document);
     }
     public void removeAll(List<? extends Object> objects) {
         objects.forEach(object -> chatMongoTemplate.remove(object));
@@ -29,6 +32,11 @@ public class ChatRepository {
 
     public <T> List<T> insertAllWithReturn(List<T> documents) {
         return new ArrayList<>(chatMongoTemplate.insertAll(documents));
+    }
+
+    public List<Member> findAllMember() {
+        Query query = new Query();
+        return chatMongoTemplate.find(query, Member.class);
     }
 }
 

@@ -12,7 +12,7 @@ public class RoomMember extends BasicEntity {
     @Id
     private String id;
     @Indexed
-    private String userId;
+    private String memberId;
     @Indexed
     private String roomId;
     private MemberStatus memberStatus;
