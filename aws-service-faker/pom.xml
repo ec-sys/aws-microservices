@@ -73,6 +73,23 @@
             <version>0.1</version>
         </dependency>
 
+        <!-- domain-data -->
+        <dependency>
+            <groupId>demo.aws.core</groupId>
+            <artifactId>protobuf-gen</artifactId>
+            <version>0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>demo.aws.backend</groupId>
+            <artifactId>service-chat-data</artifactId>
+            <version>0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>demo.aws.backend</groupId>
+            <artifactId>service-uaa-data</artifactId>
+            <version>0.1</version>
+        </dependency>
+
         <!-- test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -100,6 +117,11 @@
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>1.0.2</version>
         </dependency>
     </dependencies>
 </project>

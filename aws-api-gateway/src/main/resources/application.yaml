@@ -36,10 +36,16 @@ spring:
             - Path=/ws/rtm/**
           filters:
             - StripPrefix=2
-        - id: post
+        - id: chat
           uri: ${SERVICE_CHAT_URL:http://localhost:9005/}
           predicates:
             - Path=/api/chat/**
+          filters:
+            - StripPrefix=2
+        - id: faker
+          uri: ${SERVICE_FAKER_URL:http://localhost:9900/}
+          predicates:
+            - Path=/api/faker/**
           filters:
             - StripPrefix=2
   data:

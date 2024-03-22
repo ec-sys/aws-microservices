@@ -5,7 +5,7 @@ import demo.aws.backend.uaa.api.request.RefreshTokenRequest;
 import demo.aws.backend.uaa.api.response.LoginResponse;
 import demo.aws.backend.uaa.api.response.RefreshTokenResponse;
 import demo.aws.backend.uaa.domain.entity.User;
-import demo.aws.backend.uaa.domain.entity.redis.UserToken;
+import demo.aws.backend.uaa.repository.redis.UserToken;
 import demo.aws.backend.uaa.domain.model.TokenInfo;
 import demo.aws.backend.uaa.repository.RoleRepository;
 import demo.aws.backend.uaa.repository.UserRepository;

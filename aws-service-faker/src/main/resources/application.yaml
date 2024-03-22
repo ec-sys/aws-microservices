@@ -6,7 +6,7 @@ spring:
   profiles:
     active: ${ACTIVE_PROFILE:local}
   application:
-    name: service-uaa
+    name: service-faker
   datasource:
     url: ${MYSQL_URL:jdbc:mysql://localhost:3306/db_zenblog}
     username: ${MYSQL_USER_NAME:root}
@@ -18,6 +18,13 @@ spring:
   output:
     ansi:
       enabled: always
+
+mongo:
+  clients:
+    - name: chat
+      uri: ${MONGO_CHAT_URL:mongodb://localhost:27017/zenblog_chat}
+    - name: rtm
+      uri: ${MONGO_RTM_URL:mongodb://localhost:27017/zenblog_rtm}
 
 #management
 management:

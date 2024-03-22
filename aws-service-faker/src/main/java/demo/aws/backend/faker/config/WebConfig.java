@@ -1,4 +1,4 @@
-package demo.aws.backend.uaa.config;
+package demo.aws.backend.faker.config;
 
 import org.springframework.context.annotation.Configuration;
 

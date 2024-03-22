@@ -1,4 +1,4 @@
-package demo.aws.backend.uaa.config;
+package demo.aws.backend.faker.config;
 
 import demo.aws.core.framework.security.AbstractSecurityConfig;
 import lombok.RequiredArgsConstructor;
