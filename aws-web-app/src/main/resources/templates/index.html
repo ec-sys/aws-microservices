@@ -2,10 +2,33 @@
 <html>
 <head>
     <title>Index</title>
-    <div th:replace="fragments/header"></div>
+    <div th:replace="~{fragments/header}"></div>
 </head>
 <body>
-<h1>Hello</h1>
+<div class="container">
+    <h2 id="greeting">Hello</h2>
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link" href="/chat/home">Chat</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" style="color: #c13625" onclick="logout();">Logout</a>
+        </li>
+    </ul>
+</div>
 </body>
-<div th:replace="fragments/footer"></div>
+<div th:replace="~{fragments/footer}"></div>
+<script type="text/javascript">
+    function logout() {
+        localStorage.removeItem(CONST_LOGIN_STORAGE);
+        window.location.href = "auth/login";
+    }
+
+    $(document).ready(function () {
+        let user = Util.getUserProfile();
+        if(!Util.isUndefined(user)) {
+            $("#greeting").text("Hello: " + user.fullName)
+        }
+    });
+</script>
 </html>

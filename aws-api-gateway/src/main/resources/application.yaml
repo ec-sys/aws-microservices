@@ -36,6 +36,12 @@ spring:
             - Path=/ws/rtm/**
           filters:
             - StripPrefix=2
+        - id: rtm-api
+          uri: ${SERVICE_RTM_URL:http://localhost:9004/}
+          predicates:
+            - Path=/api/rtm/**
+          filters:
+            - StripPrefix=2
         - id: chat
           uri: ${SERVICE_CHAT_URL:http://localhost:9005/}
           predicates:

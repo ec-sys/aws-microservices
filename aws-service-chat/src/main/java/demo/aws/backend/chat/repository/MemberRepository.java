@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface MemberRepository extends MongoRepository<Member, String> {
     List<Member> findByIdIn(List<String> memberIds);
+    Member findFirstByUserId(String userId);
 }
 

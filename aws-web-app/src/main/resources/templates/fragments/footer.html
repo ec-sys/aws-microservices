@@ -1,5 +1,11 @@
 <footer>
+    <span>Message Count: </span><span id="counter" onclick="test();">0</span>
+    <ul id="globalMsg">
+    </ul>
     <script type="text/javascript">
+        function test() {
+            alert($("#globalMsg").find("li").length);
+        }
         $(document).ready(function () {
             checkAuth();
         });
@@ -13,7 +19,7 @@
             if (!isLogin) {
                 window.location.href = '/auth/login';
             } else {
-                // connectSystemNotified();
+                connectGlobalNotified();
             }
         }
 
@@ -23,11 +29,11 @@
             return true;
         }
 
-        const stompClient = new StompJs.Client({
+        const STOMP_GLOBAL = new StompJs.Client({
             brokerURL: 'ws://localhost:8080/ws/rtm/ws-system',
             connectHeaders: {
-                'Id-Token': 'c8de26dc-196b-49b4-9173-1165d0564dd8',
-                'Access-Token': 'eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJlYy5zeXMiLCJzdWIiOiJhZG1pbiIsImV4cCI6MTcxMTg1MDAwMywibG9naW5JZCI6ImFkbWluIiwidXNlcklkIjoxLCJyb2xlTmFtZXMiOlsiQURNSU4iLCJNRU1CRVIiXX0.B5H4p7huWDsQfwBupPw13Obf-WoVqll-wnRgDfxU3XAPiZaHK8ZZvSBQ2gEBpAtb8IeQbmjN4o5IiUXcX96Q1pGcwoELQg2VFpZSvssizxUo7gdVJobsiVz1PRJ25rn_q0ev0u2FyqWul_bZxc8na6lin07KMekcuImgByS9CVg4VsZGHCpMVDwe3PgQsHRItAcP98jpXqSWut3m7ZvtSRXntJtwgV2HUIL-3DcDvIJXy_rBfmwrBI13CCVYyHAyZfiT5lW2rCQaTZrtMnFicV6mEws8ZHrYuiGNO-P_StmGTNaBsuq0MX55UA7DW9zQv-sHd_LHprNnAUcRuUBY-A',
+                'Id-Token': Util.getLoginAuth().idToken,
+                'Access-Token': Util.getLoginAuth().accessToken,
             },
             debug: function (str) {
                 console.log(str);
@@ -37,27 +43,33 @@
             heartbeatOutgoing: 15000
         });
 
-        stompClient.onConnect = (frame) => {
+        STOMP_GLOBAL.onConnect = (frame) => {
             console.log('Connected: ' + frame);
-            stompClient.subscribe('/topic/system-notified', (msg) => {
+            STOMP_GLOBAL.subscribe('/topic/global', (msg) => {
+                // msg
+                let tagMsg = $("<li></li>").text(msg.body);
+                $("#globalMsg").append(tagMsg);
+                // counter
+                let counter = $("#counter").text();
+                $("#counter").text(parseInt(counter) + 1);
             });
         };
 
-        stompClient.onWebSocketError = (error) => {
+        STOMP_GLOBAL.onWebSocketError = (error) => {
             console.error('Error with websocket', error);
         };
 
-        stompClient.onStompError = (frame) => {
+        STOMP_GLOBAL.onStompError = (frame) => {
             console.error('Broker reported error: ' + frame.headers['message']);
             console.error('Additional details: ' + frame.body);
         };
 
-        function connectSystemNotified() {
-            stompClient.activate();
+        function connectGlobalNotified() {
+            STOMP_GLOBAL.activate();
         }
 
         function disconnectSystemNotified() {
-            stompClient.deactivate();
+            STOMP_GLOBAL.deactivate();
             console.log("Disconnected");
         }
     </script>

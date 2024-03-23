@@ -1,6 +1,6 @@
 package demo.aws.backend.chat.api.controller;
 
-import demo.aws.backend.chat.api.response.RoomMemberResponse;
+import demo.aws.backend.chat.api.response.UserRoomsResponse;
 import demo.aws.backend.chat.service.RoomService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,18 +11,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/rooms")
+@RequestMapping("/members")
 @Slf4j
-public class RoomController {
+public class MemberController {
 
     @Autowired
     RoomService roomService;
 
-    @GetMapping("/{roomId}/members")
-    public ResponseEntity<List<RoomMemberResponse>> getMembersOfRoom(@PathVariable String roomId) {
-        return new ResponseEntity<>(roomService.getRoomMembers(roomId), HttpStatus.OK);
+    @GetMapping("/{userId}/rooms")
+    public ResponseEntity<UserRoomsResponse> getRoomsOfUser(@PathVariable String userId) {
+        return new ResponseEntity<>(roomService.getRoomsOfUser(userId), HttpStatus.OK);
     }
 }

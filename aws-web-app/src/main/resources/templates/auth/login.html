@@ -29,7 +29,6 @@
     </div><!-- /card-container -->
 </div><!-- /container -->
 </body>
-<div th:replace="~{fragments/footer}"></div>
 <script type="text/javascript">
     function doLogin() {
         let loginUrl = Util.getUaaAPIUrl("auth/login");
@@ -45,7 +44,7 @@
             contentType: "application/json",
             data : JSON.stringify(params),
             success : function(data, status, jqXHR) {
-                localStorage.setItem(CONST_LOGIN_STORAGE, data);
+                localStorage.setItem(CONST_LOGIN_STORAGE, JSON.stringify(data));
                 Util.hideLoading();
                 window.location.href="/chat/home";
             },

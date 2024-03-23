@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface RoomMemberRepository extends MongoRepository<RoomMember, String> {
     List<RoomMember> findByRoomId(String roomId);
+    List<RoomMember> findByMemberId(String memberId);
 }
 

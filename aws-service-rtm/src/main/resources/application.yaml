@@ -6,14 +6,6 @@ spring:
     active: ${ACTIVE_PROFILE:local}
   application:
     name: service-rtm
-  datasource:
-    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/db_zenblog}
-    username: ${MYSQL_USER_NAME:root}
-    password: ${MYSQL_PASSWORD:root123}
-  jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
-    hibernate:
-      ddl-auto: none
   output:
     ansi:
       enabled: always
@@ -27,6 +19,8 @@ spring:
       host: ${REDIS_HOST:localhost}
       password: ${REDIS_PASSWORD:root123}
       port: ${REDIS_PORT:6379}
+    mongodb:
+      uri: ${MONGO_URL:mongodb://localhost:27017/zenblog_rtm}
 
 #grpc
 grpc:

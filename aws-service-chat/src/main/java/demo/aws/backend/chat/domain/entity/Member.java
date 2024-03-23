@@ -19,5 +19,6 @@ public class Member extends BasicEntity {
     private String phoneNumber;
     private Date birthDate;
     private String address;
+    private String avatar;
 }
 
