@@ -39,16 +39,22 @@
         }
         // post login
         Util.showLoading();
-        $.post(
-            loginUrl,
-            params,
-            function (data, status, xhr) {
+        $.ajax({
+            type : "POST",
+            url : loginUrl,
+            contentType: "application/json",
+            data : JSON.stringify(params),
+            success : function(data, status, jqXHR) {
+                localStorage.setItem(CONST_LOGIN_STORAGE, data);
                 Util.hideLoading();
-            })
-            .fail(function (jqxhr, settings, ex) {
+                window.location.href="/chat/home";
+            },
+            error : function(jqXHR, status, error) {
                 Util.hideLoading();
+                console.error(error);
                 alert("Login has some error");
-            });
+            }
+        });
     }
 </script>
 </html>
