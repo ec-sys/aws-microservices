@@ -5,9 +5,10 @@
     <title>Chat-Home</title>
     <div th:replace="~{fragments/header}"></div>
     <link rel="stylesheet" th:href="@{/styles/chat/home-page.css}"/>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body>
-<div class="container">
+<div id="app" class="container">
     <div class="row clearfix">
         <div class="col-lg-12">
             <div class="card chat-app">
@@ -19,46 +20,11 @@
                         <input class="form-control" placeholder="Search..." type="text">
                     </div>
                     <ul class="list-unstyled chat-list mt-2 mb-0">
-                        <li class="clearfix">
-                            <img alt="avatar" src="https://bootdey.com/img/Content/avatar/avatar1.png">
+                        <li class="clearfix" v-for="room in rooms">
+                            <img alt="avatar" :src="room.avatar">
                             <div class="about">
-                                <div class="name">Vincent Porter</div>
+                                <div class="name">{{ room.name }}</div>
                                 <div class="status"><i class="fa fa-circle offline"></i> left 7 mins ago</div>
-                            </div>
-                        </li>
-                        <li class="clearfix active">
-                            <img alt="avatar" src="https://bootdey.com/img/Content/avatar/avatar2.png">
-                            <div class="about">
-                                <div class="name">Aiden Chavez</div>
-                                <div class="status"><i class="fa fa-circle online"></i> online</div>
-                            </div>
-                        </li>
-                        <li class="clearfix">
-                            <img alt="avatar" src="https://bootdey.com/img/Content/avatar/avatar3.png">
-                            <div class="about">
-                                <div class="name">Mike Thomas</div>
-                                <div class="status"><i class="fa fa-circle online"></i> online</div>
-                            </div>
-                        </li>
-                        <li class="clearfix">
-                            <img alt="avatar" src="https://bootdey.com/img/Content/avatar/avatar7.png">
-                            <div class="about">
-                                <div class="name">Christian Kelly</div>
-                                <div class="status"><i class="fa fa-circle offline"></i> left 10 hours ago</div>
-                            </div>
-                        </li>
-                        <li class="clearfix">
-                            <img alt="avatar" src="https://bootdey.com/img/Content/avatar/avatar8.png">
-                            <div class="about">
-                                <div class="name">Monica Ward</div>
-                                <div class="status"><i class="fa fa-circle online"></i> online</div>
-                            </div>
-                        </li>
-                        <li class="clearfix">
-                            <img alt="avatar" src="https://bootdey.com/img/Content/avatar/avatar3.png">
-                            <div class="about">
-                                <div class="name">Dean Henry</div>
-                                <div class="status"><i class="fa fa-circle offline"></i> offline since Oct 28</div>
                             </div>
                         </li>
                     </ul>
@@ -116,10 +82,10 @@
                     </div>
                     <div class="chat-message clearfix">
                         <div class="input-group mb-0">
-                            <div class="input-group-prepend">
+                            <div class="input-group-prepend" v-on:click="doSendMsg">
                                 <span class="input-group-text"><i class="fa fa-send"></i></span>
                             </div>
-                            <input class="form-control" placeholder="Enter text here..." type="text">
+                            <input class="form-control" placeholder="Enter text here..." type="text" v-model="sendMsg">
                         </div>
                     </div>
                 </div>
@@ -129,4 +95,71 @@
 </div>
 </body>
 <div th:replace="~{fragments/footer}"></div>
+<script type="text/javascript">
+    const { createApp, ref } = Vue
+
+    createApp({
+        data() {
+            return {
+                rooms: [],
+                sendMsg: ""
+            }
+        },
+        mounted() {
+            let arrRooms = [];
+            for(let i = 0; i < 5; i++) {
+                arrRooms.push({
+                    avatar: "https://bootdey.com/img/Content/avatar/avatar1.png",
+                    name: "Hi Chavez",
+                    isOnline: true,
+                    lastAction: "left 7 mins ago"
+                })
+            }
+            this.rooms = arrRooms;
+        },
+        methods: {
+            doSendMsg: function (event) {
+                alert('Xin chào ' + this.sendMsg + '!')
+                if (event) {
+                    alert(event.target.tagName)
+                }
+            }
+        }
+    }).mount('#app');
+    $(document).ready(function () {
+        STOMP_CHAT.activate();
+    });
+
+    const STOMP_CHAT = new StompJs.Client({
+        brokerURL: 'ws://localhost:8080/ws/rtm/ws-chat',
+        connectHeaders: {
+            'Id-Token': Util.getLoginAuth().idToken,
+            'Access-Token': Util.getLoginAuth().accessToken,
+        },
+        debug: function (str) {
+            console.log(str);
+        },
+        reconnectDelay: 5000,
+        heartbeatIncoming: 15000,
+        heartbeatOutgoing: 15000
+    });
+
+    STOMP_CHAT.onConnect = (frame) => {
+        console.log('Connected: ' + frame);
+        let userTopic = '/topic/user-' + Util.getLoginAuth().userId;
+        console.log(userTopic);
+        STOMP_GLOBAL.subscribe(userTopic, (msg) => {
+            console.log(msg.body);
+        });
+    };
+
+    STOMP_CHAT.onWebSocketError = (error) => {
+        console.error('Error with websocket', error);
+    };
+
+    STOMP_CHAT.onStompError = (frame) => {
+        console.error('Broker reported error: ' + frame.headers['message']);
+        console.error('Additional details: ' + frame.body);
+    };
+</script>
 </html>

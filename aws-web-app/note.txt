@@ -1,0 +1,1 @@
+https://stomp-js.github.io/api-docs/latest/classes/Client.html#state
