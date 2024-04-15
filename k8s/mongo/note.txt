@@ -1,0 +1,15 @@
+root
+root_password
+
+ww_user
+ww_password
+
+mongo --host localhost -u user -p password  --authenticationDatabase admin test
+
+mongo "mongodb://localhost:27027"
+
+mongo --username root --password --host localhost --port 27027
+mongo --username root --password --host localhost --port 27028
+mongo --username root --password --host localhost --port 27029
+
+- MONGO_URL=mongodb://mongo-0.mongo.registration,mongo-1.mongo.registration,mongo-2.mongo.registration:27017/famishare?replicaSet=famishare&readPreference=secondary&maxStalenessSeconds=180
