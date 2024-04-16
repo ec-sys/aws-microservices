@@ -18,3 +18,142 @@ sudo aws s3 cp s3://dangtit90/service-post-0.1.jar service-post-0.1.jar
 
 
 java -jar D:\\soft\\zipkin-server-2.24.3-exec.jar
+
+s3-user-1
+s3-admin-group
+
+s3-user-2
+s3-readonly-group
+
+s3-user-3
+s3-custom-group
+
+Dangtit@90
+
+
+#!/bin/bash
+yum update -y
+yum install -y httpd
+systemctl start httpd
+systemctl enable httpd
+echo "<h1>Hello World from $(hostname -f)</h1>" > /var/www/html/index.html
+
+file -s /dev/xvdb
+
+mkfs -t xfs /dev/xvdb
+mount /dev/xvdb /data
+
+mkfs -t xfs /dev/xvdc
+mount /dev/xvdc /data
+
+lsblk -f
+
+file -s /dev/xvdb
+
+mkdir /data
+mount /dev/xvdb /data
+
+mount -t nfs -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport fs-07496d591cdabaebd.efs.us-west-1.amazonaws.com:/   efs-mount-point
+
+mount -t nfs -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport fs-07496d591cdabaebd.efs.us-west-1.amazonaws.com:/   ~/efs-mount-point
+
+
+mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport 10.0.1.122:/ ~/efs-mount-point
+
+echo "<h1>Service User from $(hostname -f)</h1>" > /var/www/html/index.html
+
+
+ssh ec2-user@10.0.10.232
+
+http://zenblog-alb-618350866.us-west-1.elb.amazonaws.com/
+
+
+http://localhost:8080/user/get-all
+
+
+aws s3 cp s3://dangtit90/zenblog-0.0.1-SNAPSHOT.jar be_server.jar
+
+http://localhost:8080/user
+
+aws s3 cp https://dangtit90.s3.amazonaws.com/zenblog-0.0.1-SNAPSHOT.jar /data/be_server.jar
+
+aws --endpoint-url=com.amazonaws.us-west-1.s3 s3 s3api list-buckets
+
+
+s3://dangtit90/zenblog-0.0.1-SNAPSHOT.jar
+
+
+aws --endpoint-url=http://com.amazonaws.us-west-1.s3 s3 cp s3://dangtit90/zenblog-0.0.1-SNAPSHOT.jar be_server.jar
+
+aws s3 cp test.txt s3://mybucket/test2.txt
+
+aws s3 cp s3://dangtit89/service-user-0.0.1-SNAPSHOT.jar /data/be_server.jar --region us-west-1
+aws s3 cp s3://dangtit89/service-order-0.0.1-SNAPSHOT.jar /data/be_server.jar --region us-west-1
+
+#!/bin/bash
+mkdir /data
+aws s3 cp s3://dangtit89/service-user-0.0.1-SNAPSHOT.jar /data/be_server.jar --region us-west-1
+cd /data
+java -jar be_server.jar
+
+******************
+Content-Type: multipart/mixed; boundary="//"
+MIME-Version: 1.0
+
+--//
+Content-Type: text/cloud-config; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="cloud-config.txt"
+
+#cloud-config
+cloud_final_modules:
+- [scripts-user, always]
+
+--//
+Content-Type: text/x-shellscript; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="userdata.txt"
+
+#!/bin/bash
+echo "export DB_URL=test" >> ~/.bash_profile
+echo "export REST_SERVER_PORT=8080" >> ~/.bash_profile
+echo "export SERVICE_COMMENT_URL=http://internal-zenblog-internal-alb-1604652038.us-west-1.elb.amazonaws.com/comment" >> ~/.bash_profile
+source ~/.bash_profile
+
+mkdir /app
+aws s3 cp s3://dangtit89/service-post-0.1.jar /app/be_server.jar --region us-west-1
+cd /app
+java -jar be_server.jar
+--//--
+******************
+
+echo $SERVICE_COMMENT_URL
+
+
+com.amazonaws.us-east-1.route53-healthchecks
+
+http://geolocation.dangtit90.top
+
+https://d1ipdz2w9drjbl.cloudfront.net/
+
+java -jar -DREST_SERVER_PORT=8080 service-comment-0.1.jar
+
+java -jar -DREST_SERVER_PORT=8080 service-comment-0.1.jar
+
+
+http://localhost:8080/comment/actuator/health
+http://10.0.10.157:8080/comment/actuator/health
+
+http://internal-zenblog-internal-alb-1604652038.us-west-1.elb.amazonaws.com/comment/actuator/health
+
+curl http://localhost:8080/post/post-mng/1/with-comment
+
+curl http://internal-zenblog-internal-alb-1604652038.us-west-1.elb.amazonaws.com/comment/post-comment/1
+
+
+echo "export DB_URL=test" >> ~/.bash_profile
+echo "export REST_SERVER_PORT=8080" >> ~/.bash_profile
+echo "export SERVICE_COMMENT_URL=http://internal-zenblog-internal-alb-1604652038.us-west-1.elb.amazonaws.com/comment" >> ~/.bash_profile
+source ~/.bash_profile

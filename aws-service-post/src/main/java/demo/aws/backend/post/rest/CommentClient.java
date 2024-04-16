@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-@FeignClient(name = "service-comment")
+@FeignClient(name = "commentClient", url = "${spring.cloud.openfeign.client.config.commentClient.url}")
 public interface CommentClient {
 
     @GetMapping("/post-comment/{postId}")

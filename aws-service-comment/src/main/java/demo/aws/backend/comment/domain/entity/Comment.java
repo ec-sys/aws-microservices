@@ -1,16 +1,10 @@
 package demo.aws.backend.comment.domain.entity;
 
-import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Date;
-@Entity
 @Data
-@Table(name = "comments")
 public class Comment {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long parentId;

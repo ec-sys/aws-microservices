@@ -1,14 +1,59 @@
+server:
+  port: ${HTTP_SERVER_PORT:8080}
+
 spring:
   profiles:
     active: ${ACTIVE_PROFILE:local}
   application:
     name: api-gateway
-  config:
-    import: "configserver:"
+  output:
+    ansi:
+      enabled: always
   cloud:
-    config:
-      uri: ${CONFIG_SERVER:http://localhost:9000}
-      username: ${CONFIG_ACCESS_USERNAME:root}
-      password: ${CONFIG_ACCESS_PASSWORD:s3cr3t}
-      name: global, api-gateway
-      profile: default
+    gateway:
+      routes:
+        - id: uaa
+          uri: ${SERVICE_UAA_URL:http://localhost:9001}
+          predicates:
+            - Path=/api/uaa/**
+          filters:
+            - StripPrefix=1
+        - id: post
+          uri: ${SERVICE_POST_URL:http://localhost:9002}
+          predicates:
+            - Path=/api/post/**
+          filters:
+            - StripPrefix=1
+        - id: comment
+          uri: ${SERVICE_COMMENT_URL:http://localhost:9003}
+          predicates:
+            - Path=/api/comment/**
+          filters:
+            - StripPrefix=1
+
+#management
+management:
+  #spring actuator
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+    enabled-by-default: 'false'
+  endpoint:
+    health:
+      enabled: 'true'
+      show-details: never
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedHeaders: "*"
+            allowedMethods: "*"

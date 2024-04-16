@@ -1,14 +1,34 @@
+server:
+  port: ${REST_SERVER_PORT:9003}
+  servlet:
+    context-path: /comment
+
 spring:
   profiles:
     active: ${ACTIVE_PROFILE:local}
   application:
-    name: service-post
-  config:
-    import: "configserver:"
-  cloud:
-    config:
-      uri: ${CONFIG_SERVER:http://localhost:9000}
-      username: ${CONFIG_ACCESS_USERNAME:root}
-      password: ${CONFIG_ACCESS_PASSWORD:s3cr3t}
-      name: global, service-comment
-      profile: default
+    name: service-comment
+  output:
+    ansi:
+      enabled: always
+
+#management
+management:
+  #spring actuator
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+    enabled-by-default: 'false'
+  endpoint:
+    health:
+      enabled: 'true'
+      show-details: never
+
+#logging
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%X{traceId:-},%X{spanId:-}] ${LOG_LEVEL_PATTERN:-%5p} %m%n"
+    # traceID and spanId are predefined MDC keys - we want the logs to include them
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"

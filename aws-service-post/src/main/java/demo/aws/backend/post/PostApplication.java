@@ -29,5 +29,6 @@ public class PostApplication implements CommandLineRunner {
         log.info("DB_URL: {}", env.getProperty("spring.datasource.url"));
         log.info("DB_USER_NAME: {}", env.getProperty("spring.datasource.username"));
         log.info("DB_PASSWORD: {}", env.getProperty("spring.datasource.password"));
+        log.info("SERVICE_COMMENT_URL: {}", env.getProperty("spring.cloud.openfeign.client.config.commentClient.url"));
     }
 }
