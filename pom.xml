@@ -31,6 +31,7 @@
         <module>aws-service-chat</module>
         <module>aws-service-faker</module>
         <module>aws-web-app</module>
+        <module>aws-k8s-job</module>
     </modules>
 
     <dependencyManagement>

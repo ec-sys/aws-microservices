@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option java_package = "demo.aws.core.autogen.grpc.k8s_job";
+option java_multiple_files = true;
+
+package product;
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "common.proto";
+import "master.proto";
+
+
+
+service K8SJob {
+}

@@ -1,0 +1,3 @@
+k8s:
+  config:
+    path: ${K8S_CONFIG_PATH:"C:\\Users\\longd\\.kube\\config"}
