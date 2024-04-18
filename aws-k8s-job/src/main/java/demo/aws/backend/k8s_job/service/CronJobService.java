@@ -11,12 +11,15 @@ import io.kubernetes.client.openapi.models.*;
 import io.kubernetes.client.util.ClientBuilder;
 import io.kubernetes.client.util.KubeConfig;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.FileReader;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 @Service
@@ -27,19 +30,7 @@ public class CronJobService {
         BatchV1Api apiInstance = new BatchV1Api(K8SConfig.getApiClient());
 
         V1CronJob cronJob = getCronJob(namespace, cronJobName);
-        V1JobSpec jobSpec = new V1JobSpec();
-        V1PodTemplateSpec podTemplateSpec = cronJob.getSpec().getJobTemplate().getSpec().getTemplate();
-
-        var specMetadata = podTemplateSpec.getMetadata();
-        Random random = new Random();
-        specMetadata.setName("pob-" + random.nextInt(1, 1000));
-        podTemplateSpec.setMetadata(specMetadata);
-
-        jobSpec.setTemplate(podTemplateSpec);
-
-        V1Job body = new V1Job(); // V1Job |
-        body.setSpec(jobSpec);
-        body.setMetadata(specMetadata);
+        V1Job body = getV1Job(cronJob, cronJobName);
 
         try {
             V1Job createdJob = apiInstance.createNamespacedJob(namespace, body).execute();
@@ -50,6 +41,31 @@ public class CronJobService {
             System.err.println("Response headers: " + e.getResponseHeaders());
             e.printStackTrace();
         }
+    }
+
+    @NotNull
+    private V1Job getV1Job(V1CronJob cronJob, String cronJobName) {
+        V1JobSpec jobSpec = new V1JobSpec();
+        V1PodTemplateSpec podTemplateSpec = cronJob.getSpec().getJobTemplate().getSpec().getTemplate();
+
+        var specMetadata = podTemplateSpec.getMetadata();
+        specMetadata.setName(getJobName(cronJobName));
+        podTemplateSpec.setMetadata(specMetadata);
+
+        jobSpec.setTemplate(podTemplateSpec);
+
+        V1Job body = new V1Job(); // V1Job |
+        body.setSpec(jobSpec);
+        body.setMetadata(specMetadata);
+        return body;
+    }
+
+    private String getJobName(String originJobName) {
+        Random random = new Random();
+        String pattern = "yyyyMMddHHmmss";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        String date = simpleDateFormat.format(new Date());
+        return String.format("%s-%s-%o", originJobName, date, random.nextInt(1000, 9999));
     }
 
     private V1CronJob getCronJob(String namespace, String cronJobName) {
