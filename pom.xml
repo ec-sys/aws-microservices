@@ -20,6 +20,7 @@
     </properties>
 
     <modules>
+        <!-- for learning about coomon tech like: api-gateway, grpc, jwt -->
         <module>aws-common-util</module>
         <module>aws-service-framework</module>
         <module>aws-protobuf</module>
@@ -27,11 +28,21 @@
         <module>aws-service-uaa</module>
         <module>aws-service-post</module>
         <module>aws-service-comment</module>
+
+        <!-- for learning about web-socket -->
         <module>aws-service-rtm</module>
         <module>aws-service-chat</module>
-        <module>aws-service-faker</module>
         <module>aws-web-app</module>
+
+        <!-- for learning about job, batch, multi data-source, multi database -->
+        <module>aws-service-faker</module>
         <module>aws-k8s-job</module>
+        <module>aws-service-batch</module>
+
+        <!-- for learning about messaging, transaction (ex:kafka, rabbit-mq, aws sqs, aws sns, localstack for aws development) -->
+        <module>aws-service-order</module>
+        <module>aws-service-customer</module>
+        <module>aws-service-inventory</module>
     </modules>
 
     <dependencyManagement>

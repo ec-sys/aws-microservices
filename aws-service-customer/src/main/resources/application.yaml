@@ -1,0 +1,61 @@
+
+server:
+  port: ${REST_SERVER_PORT:9102}
+
+spring:
+  profiles:
+    active: ${ACTIVE_PROFILE:local}
+  application:
+    name: service-customer
+  datasource:
+    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/db_ec}
+    username: ${MYSQL_USER_NAME:root}
+    password: ${MYSQL_PASSWORD:root123}
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: none
+  output:
+    ansi:
+      enabled: always
+
+#grpc
+grpc:
+  server:
+    port: ${GRPC_SERVER_PORT:1502}
+  client:
+    order:
+      address: ${GRPC_CLIENT_COMMENT_URL:static://localhost:1500}
+      negotiationType: plaintext
+    inventory:
+      address: ${GRPC_CLIENT_COMMENT_URL:static://localhost:1501}
+      negotiationType: plaintext
+
+#management
+management:
+  #spring actuator
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+    enabled-by-default: 'false'
+  endpoint:
+    health:
+      enabled: 'true'
+      show-details: never
+  #tracing
+  tracing:
+    enabled: ${ENABLED_TRACING:false}
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: ${ZIPKIN_SERVER:http://localhost:9411/api/v2/spans}
+
+#logging
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%X{traceId:-},%X{spanId:-}] ${LOG_LEVEL_PATTERN:-%5p} %m%n"
+    # traceID and spanId are predefined MDC keys - we want the logs to include them
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
