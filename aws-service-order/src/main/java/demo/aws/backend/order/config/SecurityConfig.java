@@ -1,4 +1,4 @@
-package demo.aws.backend.post.config;
+package demo.aws.backend.order.config;
 
 import demo.aws.core.framework.security.AbstractSecurityConfig;
 import org.springframework.context.annotation.Configuration;

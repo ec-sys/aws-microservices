@@ -1,0 +1,29 @@
+package demo.aws.backend.order.api.controller;
+
+
+import demo.aws.backend.order.api.request.OrderCreateRequest;
+import demo.aws.backend.order.api.response.OrderCreateResponse;
+import demo.aws.backend.order.service.OrderProcessService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+
+@RestController
+@RequestMapping("/order-process")
+@Slf4j
+public class OrderController {
+
+    @Autowired
+    OrderProcessService orderProcessService;
+
+    @PostMapping("/create-order")
+    public ResponseEntity<OrderCreateResponse> createOrde(@RequestBody OrderCreateRequest request) throws Exception {
+        return new ResponseEntity<>(orderProcessService.createOrder(request), HttpStatus.OK);
+    }
+}

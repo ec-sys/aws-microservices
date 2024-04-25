@@ -1,0 +1,23 @@
+spring:
+  cloud:
+    aws:
+      credentials:
+        profile:
+          path: ${AWS_CREDENTAIL_PATH:foo}
+      region:
+        static: ${AWS_DEFAULT_REGION:us-east-1}
+
+management:
+  cloudwatch:
+    metrics:
+      export:
+        enabled: false
+
+custom:
+  environment: aws
+
+logging:
+  level:
+    io:
+      awspring:
+        cloud: error

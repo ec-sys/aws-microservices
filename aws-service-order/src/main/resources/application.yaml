@@ -7,14 +7,9 @@ spring:
     active: ${ACTIVE_PROFILE:local}
   application:
     name: service-order
-  datasource:
-    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/db_ec}
-    username: ${MYSQL_USER_NAME:root}
-    password: ${MYSQL_PASSWORD:root123}
-  jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
-    hibernate:
-      ddl-auto: none
+  data:
+    mongodb:
+      uri: ${MONGO_URL:mongodb://localhost:27017/ec_order}
   output:
     ansi:
       enabled: always

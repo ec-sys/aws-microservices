@@ -1,4 +1,4 @@
-package demo.aws.backend.post.config;
+package demo.aws.backend.order.config;
 
 import demo.aws.core.framework.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;

@@ -10,7 +10,7 @@ services:
     ports:
       - 4566:4566
     environment:
-      - SERVICES=sqs,ses,dynamodb
+      - SERVICES=sns,sqs,ses,dynamodb,s3,kinesis
       - DEFAULT_REGION=eu-east-1
       - USE_SINGLE_REGION=true
     volumes:

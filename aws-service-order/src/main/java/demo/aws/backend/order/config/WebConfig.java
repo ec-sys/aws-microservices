@@ -1,4 +1,4 @@
-package demo.aws.backend.post.config;
+package demo.aws.backend.order.config;
 
 import org.springframework.context.annotation.Configuration;
 

@@ -61,3 +61,9 @@ minikube addons enable metrics-server -p minikube
 kubectl create namespace envoy-grpc
 
 kubectl port-forward svc/zipkin-server -n dev-envoy 9411:9411
+
+awslocal sqs list-queues
+awslocal sqs create-queue --queue-name stratospheric-todo-sharing
+aws sqs list-queues
+
+awslocal sns create-topic --name order-process-topic
