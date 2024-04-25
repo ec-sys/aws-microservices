@@ -1,5 +1,10 @@
 package demo.aws.backend.customer.service;
 
+import demo.aws.backend.order.domain.constant.OrderProcessConstant;
+import demo.aws.backend.order.domain.constant.OrderProcessStep;
+import demo.aws.backend.order.domain.dto.OrderProcessRequestDto;
+import demo.aws.backend.order.domain.dto.OrderProcessResponseDto;
+import demo.aws.backend.order.domain.model.OrderErrorCode;
 import io.awspring.cloud.sqs.annotation.SqsListener;
 import io.awspring.cloud.sqs.operations.SqsTemplate;
 import jakarta.transaction.Transactional;
@@ -16,15 +21,16 @@ public class OrderProcessService {
         this.sqsTemplate = sqsTemplate;
     }
 
-    @SqsListener("order-customer-queue")
-    public void listenToProcessCustomerOfOrder(String message) {
-        log.info("{}", "i received " + message);
-        sqsTemplate.send("order-process-queue", "i received " + message);
+    @SqsListener(value = OrderProcessConstant.QUEUE_ORDER_CUSTOMER)
+    public void listenToProcessCustomerOfOrder(OrderProcessRequestDto requestDto) {
+        log.info("{}", "i received order with id {}, status {}" + requestDto.getOrderId(), requestDto.getStatus());
+        // TODO: logic check customer
+        // return check result
+        OrderProcessResponseDto responseDto = new OrderProcessResponseDto();
+        responseDto.setOrderStatus(requestDto.getStatus());
+        responseDto.setOrderId(requestDto.getOrderId());
+        responseDto.setProcessStep(OrderProcessStep.CUSTOMER);
+        responseDto.setErrorCode(OrderErrorCode.NONE);
+        sqsTemplate.send(OrderProcessConstant.QUEUE_ORDER_PROCESS, responseDto);
     }
-
-//    @SqsListener("order-process-queue")
-//    public void listenToResultProcessOrder(String message) {
-//        log.info("{}", "i received " + message);
-//        sqsTemplate.send("order-process-queue", "i received " + message);
-//    }
 }

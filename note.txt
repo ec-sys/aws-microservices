@@ -67,3 +67,5 @@ awslocal sqs create-queue --queue-name stratospheric-todo-sharing
 aws sqs list-queues
 
 awslocal sns create-topic --name order-process-topic
+awslocal sns subscribe --topic-arn "arn:aws:sns:us-east-1:000000000000:order-process-topic" --protocol sqs --notification-endpoint "arn:aws:sqs:us-east-1:000000000000:order-inventory-queue"
+awslocal sns subscribe --topic-arn "arn:aws:sns:us-east-1:000000000000:order-process-topic" --protocol sqs --notification-endpoint "arn:aws:sqs:us-east-1:000000000000:order-customer-queue"

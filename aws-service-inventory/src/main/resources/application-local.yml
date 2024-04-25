@@ -1,0 +1,24 @@
+spring:
+  cloud:
+    aws:
+      credentials:
+        secret-key: ${AWS_ACCESS_KEY_ID:foo}
+        access-key: ${AWS_SECRET_ACCESS_KEY:foo}
+      endpoint: http://localhost:4566
+      region:
+        static: us-east-1
+
+management:
+  cloudwatch:
+    metrics:
+      export:
+        enabled: false
+
+custom:
+  environment: local
+
+logging:
+  level:
+    io:
+      awspring:
+        cloud: error

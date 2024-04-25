@@ -90,6 +90,11 @@
             <artifactId>protobuf-gen</artifactId>
             <version>0.1</version>
         </dependency>
+        <dependency>
+            <groupId>demo.aws.backend</groupId>
+            <artifactId>service-order-data</artifactId>
+            <version>0.1</version>
+        </dependency>
 
         <!-- grpc -->
         <dependency>

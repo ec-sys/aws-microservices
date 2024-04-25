@@ -1,5 +1,6 @@
 package demo.aws.backend.order.domain.dto;
 
+import demo.aws.backend.order.domain.constant.OrderProcessStep;
 import demo.aws.backend.order.domain.model.OrderErrorCode;
 import demo.aws.backend.order.domain.model.OrderStatus;
 import lombok.Data;
@@ -7,10 +8,10 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class OrderProcessResponeDto implements Serializable {
+public class OrderProcessResponseDto implements Serializable {
     private static final long serialVersionUID = 1L;
     private String orderId;
-    private long customerId;
-    private OrderStatus status;
+    private OrderStatus orderStatus;
     private OrderErrorCode errorCode;
+    private OrderProcessStep processStep;
 }

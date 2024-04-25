@@ -1,6 +1,10 @@
 #!/bin/sh
 
-awslocal sqs create-queue --queue-name stratospheric-todo-sharing
+awslocal sqs create-queue --queue-name order-customer-queue
+awslocal sqs create-queue --queue-name order-inventory-queue
+awslocal sqs create-queue --queue-name order-process-queue
+
+awslocal sns create-topic --name order-process-topic
 
 awslocal ses verify-email-identity --email-address noreply@stratospheric.dev
 awslocal ses verify-email-identity --email-address info@stratospheric.dev

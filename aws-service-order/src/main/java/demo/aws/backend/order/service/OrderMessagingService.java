@@ -1,10 +1,15 @@
 package demo.aws.backend.order.service;
 
+import demo.aws.backend.order.domain.constant.OrderProcessConstant;
+import demo.aws.backend.order.domain.constant.OrderProcessStep;
 import demo.aws.backend.order.domain.dto.OrderProcessRequestDto;
+import demo.aws.backend.order.domain.dto.OrderProcessResponseDto;
 import demo.aws.backend.order.domain.entity.Order;
+import demo.aws.backend.order.domain.model.OrderErrorCode;
 import demo.aws.backend.order.domain.model.OrderStatus;
 import demo.aws.backend.order.repository.OrderRepository;
 import io.awspring.cloud.sns.core.SnsTemplate;
+import io.awspring.cloud.sqs.annotation.SqsListener;
 import io.awspring.cloud.sqs.operations.SqsTemplate;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -40,7 +45,7 @@ public class OrderMessagingService {
         if(StringUtils.isNotEmpty(TOPIC_ORDER_PROCESS)) {
             String subject = "create_order_" + order.getId();
             snsTemplate.sendNotification(TOPIC_ORDER_PROCESS, event, subject);
-            changeOrderStatus(order.getId(), OrderStatus.CREATING);
+            changeOrderStatus(order.getId(), OrderStatus.CREATED);
         } else {
             log.error("value of TOPIC_ORDER_PROCESS is empty");
         }
@@ -55,5 +60,10 @@ public class OrderMessagingService {
         } else {
             log.error("order with id {} is not exist", orderId);
         }
+    }
+
+    @SqsListener(value = OrderProcessConstant.QUEUE_ORDER_PROCESS)
+    public void listenToResultProcessOrder(OrderProcessResponseDto responseDto) {
+        log.info("{}", "i received step check {}, with order id {}, with order status {}", responseDto.getProcessStep(), responseDto.getOrderId(), responseDto.getOrderStatus());
     }
 }

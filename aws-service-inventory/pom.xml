@@ -43,6 +43,16 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- spring aws -->
+        <dependency>
+            <groupId>io.awspring.cloud</groupId>
+            <artifactId>spring-cloud-aws-starter-sqs</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.awspring.cloud</groupId>
+            <artifactId>spring-cloud-aws-starter-sns</artifactId>
+        </dependency>
+
         <!-- tracing -->
         <dependency>
             <groupId>io.opentelemetry</groupId>
@@ -77,6 +87,11 @@
         <dependency>
             <groupId>demo.aws.core</groupId>
             <artifactId>protobuf-gen</artifactId>
+            <version>0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>demo.aws.backend</groupId>
+            <artifactId>service-order-data</artifactId>
             <version>0.1</version>
         </dependency>
 
@@ -119,6 +134,11 @@
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1</version>
         </dependency>
     </dependencies>
 </project>
