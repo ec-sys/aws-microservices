@@ -14,4 +14,9 @@ public class AwsUtil {
         }
         return null;
     }
+
+    public static  <T> T  getObjectFromSqsMessage(String jsonString, Class<?> classOfT) {
+        Gson gson = new Gson();
+        return (T) gson.fromJson(jsonString, classOfT);
+    }
 }

@@ -1,30 +1,26 @@
-
 server:
-  port: ${REST_SERVER_PORT:9101}
+  port: ${REST_SERVER_PORT:9102}
 
 spring:
   profiles:
     active: ${ACTIVE_PROFILE:local}
   application:
-    name: service-inventory
-  datasource:
-    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/db_ec}
-    username: ${MYSQL_USER_NAME:root}
-    password: ${MYSQL_PASSWORD:root123}
-  jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
-    hibernate:
-      ddl-auto: none
+    name: orchestrator-order
+  data:
+    mongodb:
+      uri: ${MONGO_URL:mongodb://localhost:27017/ec_order}
+      auto-index-creation: true
   kafka:
     bootstrap-servers: ${KAFKA_SERVERS:localhost:9092,localhost:9093,localhost:9094}
-    consumer:
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-      properties:
-        spring.json.trusted.packages: "*"
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    streams:
+      properties:
+        default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+        default.value.serde: org.springframework.kafka.support.serializer.JsonSerde
+        spring.json.trusted.packages: "*"
+      state-dir: /tmp/kafka-streams/
   output:
     ansi:
       enabled: always
@@ -32,10 +28,13 @@ spring:
 #grpc
 grpc:
   server:
-    port: ${GRPC_SERVER_PORT:1501}
+    port: ${GRPC_SERVER_PORT:1600}
   client:
     order:
       address: ${GRPC_CLIENT_COMMENT_URL:static://localhost:1500}
+      negotiationType: plaintext
+    inventory:
+      address: ${GRPC_CLIENT_COMMENT_URL:static://localhost:1501}
       negotiationType: plaintext
     customer:
       address: ${GRPC_CLIENT_COMMENT_URL:static://localhost:1502}

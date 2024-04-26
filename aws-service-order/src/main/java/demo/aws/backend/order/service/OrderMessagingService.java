@@ -37,15 +37,27 @@ public class OrderMessagingService {
         OrderProcessRequestDto event = new OrderProcessRequestDto();
         event.setCustomerId(order.getCustomerId());
         event.setOrderId(order.getId());
-        event.setStatus(OrderStatus.CREATING);
+        event.setStatus(OrderStatus.NEW);
         event.setRecipient(order.getRecipient());
         event.setItems(order.getItems());
 
         // send to sns
+        // send to sqs
+        sendOrderCreateEventToAwsSqs(event);
+    }
+
+    // send to aws sqs, after that it is process by kafka in orchestrator_order
+    private void sendOrderCreateEventToAwsSqs(OrderProcessRequestDto event) {
+        sqsTemplate.send(OrderProcessConstant.QUEUE_ORDER_CREATE, event);
+        orderProcessService.changeOrderStatus(event.getOrderId(), OrderStatus.CREATING);
+    }
+
+    // send to aws sqs, after that it is process by sqs in customer and inventory service
+    private void sendOrderCreateEventToAwsSns(OrderProcessRequestDto event) {
         if(StringUtils.isNotEmpty(TOPIC_ORDER_PROCESS)) {
-            String subject = "create_order_" + order.getId();
+            String subject = "create_order_" + event.getOrderId();
             snsTemplate.sendNotification(TOPIC_ORDER_PROCESS, event, subject);
-            orderProcessService.changeOrderStatus(order.getId(), OrderStatus.CREATED);
+            orderProcessService.changeOrderStatus(event.getOrderId(), OrderStatus.CREATING);
         } else {
             log.error("value of TOPIC_ORDER_PROCESS is empty");
         }

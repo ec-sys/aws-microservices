@@ -61,11 +61,13 @@ minikube addons enable metrics-server -p minikube
 kubectl create namespace envoy-grpc
 
 kubectl port-forward svc/zipkin-server -n dev-envoy 9411:9411
-
-awslocal sqs list-queues
 awslocal sqs create-queue --queue-name stratospheric-todo-sharing
+awslocal sqs create-queue --queue-name order-create-queue
 aws sqs list-queues
+
+awslocal sqs delete-queue --queue-url http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000/order-process-queue
 
 awslocal sns create-topic --name order-process-topic
 awslocal sns subscribe --topic-arn "arn:aws:sns:us-east-1:000000000000:order-process-topic" --protocol sqs --notification-endpoint "arn:aws:sqs:us-east-1:000000000000:order-inventory-queue"
 awslocal sns subscribe --topic-arn "arn:aws:sns:us-east-1:000000000000:order-process-topic" --protocol sqs --notification-endpoint "arn:aws:sqs:us-east-1:000000000000:order-customer-queue"
+awslocal sns create-topic --name order-create-queue
