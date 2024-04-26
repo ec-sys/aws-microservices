@@ -10,6 +10,7 @@ spring:
   data:
     mongodb:
       uri: ${MONGO_URL:mongodb://localhost:27017/ec_order}
+      auto-index-creation: true
   output:
     ansi:
       enabled: always

@@ -5,6 +5,8 @@ awslocal sqs create-queue --queue-name order-inventory-queue
 awslocal sqs create-queue --queue-name order-process-queue
 
 awslocal sns create-topic --name order-process-topic
+awslocal sns subscribe --topic-arn "arn:aws:sns:us-east-1:000000000000:order-process-topic" --protocol sqs --notification-endpoint "arn:aws:sqs:us-east-1:000000000000:order-inventory-queue"
+awslocal sns subscribe --topic-arn "arn:aws:sns:us-east-1:000000000000:order-process-topic" --protocol sqs --notification-endpoint "arn:aws:sqs:us-east-1:000000000000:order-customer-queue"
 
 awslocal ses verify-email-identity --email-address noreply@stratospheric.dev
 awslocal ses verify-email-identity --email-address info@stratospheric.dev

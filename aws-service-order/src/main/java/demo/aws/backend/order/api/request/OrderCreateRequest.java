@@ -2,7 +2,6 @@ package demo.aws.backend.order.api.request;
 
 import demo.aws.backend.order.domain.model.OrderItem;
 import demo.aws.backend.order.domain.model.OrderRecipient;
-import demo.aws.backend.order.domain.model.OrderStatus;
 import lombok.Data;
 
 import java.util.List;
