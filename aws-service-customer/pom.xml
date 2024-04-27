@@ -54,6 +54,16 @@
             <artifactId>spring-cloud-aws-starter-sns</artifactId>
         </dependency>
 
+        <!-- spring kafka -->
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
         <!-- tracing -->
         <dependency>
             <groupId>io.opentelemetry</groupId>
