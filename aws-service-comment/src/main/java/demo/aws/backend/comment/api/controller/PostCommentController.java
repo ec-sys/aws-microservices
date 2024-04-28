@@ -27,4 +27,17 @@ public class PostCommentController {
     public ResponseEntity<List<Comment>> getOfPost(HttpServletRequest request, @PathVariable long postId) {
         return new ResponseEntity<>(commentService.getCommentsOfPost(postId), HttpStatus.OK);
     }
+
+    @GetMapping("/check-post/{postId}")
+    public ResponseEntity<String> testCloudLog(HttpServletRequest request, @PathVariable int postId) {
+        String check = "";
+        if(postId == 0) {
+            check = "invalid";
+            log.error("post id is {} {}", postId, check);
+        } else {
+            check = "valid";
+            log.info("post id is {} {}", postId, check);
+        }
+        return new ResponseEntity<>(check, HttpStatus.OK);
+    }
 }
