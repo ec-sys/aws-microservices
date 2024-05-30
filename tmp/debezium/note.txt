@@ -15,4 +15,105 @@
     }
 }
 
+{
+    "name": "outbox-connector",
+    "config": {
+        "connector.class" : "io.debezium.connector.mongodb.MongoDbConnector",
+        "tasks.max" : "1",
+        "mongodb.connection.string" : "mongodb://mongo:27017",
+        "mongodb.user" : "root",
+        "mongodb.password" : "debezium",
+        "topic.prefix" : "dbec1",
+        "database.include.list" : "ec_order",
+        "collection.include.list": "ec_order.outbox_orders",
+        "schema.history.internal.kafka.bootstrap.servers": "broker:9092",
+        "schema.history.internal.kafka.topic": "schemahistory.outbox-order"
+    }
+}
+
 curl -i -X DELETE -H "Accept:application/json" -H "Content-Type:application/json" localhost:8083/connectors/inventory-connector
+curl -i -X DELETE -H "Accept:application/json" -H "Content-Type:application/json" localhost:8083/connectors/outbox-connector
+
+{
+    "name": "outbox-order-connector",
+    "config": {
+        "connector.class" : "io.debezium.connector.mongodb.MongoDbConnector",
+        "tasks.max" : "1",
+        "topic.prefix" : "dbserver1",
+        "mongodb.connection.string" : "mongodb://mongo:27017/?replicaSet=rs0",
+        "mongodb.user" : "ec_readonly_user",
+        "mongodb.password" : "ec_password",
+        "database.include.list" : "ec_order",
+        "schema.history.internal.kafka.bootstrap.servers": "broker:9092",
+        "transforms": "route",
+        "transforms.route.type" : "org.apache.kafka.connect.transforms.RegexRouter",
+        "transforms.route.regex" : "([^.]+)\\.([^.]+)\\.([^.]+)",
+        "transforms.route.replacement" : "$3"
+    }
+}
+
+{
+    "name": "outbox-connector",
+    "config": {
+        "connector.class" : "io.debezium.connector.mongodb.MongoDbConnector",
+        "tasks.max" : "1",
+        "topic.prefix" : "dbec1",
+        "mongodb.connection.string" : "mongodb://mongo:27017/?replicaSet=rs0",
+        "mongodb.user" : "ec_user",
+        "mongodb.password" : "ec_password",
+        "database.include.list" : "ec_order",
+        "collection.include.list": "ec_order.outbox_orders",
+        "schema.history.internal.kafka.bootstrap.servers": "broker:9092",
+        "schema.history.internal.kafka.topic": "schemahistory.outbox-order"
+    }
+}
+
+{
+    "name": "inventory-connector",
+    "config": {
+        "connector.class" : "io.debezium.connector.mongodb.MongoDbConnector",
+        "tasks.max" : "1",
+        "topic.prefix" : "mongo1",
+        "mongodb.connection.string" : "mongodb://mongodb:27017/?replicaSet=rs0",
+        "mongodb.user" : "debezium",
+        "mongodb.password" : "dbz",
+        "database.include.list" : "inventory",
+        "schema.history.internal.kafka.bootstrap.servers" : "broker:9092",
+        "schema.history.internal.kafka.topic": "mongodb.inventory"
+    }
+}
+
+
+{
+    "name": "outbox-connector",
+    "config": {
+        "connector.class" : "io.debezium.connector.mongodb.MongoDbConnector",
+        "tasks.max" : "1",
+        "topic.prefix" : "dbec1",
+        "mongodb.connection.string" : "mongodb://mongodb-secondary:27017/?replicaSet=replicaset",
+        "mongodb.user" : "root",
+        "mongodb.password" : "password123",
+        "database.include.list" : "ec_order",
+        "collection.include.list": "ec_order.outbox_orders",
+        "schema.history.internal.kafka.bootstrap.servers": "broker:9092",
+        "schema.history.internal.kafka.topic": "schemahistory.outbox-order"
+    }
+}
+
+
+{
+    "name": "outbox-connector",
+    "config": {
+        "connector.class" : "io.debezium.connector.mongodb.MongoDbConnector",
+        "tasks.max" : "1",
+        "topic.prefix" : "ec",
+        "mongodb.connection.string" : "mongodb://mongodb-secondary:27017/?replicaSet=replicaset",
+        "mongodb.user" : "root",
+        "mongodb.password" : "password123",
+        "database.include.list" : "ec_order",
+        "collection.include.list": "ec_order.outbox_orders",
+        "schema.history.internal.kafka.bootstrap.servers": "broker:9092",
+        "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "value.converter.schemas.enable": false
+    }
+}

@@ -47,6 +47,7 @@ services:
         confluent-hub install --no-prompt confluentinc/kafka-connect-jdbc:latest
         confluent-hub install --no-prompt confluentinc/kafka-connect-datagen:latest
         confluent-hub install --no-prompt debezium/debezium-connector-mysql:latest
+        confluent-hub install --no-prompt debezium/debezium-connector-mongodb:latest
         /etc/confluent/docker/run
     environment:
       CONNECT_BOOTSTRAP_SERVERS: "broker:9092"
@@ -79,6 +80,64 @@ services:
     ports:
       - '3306:3306'
 
+#  mongodb:
+#    image: bitnami/mongodb:7.0
+#    hostname: mongodb
+#    container_name: mongodb
+#    depends_on:
+#      - broker
+#    environment:
+#      - MONGODB_ROOT_PASSWORD=password123
+#      - MONGODB_USERNAME=ec_user
+#      - MONGODB_PASSWORD=ec_password
+#      - MONGODB_DATABASE=ec_order
+#    ports:
+#      - '27027:27017'
+
+  mongodb-primary:
+    image: docker.io/bitnami/mongodb:7.0
+    hostname: mongodb-primary
+    container_name: mongodb-primary
+    environment:
+      - MONGODB_DATABASE=ec_order
+      - MONGODB_ADVERTISED_HOSTNAME=mongodb-primary
+      - MONGODB_REPLICA_SET_MODE=primary
+      - MONGODB_ROOT_PASSWORD=password123
+      - MONGODB_REPLICA_SET_KEY=replicasetkey123
+    volumes:
+      - 'mongodb_master_data:/bitnami/mongodb'
+    ports:
+      - '27027:27017'
+
+  mongodb-secondary:
+    image: docker.io/bitnami/mongodb:7.0
+    hostname: mongodb-secondary
+    container_name: mongodb-secondary
+    depends_on:
+      - mongodb-primary
+    environment:
+      - MONGODB_ADVERTISED_HOSTNAME=mongodb-secondary
+      - MONGODB_REPLICA_SET_MODE=secondary
+      - MONGODB_INITIAL_PRIMARY_HOST=mongodb-primary
+      - MONGODB_INITIAL_PRIMARY_ROOT_PASSWORD=password123
+      - MONGODB_REPLICA_SET_KEY=replicasetkey123
+    ports:
+      - '27028:27017'
+
+  mongodb-arbiter:
+    hostname: mongodb-arbiter
+    container_name: mongodb-arbiter
+    image: docker.io/bitnami/mongodb:7.0
+    depends_on:
+      - mongodb-primary
+    environment:
+      - MONGODB_ADVERTISED_HOSTNAME=mongodb-arbiter
+      - MONGODB_REPLICA_SET_MODE=arbiter
+      - MONGODB_INITIAL_PRIMARY_HOST=mongodb-primary
+      - MONGODB_INITIAL_PRIMARY_ROOT_PASSWORD=password123
+      - MONGODB_REPLICA_SET_KEY=replicasetkey123
+
+
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
     ports:
@@ -88,3 +147,7 @@ services:
     environment:
       KAFKA_CLUSTERS_0_NAME: broker_1
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: broker:9092
+
+volumes:
+  mongodb_master_data:
+    driver: local
