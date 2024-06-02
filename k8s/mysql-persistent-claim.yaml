@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: db-pv-envov
+  name: db-pv-envoy
   labels:
-    name: db-pv-envov
+    name: db-pv-envoy
 spec:
   # storage name use in pvc
-  storageClassName: db-pv-envov
+  storageClassName: db-pv-envoy
   capacity:
     storage: 10Gi
   accessModes:
@@ -24,7 +24,7 @@ metadata:
   labels:
     name: mysql-pvc
 spec:
-  storageClassName: db-pv-envov
+  storageClassName: db-pv-envoy
   accessModes:
     - ReadWriteOnce
   resources:

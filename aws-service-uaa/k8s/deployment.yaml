@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: service-uaa
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       component: service-uaa-pod

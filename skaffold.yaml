@@ -39,20 +39,21 @@ manifests:
     - k8s/db-configmap.yaml
     - k8s/db-secret.yaml
     - k8s/zipkin-server.yaml
-#    - k8s/mysql-*.yaml
-#    - k8s/redis-*.yaml
+    - k8s/mysql-*.yaml
+    - k8s/redis-*.yaml
     - k8s/ingress.yaml
     #    - k8s/privileges.yaml
-#    - aws-api-gateway/k8s/*.yaml
-#    - aws-service-uaa/k8s/*.yaml
-#    - aws-service-post/k8s/*.yaml
-#    - aws-service-comment/k8s/*.yaml
-  kustomize:
-    paths:
-      - aws-api-gateway/deployments/base
-      - aws-service-uaa/deployments/base
-      - aws-service-comment/deployments/base
-      - aws-service-post/deployments/base
+    - aws-api-gateway/k8s/*.yaml
+    - aws-service-uaa/k8s/*.yaml
+    - aws-service-post/k8s/*.yaml
+    - aws-service-comment/k8s/*.yaml
+
+#  kustomize:
+#    paths:
+#      - aws-api-gateway/deployments/base
+#      - aws-service-uaa/deployments/base
+#      - aws-service-comment/deployments/base
+#      - aws-service-post/deployments/base
 deploy:
   kubectl:
     defaultNamespace: dev-envoy

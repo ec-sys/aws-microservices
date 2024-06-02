@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: service-post
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       component: service-post-pod

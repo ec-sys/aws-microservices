@@ -71,3 +71,17 @@ awslocal sns create-topic --name order-process-topic
 awslocal sns subscribe --topic-arn "arn:aws:sns:us-east-1:000000000000:order-process-topic" --protocol sqs --notification-endpoint "arn:aws:sqs:us-east-1:000000000000:order-inventory-queue"
 awslocal sns subscribe --topic-arn "arn:aws:sns:us-east-1:000000000000:order-process-topic" --protocol sqs --notification-endpoint "arn:aws:sqs:us-east-1:000000000000:order-customer-queue"
 awslocal sns create-topic --name order-create-queue
+
+kubectl port-forward --address 0.0.0.0 pod/mypod 8888:5000
+kubectl port-forward --address 0.0.0.0 svc/mysql-svc -n dev-envoy 3307:3306
+kubectl get secret -n loki-stack loki-grafana -o jsonpath="{.data.admin-password}" | base64 --decode; echo
+
+helm repo add grafana https://grafana.github.io/helm-charts
+helm upgrade --install loki --create-namespace --namespace=loki-stack grafana/loki-stack --set grafana.enabled=true
+kubectl get pod -n loki-stack
+
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm install prometheus-stack --namespace prometheus-stack --create-namespace prometheus-community/kube-prometheus-stack -f prometheus.yaml
+
+kubectl port-forward --namespace loki-stack service/loki-grafana 3000:80
