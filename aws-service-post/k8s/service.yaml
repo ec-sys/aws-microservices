@@ -5,7 +5,7 @@ metadata:
   labels:
     component: service-post
 spec:
-  clusterIP: None
+  type: ClusterIP
   selector:
     component: service-post-pod
   ports:

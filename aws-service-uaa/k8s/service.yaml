@@ -5,7 +5,7 @@ metadata:
   labels:
     component: service-uaa
 spec:
-  clusterIP: None
+  type: ClusterIP
   selector:
     component: service-uaa-pod
   ports:

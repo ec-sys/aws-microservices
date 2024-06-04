@@ -1,6 +1,7 @@
 package demo.aws.core.framework.grpc;
 
 import demo.aws.core.common_util.model.AuthInfo;
+import demo.aws.core.common_util.model.TraceInfo;
 import io.grpc.CallOptions;
 import io.grpc.Channel;
 import io.grpc.ClientCall;
@@ -40,8 +41,19 @@ public class GrpcHeaderClientInterceptor implements ClientInterceptor {
                 }
 
                 if (grpcAuthInfo != null) {
-                    // Custom header
+                    // custom header
                     headers.put(GrpcGlobals.LOGIN_INFO_METADATA, grpcAuthInfo);
+
+                    // trace header
+                    TraceInfo traceInfo = grpcAuthInfo.getAuthInfo().getTraceInfo();
+                    headers.put(GrpcGlobals.METADATA_TRACE_X_REQUEST_ID, traceInfo.getRequestId());
+                    headers.put(GrpcGlobals.METADATA_TRACE_X_B3_TRACE_ID, traceInfo.getTraceId());
+                    headers.put(GrpcGlobals.METADATA_TRACE_X_B3_SPAN_ID, traceInfo.getSpanid());
+                    headers.put(GrpcGlobals.METADATA_TRACE_X_B3_PARENT_SPAN_ID, traceInfo.getParentSpanId());
+                    headers.put(GrpcGlobals.METADATA_TRACE_X_B3_FLAGS, traceInfo.getFlags());
+                    headers.put(GrpcGlobals.METADATA_TRACE_X_B3_SAMPLED, traceInfo.getSampled());
+                    // headers.put(GrpcGlobals.METADATA_TRACE_GRPC_TRACE_BIN, traceInfo.getGrpcTraceBin());
+                    headers.put(GrpcGlobals.METADATA_TRACE_TRACE_PARENT, traceInfo.getTraceParent());
                 }
 
                 final RequestInfo requestInfo = GrpcRequestInfoHeaderUtil.setRequestInfoHeader(headers, outerContext);

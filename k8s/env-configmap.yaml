@@ -4,7 +4,7 @@ metadata:
   name: env-config
 data:
   ENABLED_TRACING: "true"
-  ZIPKIN_SERVER: "http://zipkin-server:9411/api/v2/spans"
+  ZIPKIN_SERVER: "http://zipkin-server.istio-system:9411/api/v2/spans"
   MYSQL_URL: "jdbc:mysql://mysql-svc:3306/db_zenblog"
   # redis
   REDIS_HOST: "redis-svc"

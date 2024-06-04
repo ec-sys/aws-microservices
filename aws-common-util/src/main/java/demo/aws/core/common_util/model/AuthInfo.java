@@ -11,4 +11,5 @@ public class AuthInfo implements Serializable {
     private long userId;
     private String loginId;
     private List<String> roleName;
+    private TraceInfo traceInfo;
 }

@@ -38,10 +38,11 @@ manifests:
 #    - k8s/db-*.yaml
     - k8s/db-configmap.yaml
     - k8s/db-secret.yaml
-    - k8s/zipkin-server.yaml
-    - k8s/mysql-*.yaml
-    - k8s/redis-*.yaml
-    - k8s/ingress.yaml
+#    - k8s/zipkin-server.yaml
+#    - k8s/mysql-*.yaml
+#    - k8s/redis-*.yaml
+#    - k8s/ingress.yaml
+    - k8s/zenblog-gateway.yaml
     #    - k8s/privileges.yaml
     - aws-api-gateway/k8s/*.yaml
     - aws-service-uaa/k8s/*.yaml
@@ -56,4 +57,4 @@ manifests:
 #      - aws-service-post/deployments/base
 deploy:
   kubectl:
-    defaultNamespace: dev-envoy
+    defaultNamespace: zenblog

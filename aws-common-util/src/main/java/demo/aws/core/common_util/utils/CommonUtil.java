@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class CommonUtil {
     public static List<String> getPublicUrlPaths() {
@@ -42,5 +43,10 @@ public class CommonUtil {
         } catch (JsonProcessingException ex) {
             return StringUtils.EMPTY;
         }
+    }
+
+    public static String toStr(Object obj) {
+        if(Objects.isNull(obj)) return StringUtils.EMPTY;
+        return String.valueOf(obj);
     }
 }

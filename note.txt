@@ -23,6 +23,7 @@ kubectl get secret admin-user -n kubernetes-dashboard -o jsonpath={".data.token"
 
 docker context use default
 minikube start -p multi-node
+minikube start --nodes 3 -p multi-node
 minikube dashboard -p multi-node
 minikube profile list
 minikube start -p minikube
@@ -35,6 +36,7 @@ skaffold delete
 skaffold run --profile zenblog
 
 kubectl label namespace zenblog istio-injection=enabled
+kubectl label namespace default istio-injection=disabled
 kubectl get namespace -L istio-injection
 kubectl label namespace default istio-injection-
 
@@ -55,6 +57,7 @@ kubectl apply -k base
 kubectl port-forward svc/mainapp-envoy-sidecar-svc -n dev-envoy 5190:5199
 
 kubectl port-forward svc/mysql-svc -n dev-envoy 3307:3306
+kubectl port-forward svc/mysql-svc -n zenblog 3307:3306
 
 minikube addons enable metrics-server -p minikube
 
@@ -85,3 +88,5 @@ helm repo update
 helm install prometheus-stack --namespace prometheus-stack --create-namespace prometheus-community/kube-prometheus-stack -f prometheus.yaml
 
 kubectl port-forward --namespace loki-stack service/loki-grafana 3000:80
+
+kubectl port-forward svc/zipkin-server -n zenblog 9412:9411
