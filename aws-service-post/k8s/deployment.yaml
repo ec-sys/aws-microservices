@@ -34,21 +34,32 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
+          # the application will have a maximum of 5 minutes (30 * 10 = 300s) to finish its startup.
+          # once the startup probe has succeeded once, the liveness probe takes over to provide a fast response to container deadlocks
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              httpHeaders:
+                - name: Startup-Check-Header
+                  value: system
+            failureThreshold: 10
+            periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /actuator/health
               port: 8080
               httpHeaders:
-                - name: Health-Check-Header
+                - name: Liveness-Check-Header
                   value: system
-            initialDelaySeconds: 30
-            timeoutSeconds: 2
+            initialDelaySeconds: 10
+            timeoutSeconds: 15
           readinessProbe:
             httpGet:
               path: /actuator/health
               port: 8080
               httpHeaders:
-                - name: Ready-Check-Header
+                - name: Readiness-Check-Header
                   value: system
             initialDelaySeconds: 5
             timeoutSeconds: 2

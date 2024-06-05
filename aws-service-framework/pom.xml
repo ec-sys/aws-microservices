@@ -53,6 +53,12 @@
             <version>${grpc.version}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-grpclb</artifactId>
+            <version>${grpc.version}</version>
+            <scope>provided</scope>
+        </dependency>
 
         <!-- utils -->
         <dependency>

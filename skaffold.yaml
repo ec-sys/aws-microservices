@@ -32,13 +32,13 @@ build:
     gitCommit: {}
 manifests:
   rawYaml:
+    #    - k8s/zipkin-server.yaml
+    #    - k8s/app-*.yaml
+    #    - k8s/db-*.yaml
     - k8s/env-configmap.yaml
     - k8s/env-secret.yaml
-#    - k8s/app-*.yaml
-#    - k8s/db-*.yaml
     - k8s/db-configmap.yaml
     - k8s/db-secret.yaml
-#    - k8s/zipkin-server.yaml
 #    - k8s/mysql-*.yaml
 #    - k8s/redis-*.yaml
     - k8s/ingress.yaml

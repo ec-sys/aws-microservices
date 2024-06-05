@@ -26,5 +26,3 @@ grpc:
     post:
       address: ${GRPC_CLIENT_POST_URL:static://localhost:1102}
       negotiationType: plaintext
-    GLOBAL:
-      default-load-balancing-policy:
