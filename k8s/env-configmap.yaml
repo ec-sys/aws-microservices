@@ -7,6 +7,7 @@ data:
   ENABLED_TRACING: "true"
   ZIPKIN_SERVER: "http://zipkin.dev-infa:9411/api/v2/spans"
   LOKI_SERVER: "http://loki.dev-infa:3100/loki/api/v1/push"
+  PROMETHEUS_SERVER: "http://prometheus.dev-infa:9090"
   # mysql
   MYSQL_URL: "jdbc:mysql://mysql-svc:3306/db_zenblog"
   # redis

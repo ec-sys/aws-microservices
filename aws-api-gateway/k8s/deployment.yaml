@@ -39,6 +39,15 @@ spec:
             port: 8080
             httpHeaders:
               - name: Health-Check-Header
-                value: Awesome
+                value: system
+          initialDelaySeconds: 30
+          timeoutSeconds: 2
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+            httpHeaders:
+              - name: Ready-Check-Header
+                value: system
           initialDelaySeconds: 5
           timeoutSeconds: 2
