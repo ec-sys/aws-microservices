@@ -35,3 +35,12 @@ spec:
                 fieldRef:
                   fieldPath: metadata.name
             - name: REST_SERVER_PORT
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              httpHeaders:
+                - name: Health-Check-Header
+                  value: Awesome
+            initialDelaySeconds: 5
+            timeoutSeconds: 2

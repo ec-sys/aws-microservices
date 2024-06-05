@@ -17,7 +17,7 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 
 public class AbstractSecurityConfig {
     private String[] WHITE_LIST_URL = {
-            "/auth/login"
+            "/auth/login", "/actuator/**"
     };
     protected void addWhiteListUrl(List<String> whiteListUrls) {
         if(CollectionUtils.isNotEmpty(whiteListUrls)) {

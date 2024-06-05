@@ -5,6 +5,7 @@ import demo.aws.backend.post.domain.entity.Post;
 import demo.aws.backend.post.repository.PostRepository;
 import demo.aws.core.autogen.grpc.post.PSTPostResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +52,13 @@ public class PostService {
         Optional<Post> postOpt = postRepository.findById(postId);
         if(postOpt.isPresent()) {
             Post post = postOpt.get();
+            if(post.getId().intValue() == 1) {
+                try {
+                    Thread.sleep(1000);
+                } catch (Exception ex) {
+                    log.error("{}", ExceptionUtils.getStackTrace(ex));
+                }
+            }
             return PSTPostResponse.newBuilder()
                     .setPostId(post.getId())
                     .setTitle(post.getTitle())

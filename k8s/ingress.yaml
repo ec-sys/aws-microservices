@@ -5,8 +5,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: zenblog.top.com
-      http:
+    - http:
         paths:
           - path: /api
             pathType: Prefix

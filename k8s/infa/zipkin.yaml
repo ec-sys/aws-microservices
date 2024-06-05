@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: zipkin-server
+  namespace: dev-infa
 spec:
   replicas: 1
   selector:
@@ -17,11 +18,13 @@ spec:
           image: openzipkin/zipkin:2
           ports:
             - containerPort: 9411
+              name: ctn-port
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: zipkin-server
+  name: zipkin
+  namespace: dev-infa
   labels:
     component: zipkin-server
 spec:
@@ -31,3 +34,4 @@ spec:
   ports:
     - port: 9411
       protocol: TCP
+      targetPort: ctn-port

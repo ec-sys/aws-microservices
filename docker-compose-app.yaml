@@ -1,0 +1,33 @@
+version: '2'
+
+networks:
+  app-tier:
+    driver: bridge
+
+services:
+  api-gateway:
+    image: longdd90jp/api-gateway:1.0
+    networks:
+      - app-tier
+    env_file:
+      - ./tmp/docker/default.env
+    ports:
+      - 8080:8080
+  service-uaa:
+    image: longdd90jp/service-uaa:1.0
+    networks:
+      - app-tier
+    env_file:
+      - ./tmp/docker/default.env
+  service-post:
+    image: longdd90jp/service-post:1.0
+    networks:
+      - app-tier
+    env_file:
+      - ./tmp/docker/default.env
+  service-comment:
+    image: longdd90jp/service-comment:1.0
+    networks:
+      - app-tier
+    env_file:
+      - ./tmp/docker/default.env

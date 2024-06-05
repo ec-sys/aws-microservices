@@ -3,16 +3,19 @@ kind: ConfigMap
 metadata:
   name: env-config
 data:
+  ACTIVE_PROFILE: "prod"
   ENABLED_TRACING: "true"
-  ZIPKIN_SERVER: "http://zipkin-server:9411/api/v2/spans"
+  ZIPKIN_SERVER: "http://zipkin.dev-infa:9411/api/v2/spans"
+  LOKI_SERVER: "http://loki.dev-infa:3100/loki/api/v1/push"
+  # mysql
   MYSQL_URL: "jdbc:mysql://mysql-svc:3306/db_zenblog"
   # redis
   REDIS_HOST: "redis-svc"
   REDIS_PORT: "6379"
   # grpc
   GRPC_SERVER_PORT: "8085"
-  GRPC_CLIENT_POST_URL: "static://service-post:8085"
-  GRPC_CLIENT_COMMENT_URL: "static://service-comment:8085"
+  GRPC_CLIENT_POST_URL: "dns:///service-post:8085"
+  GRPC_CLIENT_COMMENT_URL: "dns:///service-comment:8085"
   # rest api
   REST_SERVER_PORT: "8080"
   SERVICE_UAA_URL: "http://service-uaa:8080"

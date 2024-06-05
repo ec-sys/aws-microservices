@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana-server
+  namespace: dev-infa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: grafana-server-pod
+  template:
+    metadata:
+      labels:
+        component: grafana-server-pod
+    spec:
+      containers:
+        - name: grafana-server-ctn
+          image: grafana/grafana:11.0.0
+          ports:
+            - containerPort: 3000
+              name: ctn-port
+          env:
+            - name: GF_SECURITY_ADMIN_USER
+              value: admin
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              value: root123
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+  namespace: dev-infa
+  labels:
+    component: grafana-server
+spec:
+  type: ClusterIP
+  selector:
+    component: grafana-server-pod
+  ports:
+    - port: 3000
+      protocol: TCP
+      targetPort: ctn-port

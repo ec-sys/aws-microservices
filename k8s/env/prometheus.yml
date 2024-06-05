@@ -1,0 +1,19 @@
+global:
+  scrape_interval: 15s # By default, scrape targets every 15 seconds.
+scrape_configs:
+  - job_name: 'app-metrics'
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['api-gateway:8080']
+        labels:
+          instance: 'api-gateway'
+      - targets: ['service-uaa:8080']
+        labels:
+          instance: 'service-uaa'
+      - targets: ['service-post:8080']
+        labels:
+          instance: 'service-post'
+      - targets: ['service-comment:8080']
+        labels:
+          instance: 'service-comment'
