@@ -1,0 +1,15 @@
+#management
+management:
+  #tracing
+  tracing:
+    enabled: false
+  #spring actuator
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update

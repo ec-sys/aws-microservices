@@ -47,6 +47,10 @@
         <module>aws-orchestrator-order</module>
         <module>aws-service-customer</module>
         <module>aws-service-inventory</module>
+        <module>aws-service-product</module>
+
+        <!-- for learning about graphql -->
+        <module>sample-graphql</module>
     </modules>
 
     <dependencyManagement>

@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-uaa
+  labels:
+    component: service-uaa
+spec:
+  clusterIP: None
+  selector:
+    component: service-uaa-pod
+  ports:
+    - port: 8080
+      protocol: TCP
+      name: rest-port
+      targetPort: 8080
+    - port: 8085
+      protocol: TCP
+      name: grpclb
+      targetPort: 8085

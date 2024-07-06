@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-uaa
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      component: service-uaa-pod
+  template:
+    metadata:
+      labels:
+        component: service-uaa-pod
+    spec:
+      containers:
+        - name: service-uaa-ctn
+          image: longdd90jp/aws-service-uaa
+          ports:
+            - containerPort: 8080
+              name: rest-port
+            - containerPort: 8085
+              name: grpc-port
+          envFrom:
+            - configMapRef:
+                name: env-config
+            - secretRef:
+                name: env-secret
+          env:
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          # the application will have a maximum of 5 minutes (30 * 10 = 300s) to finish its startup.
+          # once the startup probe has succeeded once, the liveness probe takes over to provide a fast response to container deadlocks
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              httpHeaders:
+                - name: Startup-Check-Header
+                  value: system
+            failureThreshold: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              httpHeaders:
+                - name: Liveness-Check-Header
+                  value: system
+            initialDelaySeconds: 10
+            timeoutSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              httpHeaders:
+                - name: Readiness-Check-Header
+                  value: system
+            initialDelaySeconds: 5
+            timeoutSeconds: 2

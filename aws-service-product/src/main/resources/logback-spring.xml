@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <springProperty name="name" source="spring.application.name" />
+    <springProperty scope="context" name="SPRING_LOKI_ENDPOINT" source="logging.loki.enpoint"/>
+    <property name="lokiEndpoint" value="${SPRING_LOKI_ENDPOINT}"/>
+    <property name="patternConsole" value="%d{yyyy-MM-dd HH:mm:ss} [%X{traceId:-},%X{spanId:-}] %-5level %logger{36} %X{X-Request-ID} - %msg%n"></property>
+
+    <!-- spring profile local-->
+    <springProfile name="local">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>${patternConsole}</pattern>
+            </encoder>
+        </appender>
+        <root level="INFO">
+            <appender-ref ref="CONSOLE" />
+        </root>
+    </springProfile>
+
+    <!-- spring profile prod-->
+    <springProfile name="prod">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>${patternConsole}</pattern>
+            </encoder>
+        </appender>
+        <appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
+            <http>
+                <url>${lokiEndpoint}</url>
+            </http>
+            <format>
+                <label>
+                    <pattern>app=${name},host=${HOSTNAME},level=%level</pattern>
+                </label>
+                <message>
+                    <pattern>[%X{traceId:-},%X{spanId:-}] l=%level h=${HOSTNAME} c=%logger{36} t=%thread | %msg%n</pattern>
+                </message>
+            </format>
+        </appender>
+
+        <root level="INFO">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="LOKI" />
+        </root>
+    </springProfile>
+</configuration>

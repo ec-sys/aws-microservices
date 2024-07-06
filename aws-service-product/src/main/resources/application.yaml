@@ -1,0 +1,25 @@
+
+server:
+  port: ${REST_SERVER_PORT:9103}
+
+spring:
+  profiles:
+    active: ${ACTIVE_PROFILE:local}
+  application:
+    name: service-product
+  datasource:
+    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/db_product}
+    username: ${MYSQL_USER_NAME:root}
+    password: ${MYSQL_PASSWORD:root123}
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+  output:
+    ansi:
+      enabled: always
+
+#grpc
+grpc:
+  server:
+    port: ${GRPC_SERVER_PORT:1503}

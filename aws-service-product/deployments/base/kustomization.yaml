@@ -1,0 +1,14 @@
+---
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+resources:
+  - deployment.yaml
+  - service.yaml
+
+configMapGenerator:
+  - name: service-post-files
+    files:
+      - configs/envoy.yaml
+  - name: service-post-envs
+    env: configs/envs.properties

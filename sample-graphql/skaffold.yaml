@@ -1,0 +1,15 @@
+apiVersion: skaffold/v4beta5
+kind: Config
+metadata:
+  name: aws-service-uaa
+build:
+  artifacts:
+    - image: longdd90jp/aws-service-uaa
+      docker:
+        cacheFrom:
+          - longdd90jp/aws-service-uaa
+  tagPolicy:
+    gitCommit: {}
+manifests:
+  rawYaml:
+    - k8s/**.yaml

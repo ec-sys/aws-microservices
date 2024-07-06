@@ -95,3 +95,5 @@ docker build --tag longdd90jp/service-comment:1.0 .
 kubectl port-forward --namespace dev-infa svc/grafana 3000:3000
 kubectl get secret -n dev-infa grafana -o jsonpath="{.data.admin-password}" | base64 --decode; echo
 kubectl port-forward --namespace dev-envoy svc/api-gateway 8080:8080
+
+aws --endpoint-url http://localhost:4566 s3api list-buckets

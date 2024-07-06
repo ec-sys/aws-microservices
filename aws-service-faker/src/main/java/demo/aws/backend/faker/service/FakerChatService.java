@@ -1,5 +1,7 @@
 package demo.aws.backend.faker.service;
 
+import com.github.javafaker.Commerce;
+import com.github.javafaker.Faker;
 import demo.aws.backend.chat.domain.entity.Member;
 import demo.aws.backend.chat.domain.entity.Room;
 import demo.aws.backend.chat.domain.entity.RoomMember;

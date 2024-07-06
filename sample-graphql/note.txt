@@ -1,0 +1,40 @@
+http://localhost:8080/graphql/employee/graphql
+
+
+mutation NewEmployee {
+    newEmployee(
+        employee: {
+            firstName: "Dang"
+            lastName: "Long"
+            position: "Dev Java"
+            salary: 3000
+            age: 34
+            organizationId: 1
+            departmentId: 1
+        }
+    ) {
+        id
+        firstName
+        lastName
+        position
+        salary
+        age
+    }
+}
+
+query EmployeesWithFilter {
+    employeesWithFilter(filter: { salary: { operator: "le", value: "10000" } }) {
+        id
+        firstName
+        lastName
+        department {
+            id
+            name
+        }
+        organization {
+            id
+            name
+        }
+        salary
+    }
+}
