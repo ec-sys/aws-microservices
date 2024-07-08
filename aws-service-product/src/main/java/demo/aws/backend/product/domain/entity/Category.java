@@ -10,7 +10,7 @@ import lombok.Data;
 public class Category extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     private int parentId;
     private String name;
     private String description;
