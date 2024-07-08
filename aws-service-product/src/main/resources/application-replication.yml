@@ -1,0 +1,15 @@
+spring:
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+db:
+  driverClassName: com.mysql.cj.jdbc.Driver
+  master:
+    url: ${MYSQL_MASTER_URL:jdbc:mysql://localhost:3306/db_employee}?allowPublicKeyRetrieval=true&useSSL=false
+    username: ${MYSQL_MASTER_USERNAME:root}
+    password: ${MYSQL_MASTER_PASSWORD:root123}
+  slave:
+    url: ${MYSQL_SLAVE_URL:jdbc:mysql:loadbalance://localhost:3307,localhost:3308/db_employee?loadBalanceConnectionGroup=first&ha.enableJMX=true&useSSL=false}
+    username: ${MYSQL_SLAVE_USERNAME:root}
+    password: ${MYSQL_SLAVEPASSWORD:root123}
