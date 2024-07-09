@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -23,7 +22,7 @@ import java.util.Properties;
 @EnableJpaRepositories(
         basePackages = {"demo.aws.backend.product_search.repository"}
 )
-public class ReplicasPersistenceConfig {
+public class PersistenceConfig {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 

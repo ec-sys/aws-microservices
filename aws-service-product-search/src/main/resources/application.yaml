@@ -27,7 +27,7 @@ spring:
 db:
   driverClassName: com.mysql.cj.jdbc.Driver
   slave:
-    url: ${MYSQL_SLAVE_URL:jdbc:mysql:loadbalance://localhost:3307,localhost:3308/db_product?loadBalanceConnectionGroup=first&ha.enableJMX=true&useSSL=false}
+    url: ${MYSQL_SLAVE_URL:jdbc:mysql:loadbalance://localhost:3307,localhost:3308/db_product}?allowPublicKeyRetrieval=true&useSSL=false&loadBalanceConnectionGroup=first&ha.enableJMX=true
     username: ${MYSQL_SLAVE_USERNAME:tit}
     password: ${MYSQL_SLAVEPASSWORD:dangtit90}
 

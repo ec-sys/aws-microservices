@@ -38,6 +38,7 @@ public class DataSourceConfig {
         Properties hibernateProp = new Properties();
         hibernateProp.put("hibernate.hbm2ddl.auto", "update");
         hibernateProp.put("hibernate.show_sql", true);
+        hibernateProp.put("hibernate.physical_naming_strategy", "org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy");
         return hibernateProp;
     }
 
