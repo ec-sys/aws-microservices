@@ -6,10 +6,10 @@ spring:
 db:
   driverClassName: com.mysql.cj.jdbc.Driver
   master:
-    url: ${MYSQL_MASTER_URL:jdbc:mysql://localhost:3306/db_employee}?allowPublicKeyRetrieval=true&useSSL=false
-    username: ${MYSQL_MASTER_USERNAME:root}
-    password: ${MYSQL_MASTER_PASSWORD:root123}
+    url: ${MYSQL_MASTER_URL:jdbc:mysql://localhost:3309/db_product}?allowPublicKeyRetrieval=true&useSSL=false
+    username: ${MYSQL_MASTER_USERNAME:tit}
+    password: ${MYSQL_MASTER_PASSWORD:dangtit90}
   slave:
-    url: ${MYSQL_SLAVE_URL:jdbc:mysql:loadbalance://localhost:3307,localhost:3308/db_employee?loadBalanceConnectionGroup=first&ha.enableJMX=true&useSSL=false}
-    username: ${MYSQL_SLAVE_USERNAME:root}
-    password: ${MYSQL_SLAVEPASSWORD:root123}
+    url: ${MYSQL_SLAVE_URL:jdbc:mysql:loadbalance://localhost:3307,localhost:3308/db_product?loadBalanceConnectionGroup=first&ha.enableJMX=true&useSSL=false}
+    username: ${MYSQL_SLAVE_USERNAME:tit}
+    password: ${MYSQL_SLAVEPASSWORD:dangtit90}

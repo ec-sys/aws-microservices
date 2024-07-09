@@ -15,7 +15,6 @@ import org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager
 import org.springframework.orm.jpa.persistenceunit.PersistenceUnitManager;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -25,8 +24,7 @@ import java.util.Properties;
 @EnableJpaRepositories(
         basePackages = {"demo.aws.backend.product.repository"}
 )
-@EnableTransactionManagement
-public class PersistenceConfig {
+public class ReplicasPersistenceConfig {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 

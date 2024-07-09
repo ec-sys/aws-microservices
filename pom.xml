@@ -47,7 +47,9 @@
         <module>aws-orchestrator-order</module>
         <module>aws-service-customer</module>
         <module>aws-service-inventory</module>
+        <!-- for learning about mysql-replicas, redis replicas-cluster, elastic search -->
         <module>aws-service-product</module>
+        <module>aws-service-product-search</module>
 
         <!-- for learning about graphql -->
         <module>sample-graphql</module>

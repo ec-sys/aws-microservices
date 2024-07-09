@@ -1,0 +1,28 @@
+type Query {
+    products: [Product]
+    productsWithFilter(filter: ProductFilter): [Product]
+    product(id: ID!): Product!
+}
+
+type Product {
+    id: ID!
+    name: String!
+    image: String!
+    price: Int!
+    color: String!
+    material: Int!
+    description: String
+    category: Category
+}
+
+input ProductFilter {
+    name: FilterField
+    price: FilterField
+    color: FilterField
+    material: FilterField
+}
+
+input FilterField {
+    operator: String!
+    value: String!
+}
