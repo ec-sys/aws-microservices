@@ -1,6 +1,6 @@
 
 server:
-  port: ${REST_SERVER_PORT:9103}
+  port: ${REST_SERVER_PORT:9104}
 
 spring:
   profiles:
@@ -8,21 +8,30 @@ spring:
   application:
     name: service-product-search
   datasource:
-    url: ${MYSQL_SLAVE_URL:jdbc:mysql:loadbalance://localhost:3307,localhost:3308/db_product?loadBalanceConnectionGroup=first&ha.enableJMX=true&useSSL=false}
-    username: ${MYSQL_SLAVE_USERNAME:tit}
-    password: ${MYSQL_SLAVEPASSWORD:dangtit90}
+#    url: ${MYSQL_SLAVE_URL:jdbc:mysql:loadbalance://localhost:3307,localhost:3308/db_product?loadBalanceConnectionGroup=first&ha.enableJMX=true&useSSL=false}
+#    username: ${MYSQL_SLAVE_USERNAME:tit}
+#    password: ${MYSQL_SLAVEPASSWORD:dangtit90}
+#    url: ${MYSQL_URL:jdbc:mysql://localhost:3307/db_product}
+#    username: ${MYSQL_USER_NAME:tit}
+#    password: ${MYSQL_PASSWORD:dangtit90}
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
   output:
     ansi:
       enabled: always
   graphql:
     graphiql:
       enabled: true
+db:
+  driverClassName: com.mysql.cj.jdbc.Driver
+  slave:
+    url: ${MYSQL_SLAVE_URL:jdbc:mysql:loadbalance://localhost:3307,localhost:3308/db_product?loadBalanceConnectionGroup=first&ha.enableJMX=true&useSSL=false}
+    username: ${MYSQL_SLAVE_USERNAME:tit}
+    password: ${MYSQL_SLAVEPASSWORD:dangtit90}
 
 #grpc
 grpc:
   server:
-    port: ${GRPC_SERVER_PORT:1503}
+    port: ${GRPC_SERVER_PORT:1504}

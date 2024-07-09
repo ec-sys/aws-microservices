@@ -1,13 +1,17 @@
 package demo.aws.backend.product.config.db;
 
+import demo.aws.core.framework.auditing.ApplicationAuditAware;
 import jakarta.persistence.EntityManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.data.auditing.CurrentDateTimeProvider;
+import org.springframework.data.auditing.DateTimeProvider;
+import org.springframework.data.domain.AuditorAware;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -15,16 +19,18 @@ import org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager
 import org.springframework.orm.jpa.persistenceunit.PersistenceUnitManager;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@Profile("replication")
 @EnableJpaRepositories(
         basePackages = {"demo.aws.backend.product.repository"}
 )
-public class ReplicasPersistenceConfig {
+@EnableTransactionManagement
+@EnableJpaAuditing(auditorAwareRef="auditorProvider", dateTimeProviderRef="auditorDateTimeProvider")
+public class PersistenceConfig {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -62,5 +68,15 @@ public class ReplicasPersistenceConfig {
         );
         persistenceUnitManager.setDefaultDataSource(dataSource);
         return persistenceUnitManager;
+    }
+
+    @Bean
+    public AuditorAware<String> auditorProvider() {
+        return new ApplicationAuditAware();
+    }
+
+    @Bean
+    DateTimeProvider auditorDateTimeProvider() {
+        return CurrentDateTimeProvider.INSTANCE;
     }
 }

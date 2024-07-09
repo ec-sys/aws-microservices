@@ -66,6 +66,12 @@ spring:
             - Path=/graphql/employee/**
           filters:
             - StripPrefix=2
+        - id: product
+          uri: ${SERVICE_PRODUCT_URL:http://localhost:9103/}
+          predicates:
+            - Path=/api/product/**
+          filters:
+            - StripPrefix=2
   data:
     redis:
       host: ${REDIS_HOST:localhost}

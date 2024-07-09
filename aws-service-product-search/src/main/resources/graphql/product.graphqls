@@ -1,4 +1,4 @@
-type Query {
+extend type Query {
     products: [Product]
     productsWithFilter(filter: ProductFilter): [Product]
     product(id: ID!): Product!

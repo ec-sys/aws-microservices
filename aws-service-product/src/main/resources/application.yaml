@@ -7,10 +7,6 @@ spring:
     active: ${ACTIVE_PROFILE:local}
   application:
     name: service-product
-  datasource:
-    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/db_product}
-    username: ${MYSQL_USER_NAME:root}
-    password: ${MYSQL_PASSWORD:root123}
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
@@ -18,6 +14,16 @@ spring:
   output:
     ansi:
       enabled: always
+db:
+  driverClassName: com.mysql.cj.jdbc.Driver
+  master:
+    url: ${MYSQL_MASTER_URL:jdbc:mysql://localhost:3309/db_product}?allowPublicKeyRetrieval=true&useSSL=false
+    username: ${MYSQL_MASTER_USERNAME:tit}
+    password: ${MYSQL_MASTER_PASSWORD:dangtit90}
+  slave:
+    url: ${MYSQL_SLAVE_URL:jdbc:mysql:loadbalance://localhost:3307,localhost:3308/db_product}?allowPublicKeyRetrieval=true&useSSL=false&loadBalanceConnectionGroup=first&ha.enableJMX=true
+    username: ${MYSQL_SLAVE_USERNAME:tit}
+    password: ${MYSQL_SLAVEPASSWORD:dangtit90}
 
 #grpc
 grpc:

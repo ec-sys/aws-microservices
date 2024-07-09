@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 
@@ -16,7 +15,6 @@ import java.util.Map;
 import java.util.Properties;
 
 @Configuration
-@Profile("replication")
 public class DataSourceConfig {
 
     @Value("${db.driverClassName}")
@@ -46,6 +44,7 @@ public class DataSourceConfig {
         Properties hibernateProp = new Properties();
         hibernateProp.put("hibernate.hbm2ddl.auto", "update");
         hibernateProp.put("hibernate.show_sql", true);
+        hibernateProp.put("hibernate.physical_naming_strategy", "org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy");
         return hibernateProp;
     }
 
@@ -80,22 +79,7 @@ public class DataSourceConfig {
 
     private DataSource createDataSource(DbType dbType) {
         try {
-            HikariConfig hikariConfig = new HikariConfig();
-            hikariConfig.setDriverClassName(driverClassName);
-
-            if (DbType.MASTER.equals(dbType)) {
-                hikariConfig.setJdbcUrl(urlMaster);
-                hikariConfig.setUsername(usernameMaster);
-                hikariConfig.setPassword(passwordMaster);
-            } else {
-                hikariConfig.setJdbcUrl(urlSlave);
-                hikariConfig.setUsername(usernameSlave);
-                hikariConfig.setPassword(passwordSlave);
-            }
-
-            hikariConfig.setMaximumPoolSize(5);
-            hikariConfig.setConnectionTestQuery("SELECT 1");
-            hikariConfig.setPoolName("springHikariCP");
+            HikariConfig hikariConfig = getHikariConfig(dbType);
 
             hikariConfig.addDataSourceProperty("dataSource.cachePrepStmts", "true");
             hikariConfig.addDataSourceProperty("dataSource.prepStmtCacheSize", "250");
@@ -106,5 +90,25 @@ public class DataSourceConfig {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    private HikariConfig getHikariConfig(DbType dbType) {
+        HikariConfig hikariConfig = new HikariConfig();
+        hikariConfig.setDriverClassName(driverClassName);
+
+        if (DbType.MASTER.equals(dbType)) {
+            hikariConfig.setJdbcUrl(urlMaster);
+            hikariConfig.setUsername(usernameMaster);
+            hikariConfig.setPassword(passwordMaster);
+        } else {
+            hikariConfig.setJdbcUrl(urlSlave);
+            hikariConfig.setUsername(usernameSlave);
+            hikariConfig.setPassword(passwordSlave);
+        }
+
+        hikariConfig.setMaximumPoolSize(5);
+        hikariConfig.setConnectionTestQuery("SELECT 1");
+        hikariConfig.setPoolName("springHikariCP");
+        return hikariConfig;
     }
 }
