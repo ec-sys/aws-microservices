@@ -32,6 +32,17 @@ db:
     username: ${MYSQL_SLAVE_USERNAME:tit}
     password: ${MYSQL_SLAVEPASSWORD:dangtit90}
 
+redis:
+  master:
+    host: localhost
+    port: 6380
+    password: root123
+  slaves:
+    - host: localhost
+      port: 6377
+    - host: localhost
+      port: 6378
+
 #grpc
 grpc:
   server:
