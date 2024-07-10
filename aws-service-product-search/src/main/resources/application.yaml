@@ -7,13 +7,6 @@ spring:
     active: ${ACTIVE_PROFILE:local}
   application:
     name: service-product-search
-  datasource:
-#    url: ${MYSQL_SLAVE_URL:jdbc:mysql:loadbalance://localhost:3307,localhost:3308/db_product?loadBalanceConnectionGroup=first&ha.enableJMX=true&useSSL=false}
-#    username: ${MYSQL_SLAVE_USERNAME:tit}
-#    password: ${MYSQL_SLAVEPASSWORD:dangtit90}
-#    url: ${MYSQL_URL:jdbc:mysql://localhost:3307/db_product}
-#    username: ${MYSQL_USER_NAME:tit}
-#    password: ${MYSQL_PASSWORD:dangtit90}
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
@@ -24,6 +17,14 @@ spring:
   graphql:
     graphiql:
       enabled: true
+  elasticsearch:
+    uris: ${ELASTIC_SEARCH_URL:http://localhost:9200}
+    username: root
+    password: root123
+  data:
+    elasticsearch:
+      repositories:
+        enabled: true
 db:
   driverClassName: com.mysql.cj.jdbc.Driver
   slave:

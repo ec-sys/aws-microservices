@@ -56,7 +56,7 @@ public class PersistenceConfig {
     public PersistenceUnitManager persistenceUnitManager() {
         DefaultPersistenceUnitManager persistenceUnitManager = new DefaultPersistenceUnitManager();
         persistenceUnitManager.setPackagesToScan(
-                "demo.aws.backend.product_search.domain.entity"
+                "demo.aws.backend.product.domain.entity"
         );
         persistenceUnitManager.setDefaultDataSource(dataSource);
         return persistenceUnitManager;

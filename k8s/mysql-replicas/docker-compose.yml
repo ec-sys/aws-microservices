@@ -16,6 +16,8 @@ services:
       - MYSQL_USER=tit
       - MYSQL_PASSWORD=dangtit90
       - MYSQL_DATABASE=db_product
+    volumes:
+      - D:\docker\db_product:/bitnami/mysql/data
 
   # slave-1
   mysql-slave-1:
