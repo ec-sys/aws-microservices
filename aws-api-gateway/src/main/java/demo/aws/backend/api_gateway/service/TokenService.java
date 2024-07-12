@@ -4,11 +4,15 @@ import demo.aws.backend.api_gateway.redis.UserToken;
 import demo.aws.backend.api_gateway.redis.UserTokenRepository;
 import demo.aws.core.common_util.JwtService;
 import demo.aws.core.common_util.dto.JWTPayloadDto;
+import demo.aws.core.common_util.model.Role;
+import io.jsonwebtoken.impl.DefaultClaims;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 
 @Service
@@ -35,5 +39,13 @@ public class TokenService {
             throw new IllegalArgumentException("token is not valid");
         }
         return jwtService.getPayloadFromJWT(token, userToken.getPublicKey());
+    }
+
+    public JWTPayloadDto createGuestPayload() {
+        JWTPayloadDto payloadDto = new JWTPayloadDto();
+        payloadDto.setLoginId("guest_user");
+        payloadDto.setUserId(-1);
+        payloadDto.setRoleNames(Arrays.asList(Role.GUEST.name()));
+        return payloadDto;
     }
 }

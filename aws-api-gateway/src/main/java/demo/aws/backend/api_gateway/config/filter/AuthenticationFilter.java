@@ -51,7 +51,12 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
         String tokenId = getTokenIdFromRequest(request);
 
         try {
-            JWTPayloadDto payload = tokenService.getPayloadFromToken(tokenId, jwtToken);
+            JWTPayloadDto payload;
+            if(StringUtils.isEmpty(tokenId)) {
+                payload = tokenService.createGuestPayload();
+            } else {
+                payload = tokenService.getPayloadFromToken(tokenId, jwtToken);
+            }
             ServerWebExchange modifiedExchange = exchange.mutate()
                     // modify the original request:
                     .request(originalRequest -> {
