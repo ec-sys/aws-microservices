@@ -11,6 +11,7 @@ import static demo.aws.core.common_util.model.Permission.*;
 @RequiredArgsConstructor
 public enum Role {
 
+    GUEST(Collections.emptySet()),
     USER(Collections.emptySet()),
     ADMIN(
             Set.of(

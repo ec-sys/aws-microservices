@@ -49,7 +49,12 @@ public class LoginService {
     public LoginResponse login(LoginRequest request) throws Exception {
         LoginResponse response = new LoginResponse();
         User loginUser = userRepository.findFirstByLoginId(request.getLoginId());
-        if (Objects.isNull(loginUser) || !passwordEncoder.matches(request.getPassword(), loginUser.getPassword())) {
+        if (Objects.isNull(loginUser)) {
+            log.error("provided login id {} don't exist", request.getLoginId());
+            throw new IllegalArgumentException("Login failed, provided login id don't exist");
+        }
+
+        if (!passwordEncoder.matches(request.getPassword() + loginUser.getPasswordSalt(), loginUser.getPassword())) {
             log.error("{}-{} invalid user name or password", request.getLoginId(), request.getPassword());
             throw new IllegalArgumentException("Invalid user name or password");
         }
