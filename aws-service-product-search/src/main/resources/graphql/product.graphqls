@@ -13,6 +13,7 @@ type Product {
     material: Int!
     description: String
     category: Category
+    store: [Store]
 }
 
 input ProductFilter {

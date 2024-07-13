@@ -1,4 +1,4 @@
-package demo.aws.backend.product_search.filter;
+package demo.aws.backend.product_search.graphql.filter;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Path;

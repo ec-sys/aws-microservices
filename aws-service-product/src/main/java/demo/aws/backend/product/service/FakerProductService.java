@@ -3,8 +3,12 @@ package demo.aws.backend.product.service;
 import com.github.javafaker.Faker;
 import demo.aws.backend.product.domain.entity.Category;
 import demo.aws.backend.product.domain.entity.Product;
+import demo.aws.backend.product.domain.entity.ProductStore;
+import demo.aws.backend.product.domain.entity.Store;
 import demo.aws.backend.product.repository.CategoryRepository;
 import demo.aws.backend.product.repository.ProductRepository;
+import demo.aws.backend.product.repository.ProductStoreRepository;
+import demo.aws.backend.product.repository.StoreRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +25,42 @@ public class FakerProductService {
     ProductRepository productRepository;
     @Autowired
     CategoryRepository categoryRepository;
+    @Autowired
+    ProductStoreRepository productStoreRepository;
+    @Autowired
+    StoreRepository storeRepository;
+
+    public void updateStoreToProduct() {
+        Random random = new Random();
+        List<Store> allStores = storeRepository.findAll();
+        int totalRecord = (int) productRepository.count();
+        int limit = 5000;
+        int pageSize = totalRecord / limit;
+        if(pageSize * limit < totalRecord) {
+            pageSize++;
+        }
+        log.info("TOTAL PAGE {}, LIMIT {}", pageSize, limit);
+        for (int i = 0; i < pageSize; i++) {
+            log.info("START GET IDS");
+            List<Long> productIds = productRepository.findAllIdPagination(limit, i * limit);
+            log.info("DONE GET IDS");
+            List<Product> products = productRepository.findAllById(productIds);
+            log.info("DONE GET RECORDS");
+
+            List<ProductStore> productStoreList = new ArrayList<>();
+            for (Product product : products) {
+                int storeNumber = random.nextInt(5);
+                for (int j = 0; j < storeNumber; j++) {
+                    ProductStore productStore = new ProductStore();
+                    productStore.setProductId(product.getId());
+                    productStore.setStoreId(allStores.get(random.nextInt(allStores.size() - 1)).getId());
+                    productStoreList.add(productStore);
+                }
+            }
+            productStoreRepository.saveAll(productStoreList);
+            log.info("DONE PAGE {}", i);
+        }
+    }
 
     public void fakeCategories() {
         Faker faker = new Faker();

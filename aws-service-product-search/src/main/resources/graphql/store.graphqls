@@ -1,0 +1,11 @@
+type Store {
+    id: ID!
+    address: String!
+    address2: String
+    district: String
+    cityId: Int!
+    postalCode: String
+    phone: String
+    city: City
+    products: [Product]
+}
