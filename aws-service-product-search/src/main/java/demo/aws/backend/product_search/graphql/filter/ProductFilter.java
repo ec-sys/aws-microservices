@@ -4,8 +4,12 @@ import lombok.Data;
 
 @Data
 public class ProductFilter {
+    private int categoryId;
     private FilterField name;
     private FilterField price;
     private FilterField color;
     private FilterField material;
+
+    private int pageNumber;
+    private int pageSize;
 }

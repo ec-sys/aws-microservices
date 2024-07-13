@@ -3,7 +3,6 @@ type Store {
     address: String!
     address2: String
     district: String
-    cityId: Int!
     postalCode: String
     phone: String
     city: City

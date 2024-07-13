@@ -2,6 +2,8 @@ package demo.aws.backend.product_search.graphql.response;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class ProductGraphql {
     private long id;
@@ -12,15 +14,6 @@ public class ProductGraphql {
     private String material;
     private String description;
 
-    private int categoryId;
-    private String categoryName;
-
-    private int storeId;
-    private int storeName;
-
-    private int cityId;
-    private String cityName;
-
-    private int countryId;
-    private String countryName;
+    private CategoryGraphql category;
+    private List<StoreGraphql> stores;
 }

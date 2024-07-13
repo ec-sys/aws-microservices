@@ -19,6 +19,6 @@ public class ProductSearchApplication implements CommandLineRunner {
     ProductDataService productDataService;
     @Override
     public void run(String... args) throws Exception {
-        productDataService.upsertProductFromDBToRedis();
+        // productDataService.upsertProductFromDBToRedis();
     }
 }

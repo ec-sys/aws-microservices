@@ -10,13 +10,16 @@ type Product {
     image: String!
     price: Int!
     color: String!
-    material: Int!
+    material: String!
     description: String
     category: Category
-    store: [Store]
+    stores: [Store]
 }
 
 input ProductFilter {
+    pageNumber: Int!
+    pageSize: Int!
+    categoryId: Int!
     name: FilterField
     price: FilterField
     color: FilterField
