@@ -155,7 +155,7 @@ public class ProductSearchService {
         Specification<Product> spec = buildFilter(filter);
         // run filter
         log.info("START QUERY {}", LocalDateTime.now());
-        Page<Product> products = productRepository.findAll(spec, PageRequest.of(filter.getPageNumber(), filter.getPageSize()));
+        Page<Product> products = productRepository.findAll(spec, PageRequest.of(filter.getPageNumber(), filter.getPageSize(), Sort.by(Sort.Direction.ASC, "price")));
         log.info("END QUERY {}", LocalDateTime.now());
         // build response
         List<ProductGraphql> response = new ArrayList<>();
