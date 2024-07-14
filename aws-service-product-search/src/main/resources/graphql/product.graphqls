@@ -24,6 +24,7 @@ input ProductFilter {
     price: FilterField
     color: FilterField
     material: FilterField
+    isDetail: Boolean
 }
 
 input FilterField {

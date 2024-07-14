@@ -12,4 +12,5 @@ public class ProductFilter {
 
     private int pageNumber;
     private int pageSize;
+    private boolean isDetail;
 }

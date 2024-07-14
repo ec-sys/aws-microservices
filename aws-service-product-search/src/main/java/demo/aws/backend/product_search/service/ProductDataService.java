@@ -1,15 +1,17 @@
 package demo.aws.backend.product_search.service;
 
-import demo.aws.backend.product.domain.entity.Category;
-import demo.aws.backend.product.domain.entity.City;
-import demo.aws.backend.product.domain.entity.Product;
+import demo.aws.backend.product.domain.entity.*;
 import demo.aws.backend.product_search.domain.entity.elasticsearch.ProductELS;
+import demo.aws.backend.product_search.domain.entity.redis.CityRedis;
+import demo.aws.backend.product_search.domain.entity.redis.CountryRedis;
 import demo.aws.backend.product_search.domain.entity.redis.ProductRedis;
-import demo.aws.backend.product_search.repository.CategoryRepository;
-import demo.aws.backend.product_search.repository.ProductRepository;
-import demo.aws.backend.product_search.repository.ProductStoreRepository;
+import demo.aws.backend.product_search.domain.entity.redis.StoreRedis;
+import demo.aws.backend.product_search.repository.*;
 import demo.aws.backend.product_search.repository.elasticsearch.ProductELSRepository;
+import demo.aws.backend.product_search.repository.redis.CityRedisRepository;
+import demo.aws.backend.product_search.repository.redis.CountryRedisRepository;
 import demo.aws.backend.product_search.repository.redis.ProductRedisRepository;
+import demo.aws.backend.product_search.repository.redis.StoreRedisRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +36,20 @@ public class ProductDataService {
     ProductStoreRepository productStoreRepository;
     @Autowired
     CategoryRepository categoryRepository;
+
+    @Autowired
+    CountryRepository countryRepository;
+    @Autowired
+    CityRepository cityRepository;
+    @Autowired
+    StoreRepository storeRepository;
+
+    @Autowired
+    CountryRedisRepository countryRedisRepository;
+    @Autowired
+    CityRedisRepository cityRedisRepository;
+    @Autowired
+    StoreRedisRepository storeRedisRepository;
 
     public void upsertProductFromDBToELS() {
         int totalRecord = (int) productRepository.count();
@@ -104,5 +120,49 @@ public class ProductDataService {
             productRedisRepository.saveAll(productRedisList);
             log.info("DONE PAGE {}", i);
         }
+    }
+
+    public void upsertContryFromDBToRedis() {
+        countryRedisRepository.deleteAll();
+        List<Country> allCoutries = countryRepository.findAll();
+        List<CountryRedis> countryRedisList = new ArrayList<>();
+        for (Country contry : allCoutries) {
+            CountryRedis countryRedis = new CountryRedis();
+            countryRedis.setId(contry.getId());
+            countryRedis.setName(contry.getName());
+            countryRedisList.add(countryRedis);
+        }
+        countryRedisRepository.saveAll(countryRedisList);
+    }
+
+    public void upsertCityFromDBToRedis() {
+        cityRedisRepository.deleteAll();
+        List<City> allCities = cityRepository.findAll();
+        List<CityRedis> cityRedisList = new ArrayList<>();
+        for (City city : allCities) {
+            CityRedis cityRedis = new CityRedis();
+            cityRedis.setId(city.getId());
+            cityRedis.setName(city.getName());
+            cityRedisList.add(cityRedis);
+        }
+        cityRedisRepository.saveAll(cityRedisList);
+    }
+
+    public void upsertStoreFromDBToRedis() {
+        storeRedisRepository.deleteAll();
+        List<Store> allStores = storeRepository.findAll();
+        List<StoreRedis> storeRedisList = new ArrayList<>();
+        for (Store store : allStores) {
+            StoreRedis storeRedis = new StoreRedis();
+            storeRedis.setId(store.getId());
+            storeRedis.setPhone(store.getPhone());
+            storeRedis.setAddress(store.getAddress());
+            storeRedis.setAddress2(store.getAddress2());
+            storeRedis.setCityId(store.getCityId());
+            storeRedis.setPostalCode(store.getPostalCode());
+            storeRedis.setDistrict(store.getDistrict());
+            storeRedisList.add(storeRedis);
+        }
+        storeRedisRepository.saveAll(storeRedisList);
     }
 }

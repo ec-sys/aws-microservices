@@ -73,7 +73,7 @@ spring:
           filters:
             - StripPrefix=2
         - id: product-search
-          uri: ${SERVICE_PRODUCT_SEARCH_URL:http://localhost:9104/}
+          uri: ${SERVICE_PRODUCT_SEARCH_URL:lb://service-product-search}
           predicates:
             - Path=/api/product-search/**
           filters:
@@ -93,3 +93,7 @@ jwt:
   access-token-expire-in-second: ${ACCESS_TOKEN_EXPIRE_IN_SECOND:864000}
   refresh-token-expire-in-second: ${REFRESH_TOKEN_EXPIRE_IN_SECOND:1728000}
   secret: ${JWT_SECRET:123@abc}
+
+eureka:
+  client:
+    enabled: false

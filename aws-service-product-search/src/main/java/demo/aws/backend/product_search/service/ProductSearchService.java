@@ -43,7 +43,7 @@ public class ProductSearchService {
         return response;
     }
 
-    public List<ProductGraphql> getProductGraphqlsByCategoryId(List<Product> products, int categoryId) {
+    public List<ProductGraphql> getProductGraphqlsByCategoryIdWithDetail(List<Product> products, int categoryId) {
         List<ProductGraphql> response = new ArrayList<>();
         Set<Long> productIds = products.stream().map(Product::getId).collect(Collectors.toSet());
 
@@ -54,6 +54,20 @@ public class ProductSearchService {
         CategoryGraphql categoryGraphql = getCategoryGraphql(categoryId);
         for (Product product : products) {
             response.add(getProductGraphqlFromProduct(product, categoryGraphql, mapProductAndStoreGraphqls.get(product.getId())));
+        }
+        return response;
+    }
+
+    public List<ProductGraphql> getProductGraphqlsByCategoryId(List<Product> products, int categoryId) {
+        List<ProductGraphql> response = new ArrayList<>();
+
+        // store
+        List<StoreGraphql> storeGraphqls = new ArrayList<>();
+
+        // category
+        CategoryGraphql categoryGraphql = getCategoryGraphql(categoryId);
+        for (Product product : products) {
+            response.add(getProductGraphqlFromProduct(product, categoryGraphql, storeGraphqls));
         }
         return response;
     }
@@ -210,14 +224,18 @@ public class ProductSearchService {
 
         // run filter
         log.info("START QUERY {}", LocalDateTime.now());
-        // Page<Product> products = productRepository.findAll(spec, PageRequest.of(filter.getPageNumber(), filter.getPageSize(), Sort.by(Sort.Direction.ASC, "price")));
+        Page<Product> products = productRepository.findAll(spec, PageRequest.of(filter.getPageNumber(), filter.getPageSize(), Sort.by(Sort.Direction.ASC, "price")));
         // productRepository.findById(1L);
         // List<Product> products = productRepository.findAll(spec);
         log.info("END QUERY {}", LocalDateTime.now());
-        return Arrays.asList();
+        // return Arrays.asList();
 
         // build response
-        // return getProductGraphqlsByCategoryId(products.stream().toList(), filter.getCategoryId());
+        if(filter.isDetail()) {
+            return getProductGraphqlsByCategoryIdWithDetail(products.stream().toList(), filter.getCategoryId());
+        } else {
+            return getProductGraphqlsByCategoryId(products.stream().toList(), filter.getCategoryId());
+        }
 
 //        List<ProductGraphql> response = new ArrayList<>();
 //        for (Product product : products.stream().toList()) {
