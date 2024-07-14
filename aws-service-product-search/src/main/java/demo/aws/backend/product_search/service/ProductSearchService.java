@@ -210,11 +210,14 @@ public class ProductSearchService {
 
         // run filter
         log.info("START QUERY {}", LocalDateTime.now());
-        Page<Product> products = productRepository.findAll(spec, PageRequest.of(filter.getPageNumber(), filter.getPageSize(), Sort.by(Sort.Direction.ASC, "price")));
+        // Page<Product> products = productRepository.findAll(spec, PageRequest.of(filter.getPageNumber(), filter.getPageSize(), Sort.by(Sort.Direction.ASC, "price")));
+        // productRepository.findById(1L);
+        // List<Product> products = productRepository.findAll(spec);
         log.info("END QUERY {}", LocalDateTime.now());
+        return Arrays.asList();
 
         // build response
-         return getProductGraphqlsByCategoryId(products.stream().toList(), filter.getCategoryId());
+        // return getProductGraphqlsByCategoryId(products.stream().toList(), filter.getCategoryId());
 
 //        List<ProductGraphql> response = new ArrayList<>();
 //        for (Product product : products.stream().toList()) {
