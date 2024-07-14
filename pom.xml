@@ -53,6 +53,9 @@
 
         <!-- for learning about graphql -->
         <module>sample-graphql</module>
+
+        <!-- for test load balancing at local -->
+        <module>aws-eureka-server</module>
     </modules>
 
     <dependencyManagement>

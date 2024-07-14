@@ -1,0 +1,15 @@
+FROM openjdk:17-alpine
+
+#ENV PROMETHEUS_AGENT_ENABLED=false
+#ENV PROMETHEUS_AGENT_DIR=/opt/prometheus/java
+#ENV PROMETHEUS_AGENT_PATH=${PROMETHEUS_AGENT_DIR}/jmx_prometheus_javaagent-0.15.0.jar
+#ENV PROMETHEUS_AGENT_CONFIG=${PROMETHEUS_AGENT_DIR}/config.yaml
+#ENV PROMETHEUS_AGENT_PORT=9091
+#ENV PROM_AGENT_OPTION="-javaagent:${PROMETHEUS_AGENT_PATH}=${PROMETHEUS_AGENT_PORT}:${PROMETHEUS_AGENT_CONFIG}"
+#
+#COPY build/assets/prometheus ${PROMETHEUS_AGENT_DIR}
+COPY target/api_gateway-0.1.jar app.jar
+
+EXPOSE 8080 8085
+
+CMD ["java", "-jar", "app.jar"]

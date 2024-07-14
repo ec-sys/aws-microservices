@@ -1,0 +1,9 @@
+management:
+  #tracing
+  tracing:
+    enabled: false
+  #spring actuator
+  endpoints:
+    web:
+      exposure:
+        include: "*"
