@@ -43,7 +43,26 @@ public class ProductSearchService {
         return response;
     }
 
+    public List<ProductGraphql> getProductGraphqlsByCategoryId(List<Product> products, int categoryId) {
+        List<ProductGraphql> response = new ArrayList<>();
+        Set<Long> productIds = products.stream().map(Product::getId).collect(Collectors.toSet());
+
+        // store
+        Map<Long, List<StoreGraphql>> mapProductAndStoreGraphqls = getStoreGraphqls(productIds);
+
+        // category
+        CategoryGraphql categoryGraphql = getCategoryGraphql(categoryId);
+        for (Product product : products) {
+            response.add(getProductGraphqlFromProduct(product, categoryGraphql, mapProductAndStoreGraphqls.get(product.getId())));
+        }
+        return response;
+    }
+
     public ProductGraphql getProductGraphqlById(Product product) {
+        return getProductGraphqlFromProduct(product, getCategoryGraphql(product.getCategoryId()), getStoreGraphqls(product.getId()));
+    }
+
+    private ProductGraphql getProductGraphqlFromProduct(Product product, CategoryGraphql categoryGraphql, List<StoreGraphql> storeGraphqls) {
         ProductGraphql response = new ProductGraphql();
         response.setId(product.getId());
         response.setName(product.getName());
@@ -52,8 +71,8 @@ public class ProductSearchService {
         response.setMaterial(product.getMaterial());
         response.setDescription(product.getDescription());
         response.setPrice(product.getPrice());
-        response.setStores(getStoreGraphqls(product.getId()));
-        response.setCategory(getCategoryGraphql(product.getCategoryId()));
+        response.setStores(storeGraphqls);
+        response.setCategory(categoryGraphql);
         return response;
     }
 
@@ -80,16 +99,51 @@ public class ProductSearchService {
         Map<Integer, CityGraphql> mapIdAndCityGraphql = getCityGraphqls(cityIds);
 
         for (Store store : storeList) {
-            StoreGraphql storeGraphql = new StoreGraphql();
-            storeGraphql.setId(store.getId());
-            storeGraphql.setPhone(store.getPhone());
-            storeGraphql.setAddress(store.getAddress());
-            storeGraphql.setAddress2(store.getAddress2());
-            storeGraphql.setDistrict(store.getDistrict());
-            storeGraphql.setCity(mapIdAndCityGraphql.get(store.getCityId()));
-            response.add(storeGraphql);
+            response.add(getStoreGraphqlFromStore(store, mapIdAndCityGraphql.get(store.getCityId())));
         }
         return response;
+    }
+
+    private Map<Long, List<StoreGraphql>> getStoreGraphqls(Collection<Long> productIds) {
+        Map<Long, List<StoreGraphql>> response = new HashMap<>();
+
+        // get stores
+        List<ProductStore> productStores = productStoreRepository.findByProductIdIn(productIds);
+        Map<Long, List<ProductStore>> mapProductAndProductStores = productStores.stream().collect(Collectors.groupingBy(ProductStore::getProductId));
+
+        Set<Integer> storeIds = productStores.stream().map(ProductStore::getStoreId).collect(Collectors.toSet());
+        List<Store> storeList = storeRepository.findAllById(storeIds);
+
+        // get cities
+        Set<Integer> cityIds = storeList.stream().map(Store::getCityId).collect(Collectors.toSet());
+        Map<Integer, CityGraphql> mapIdAndCityGraphql = getCityGraphqls(cityIds);
+
+        // store graphql from store
+        Map<Integer, StoreGraphql> mapIdAndStoreGraphql = new HashMap<>();
+        for (Store store : storeList) {
+            mapIdAndStoreGraphql.put(store.getId(), getStoreGraphqlFromStore(store, mapIdAndCityGraphql.get(store.getCityId())));
+        }
+
+        // build map product graphql
+        mapProductAndProductStores.forEach((id, stores) -> {
+            List<StoreGraphql> storeGraphqls = new ArrayList<>();
+            stores.forEach(item -> {
+                storeGraphqls.add(mapIdAndStoreGraphql.get(item.getStoreId()));
+            });
+            response.put(id, storeGraphqls);
+        });
+        return response;
+    }
+
+    private StoreGraphql getStoreGraphqlFromStore(Store store, CityGraphql cityGraphql) {
+        StoreGraphql storeGraphql = new StoreGraphql();
+        storeGraphql.setId(store.getId());
+        storeGraphql.setPhone(store.getPhone());
+        storeGraphql.setAddress(store.getAddress());
+        storeGraphql.setAddress2(store.getAddress2());
+        storeGraphql.setDistrict(store.getDistrict());
+        storeGraphql.setCity(cityGraphql);
+        return storeGraphql;
     }
 
     private CityGraphql getCityGraphql(int id) {
@@ -153,16 +207,20 @@ public class ProductSearchService {
     public Iterable<ProductGraphql> productsWithFilter(@Argument ProductFilter filter) {
         // build filter
         Specification<Product> spec = buildFilter(filter);
+
         // run filter
         log.info("START QUERY {}", LocalDateTime.now());
         Page<Product> products = productRepository.findAll(spec, PageRequest.of(filter.getPageNumber(), filter.getPageSize(), Sort.by(Sort.Direction.ASC, "price")));
         log.info("END QUERY {}", LocalDateTime.now());
+
         // build response
-        List<ProductGraphql> response = new ArrayList<>();
-        for (Product product : products.stream().toList()) {
-            response.add(getProductGraphqlById(product));
-        }
-        return response;
+         return getProductGraphqlsByCategoryId(products.stream().toList(), filter.getCategoryId());
+
+//        List<ProductGraphql> response = new ArrayList<>();
+//        for (Product product : products.stream().toList()) {
+//            response.add(getProductGraphqlById(product));
+//        }
+//        return response;
     }
 
     private Specification<Product> buildFilter(ProductFilter filter) {
