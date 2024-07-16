@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class ProductSearchService {
+public class ProductMySqlService {
     @Autowired
     ProductRepository productRepository;
     @Autowired
@@ -231,7 +231,7 @@ public class ProductSearchService {
         // return Arrays.asList();
 
         // build response
-        if(filter.isDetail()) {
+        if(filter.getIsDetail()) {
             return getProductGraphqlsByCategoryIdWithDetail(products.stream().toList(), filter.getCategoryId());
         } else {
             return getProductGraphqlsByCategoryId(products.stream().toList(), filter.getCategoryId());

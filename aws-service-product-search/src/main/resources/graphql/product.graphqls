@@ -25,6 +25,7 @@ input ProductFilter {
     color: FilterField
     material: FilterField
     isDetail: Boolean
+    isCache: Boolean
 }
 
 input FilterField {

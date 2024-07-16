@@ -73,7 +73,7 @@ spring:
           filters:
             - StripPrefix=2
         - id: product-search
-          uri: ${SERVICE_PRODUCT_SEARCH_URL:lb://service-product-search}
+          uri: ${SERVICE_PRODUCT_SEARCH_URL:http://localhost:9104/} #lb://service-product-search
           predicates:
             - Path=/api/product-search/**
           filters:

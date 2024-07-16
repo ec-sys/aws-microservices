@@ -31,86 +31,24 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ProductRedisService {
     @Autowired
-    ProductRepository productRepository;
-    @Autowired
-    CategoryRepository categoryRepository;
-    @Autowired
-    ProductStoreRepository productStoreRepository;
-    @Autowired
-    StoreRepository storeRepository;
-    @Autowired
-    CityRepository cityRepository;
-    @Autowired
-    CountryRepository countryRepository;
-
-    @Autowired
     CountryRedisRepository countryRedisRepository;
     @Autowired
     CityRedisRepository cityRedisRepository;
     @Autowired
     StoreRedisRepository storeRedisRepository;
 
-    public List<ProductGraphql> getProductGraphqlsByCategoryIdWithDetail(List<Product> products, int categoryId) {
-        List<ProductGraphql> response = new ArrayList<>();
-        Set<Long> productIds = products.stream().map(Product::getId).collect(Collectors.toSet());
+    @Autowired
+    ProductStoreRepository productStoreRepository;
 
-        // store
-        Map<Long, List<StoreGraphql>> mapProductAndStoreGraphqls = getStoreGraphqls(productIds);
-
-        // category
-        CategoryGraphql categoryGraphql = getCategoryGraphql(categoryId);
-        for (Product product : products) {
-            response.add(getProductGraphqlFromProduct(product, categoryGraphql, mapProductAndStoreGraphqls.get(product.getId())));
-        }
-        return response;
+    public Map<Long, List<StoreGraphql>> getStoreGraphqls(Collection<Long> productIds) {
+        List<ProductStore> productStores = productStoreRepository.findByProductIdIn(productIds);
+        return getStoreGraphqls(productStores);
     }
 
-    public List<ProductGraphql> getProductGraphqlsByCategoryId(List<Product> products, int categoryId) {
-        List<ProductGraphql> response = new ArrayList<>();
-
-        // store
-        List<StoreGraphql> storeGraphqls = new ArrayList<>();
-
-        // category
-        CategoryGraphql categoryGraphql = getCategoryGraphql(categoryId);
-        for (Product product : products) {
-            response.add(getProductGraphqlFromProduct(product, categoryGraphql, storeGraphqls));
-        }
-        return response;
-    }
-
-    private ProductGraphql getProductGraphqlFromProduct(Product product, CategoryGraphql categoryGraphql, List<StoreGraphql> storeGraphqls) {
-        ProductGraphql response = new ProductGraphql();
-        response.setId(product.getId());
-        response.setName(product.getName());
-        response.setImage(product.getImage());
-        response.setColor(product.getColor());
-        response.setMaterial(product.getMaterial());
-        response.setDescription(product.getDescription());
-        response.setPrice(product.getPrice());
-        response.setStores(storeGraphqls);
-        response.setCategory(categoryGraphql);
-        return response;
-    }
-
-    private CategoryGraphql getCategoryGraphql(int id) {
-        CategoryGraphql response = new CategoryGraphql();
-        Optional<Category> categoryOptional = categoryRepository.findById(id);
-        if(categoryOptional.isPresent()) {
-            Category category = categoryOptional.get();
-            response.setId(category.getId());
-            response.setParentId(category.getParentId());
-            response.setDescription(category.getDescription());
-            response.setName(category.getName());
-        }
-        return response;
-    }
-
-    private Map<Long, List<StoreGraphql>> getStoreGraphqls(Collection<Long> productIds) {
+    public Map<Long, List<StoreGraphql>> getStoreGraphqls(List<ProductStore> productStores) {
         Map<Long, List<StoreGraphql>> response = new HashMap<>();
 
         // get stores
-        List<ProductStore> productStores = productStoreRepository.findByProductIdIn(productIds);
         Map<Long, List<ProductStore>> mapProductAndProductStores = productStores.stream().collect(Collectors.groupingBy(ProductStore::getProductId));
 
         Set<Integer> storeIds = productStores.stream().map(ProductStore::getStoreId).collect(Collectors.toSet());
@@ -137,7 +75,7 @@ public class ProductRedisService {
         return response;
     }
 
-    private StoreGraphql getStoreGraphqlFromStore(StoreRedis store, CityGraphql cityGraphql) {
+    public StoreGraphql getStoreGraphqlFromStore(StoreRedis store, CityGraphql cityGraphql) {
         StoreGraphql storeGraphql = new StoreGraphql();
         storeGraphql.setId(store.getId());
         storeGraphql.setPhone(store.getPhone());
@@ -148,7 +86,7 @@ public class ProductRedisService {
         return storeGraphql;
     }
 
-    private Map<Integer, CityGraphql> getCityGraphqls(Set<Integer> cityIds) {
+    public Map<Integer, CityGraphql> getCityGraphqls(Set<Integer> cityIds) {
         Map<Integer, CityGraphql> response = new HashMap<>();
         // get cities
         List<CityRedis> cities = IteratorUtils.toList(cityRedisRepository.findAllById(cityIds).iterator());
@@ -169,7 +107,7 @@ public class ProductRedisService {
         return response;
     }
 
-    private Map<Integer, CountryGraphql> getCountryGraphqls(Set<Integer> countryIds) {
+    public Map<Integer, CountryGraphql> getCountryGraphqls(Set<Integer> countryIds) {
         Map<Integer, CountryGraphql> response = new HashMap<>();
         Map<Integer, CountryRedis> mapIdAndCountry = IteratorUtils.toList(countryRedisRepository.findAllById(countryIds).iterator())
                 .stream()
@@ -181,50 +119,5 @@ public class ProductRedisService {
             response.put(id, countryGraphql);
         });
         return  response;
-    }
-
-    public Iterable<ProductGraphql> productsWithFilter(@Argument ProductFilter filter) {
-        // build filter
-        Specification<Product> spec = buildFilter(filter);
-
-        // run filter
-        log.info("START QUERY {}", LocalDateTime.now());
-        Page<Product> products = productRepository.findAll(spec, PageRequest.of(filter.getPageNumber(), filter.getPageSize(), Sort.by(Sort.Direction.ASC, "price")));
-        log.info("END QUERY {}", LocalDateTime.now());
-
-        // build response
-        if(filter.isDetail()) {
-            return getProductGraphqlsByCategoryIdWithDetail(products.stream().toList(), filter.getCategoryId());
-        } else {
-            return getProductGraphqlsByCategoryId(products.stream().toList(), filter.getCategoryId());
-        }
-    }
-
-    private Specification<Product> buildFilter(ProductFilter filter) {
-        Specification<Product> spec = byCategory(filter.getCategoryId());
-        if(Objects.nonNull(filter.getPrice())) {
-            spec = spec.and(byPrice(filter.getPrice()));
-        }
-        if(Objects.nonNull(filter.getColor())) {
-            spec = spec.and(byColor(filter.getColor()));
-        }
-        if(Objects.nonNull(filter.getMaterial())) {
-            spec = spec.and(byMaterial(filter.getMaterial()));
-        }
-        return spec;
-    }
-
-    private Specification<Product> byCategory(int categoryId) {
-        FilterField filterField = new FilterField("eq", String.valueOf(categoryId));
-        return (root, query, builder) -> filterField.generateCriteria(builder, root.get("categoryId"));
-    }
-    private Specification<Product> byPrice(FilterField filterField) {
-        return (root, query, builder) -> filterField.generateCriteria(builder, root.get("price"));
-    }
-    private Specification<Product> byColor(FilterField filterField) {
-        return (root, query, builder) -> filterField.generateCriteria(builder, root.get("color"));
-    }
-    private Specification<Product> byMaterial(FilterField filterField) {
-        return (root, query, builder) -> filterField.generateCriteria(builder, root.get("material"));
     }
 }

@@ -14,3 +14,5 @@ services:
     environment:
       - ELASTICSEARCH_USERNAME=root
       - ELASTICSEARCH_PASSWORD=root123
+    volumes:
+      - D:\docker\elasticsearch:/bitnami/elasticsearch/data

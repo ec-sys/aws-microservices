@@ -16,4 +16,5 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
     Page<Integer> findAllIdPagination(Pageable pageable);
     @Query(value = "SELECT p.id FROM products p ORDER BY p.id ASC LIMIT ?1 OFFSET ?2", nativeQuery = true)
     List<Long> findAllIdPagination(int limit, int offset);
+    List<Product> findByCategoryId(int categoryId);
 }

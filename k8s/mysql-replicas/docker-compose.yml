@@ -62,44 +62,44 @@ services:
       - MYSQL_ROOT_PASSWORD=root123
 
   # slave-3
-  mysql-slave-3:
-    container_name: mysql-slave-3
-    image: 'bitnami/mysql:8.0'
-    ports:
-      - '3304:3306'
-    depends_on:
-      - mysql-master
-    environment:
-      - MYSQL_REPLICATION_MODE=slave
-      - MYSQL_REPLICATION_USER=repl_user
-      - MYSQL_REPLICATION_PASSWORD=repl_password
-      - MYSQL_USER=tit
-      - MYSQL_PASSWORD=dangtit90
-      - MYSQL_DATABASE=db_product
-      - MYSQL_MASTER_HOST=mysql-master
-      - MYSQL_MASTER_PORT_NUMBER=3306
-      - MYSQL_MASTER_ROOT_PASSWORD=root123
-      - MYSQL_ROOT_USER=root
-      - MYSQL_ROOT_PASSWORD=root123
+#  mysql-slave-3:
+#    container_name: mysql-slave-3
+#    image: 'bitnami/mysql:8.0'
+#    ports:
+#      - '3304:3306'
+#    depends_on:
+#      - mysql-master
+#    environment:
+#      - MYSQL_REPLICATION_MODE=slave
+#      - MYSQL_REPLICATION_USER=repl_user
+#      - MYSQL_REPLICATION_PASSWORD=repl_password
+#      - MYSQL_USER=tit
+#      - MYSQL_PASSWORD=dangtit90
+#      - MYSQL_DATABASE=db_product
+#      - MYSQL_MASTER_HOST=mysql-master
+#      - MYSQL_MASTER_PORT_NUMBER=3306
+#      - MYSQL_MASTER_ROOT_PASSWORD=root123
+#      - MYSQL_ROOT_USER=root
+#      - MYSQL_ROOT_PASSWORD=root123
 
 
   # slave-4
-  mysql-slave-4:
-    container_name: mysql-slave-4
-    image: 'bitnami/mysql:8.0'
-    ports:
-      - '3305:3306'
-    depends_on:
-      - mysql-master
-    environment:
-      - MYSQL_REPLICATION_MODE=slave
-      - MYSQL_REPLICATION_USER=repl_user
-      - MYSQL_REPLICATION_PASSWORD=repl_password
-      - MYSQL_USER=tit
-      - MYSQL_PASSWORD=dangtit90
-      - MYSQL_DATABASE=db_product
-      - MYSQL_MASTER_HOST=mysql-master
-      - MYSQL_MASTER_PORT_NUMBER=3306
-      - MYSQL_MASTER_ROOT_PASSWORD=root123
-      - MYSQL_ROOT_USER=root
-      - MYSQL_ROOT_PASSWORD=root123
+#  mysql-slave-4:
+#    container_name: mysql-slave-4
+#    image: 'bitnami/mysql:8.0'
+#    ports:
+#      - '3305:3306'
+#    depends_on:
+#      - mysql-master
+#    environment:
+#      - MYSQL_REPLICATION_MODE=slave
+#      - MYSQL_REPLICATION_USER=repl_user
+#      - MYSQL_REPLICATION_PASSWORD=repl_password
+#      - MYSQL_USER=tit
+#      - MYSQL_PASSWORD=dangtit90
+#      - MYSQL_DATABASE=db_product
+#      - MYSQL_MASTER_HOST=mysql-master
+#      - MYSQL_MASTER_PORT_NUMBER=3306
+#      - MYSQL_MASTER_ROOT_PASSWORD=root123
+#      - MYSQL_ROOT_USER=root
+#      - MYSQL_ROOT_PASSWORD=root123
