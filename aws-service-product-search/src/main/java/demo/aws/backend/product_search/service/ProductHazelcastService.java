@@ -32,9 +32,7 @@ public class ProductHazelcastService {
     ProductRedisRepository productRedisRepository;
     @Autowired
     CategoryRedisRepository categoryRedisRepository;
-
-    @Autowired
-    ClientConfig clientConfig;
+    ClientConfig clientConfig = new ClientConfig();
 
     public List<ProductGraphql> productsWithFilter(ProductFilter filter) {
         List<ProductGraphql> response = new ArrayList<>();

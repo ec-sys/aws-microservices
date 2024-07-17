@@ -51,8 +51,6 @@ public class ProductDataService {
     @Autowired
     CategoryRedisRepository categoryRedisRepository;
 
-    @Autowired
-    ClientConfig clientConfig;
     public void upsertProductFromDBToELS() {
         int totalRecord = (int) productRepository.count();
         int limit = 5000;
@@ -182,6 +180,7 @@ public class ProductDataService {
     }
 
     public void upsertContryFromDBToHazelcast() {
+        ClientConfig clientConfig = new ClientConfig();
         HazelcastInstance client = HazelcastClient.newHazelcastClient(clientConfig);
         IMap<Integer, CountryRedis> mapCountries = client.getMap("countries"); //creates the map proxy
         mapCountries.destroy();
@@ -198,6 +197,7 @@ public class ProductDataService {
     }
 
     public void upsertProductFromDBToHazelcast() {
+        ClientConfig clientConfig = new ClientConfig();
         HazelcastInstance client = HazelcastClient.newHazelcastClient(clientConfig);
         IMap<Long, ProductRedis> mapProducts = client.getMap("products"); //creates the map proxy
 

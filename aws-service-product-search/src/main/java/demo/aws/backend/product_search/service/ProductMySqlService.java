@@ -65,7 +65,7 @@ public class ProductMySqlService {
         List<StoreGraphql> storeGraphqls = new ArrayList<>();
 
         // category
-        CategoryGraphql categoryGraphql = getCategoryGraphql(categoryId);
+        CategoryGraphql categoryGraphql = new CategoryGraphql();
         for (Product product : products) {
             response.add(getProductGraphqlFromProduct(product, categoryGraphql, storeGraphqls));
         }
@@ -223,25 +223,36 @@ public class ProductMySqlService {
         Specification<Product> spec = buildFilter(filter);
 
         // run filter
+        int limit = filter.getPageSize();
+        int offset = filter.getPageNumber() * limit;
         log.info("START QUERY {}", LocalDateTime.now());
-        Page<Product> products = productRepository.findAll(spec, PageRequest.of(filter.getPageNumber(), filter.getPageSize(), Sort.by(Sort.Direction.ASC, "price")));
+        List<Long> tmp = productRepository.findProductIdsByGraphqlFilter(filter);
+        if(filter.getIsDetail()) {
+            Page<Product> products = productRepository.findAll(spec, PageRequest.of(filter.getPageNumber(), filter.getPageSize(), Sort.by(Sort.Direction.ASC, "price")));
+        } else {
+            List<Long> productIds = productRepository.findProductIdsByFilter(filter.getCategoryId(), Integer.parseInt(filter.getPrice().getValue()), limit, offset);
+        }
+        // List<Long> productIds = productRepository.findProductIdsByFilter(filter.getCategoryId(), Integer.parseInt(filter.getPrice().getValue()), limit, offset);
+        // Page<Product> products = productRepository.findAll(spec, PageRequest.of(filter.getPageNumber(), filter.getPageSize(), Sort.by(Sort.Direction.ASC, "price")));
         // productRepository.findById(1L);
         // List<Product> products = productRepository.findAll(spec);
         log.info("END QUERY {}", LocalDateTime.now());
         // return Arrays.asList();
 
         // build response
-        if(filter.getIsDetail()) {
-            return getProductGraphqlsByCategoryIdWithDetail(products.stream().toList(), filter.getCategoryId());
-        } else {
-            return getProductGraphqlsByCategoryId(products.stream().toList(), filter.getCategoryId());
-        }
+//        if(filter.getIsDetail()) {
+//            return getProductGraphqlsByCategoryIdWithDetail(products.stream().toList(), filter.getCategoryId());
+//        } else {
+//            return getProductGraphqlsByCategoryId(products.stream().toList(), filter.getCategoryId());
+//        }
 
 //        List<ProductGraphql> response = new ArrayList<>();
 //        for (Product product : products.stream().toList()) {
 //            response.add(getProductGraphqlById(product));
 //        }
 //        return response;
+        List<ProductGraphql> response = new ArrayList<>();
+        return response;
     }
 
     private Specification<Product> buildFilter(ProductFilter filter) {

@@ -20,8 +20,8 @@ public class ProductSearchApplication implements CommandLineRunner {
 
     @Autowired
     ProductDataService productDataService;
-    @Autowired
-    ClientConfig clientConfig;
+
+    ClientConfig clientConfig = new ClientConfig();
     @Override
     public void run(String... args) throws Exception {
 //        productDataService.upsertCityFromDBToRedis();
