@@ -1,5 +1,9 @@
 package demo.aws.backend.product_search.service;
 
+import com.hazelcast.client.HazelcastClient;
+import com.hazelcast.client.config.ClientConfig;
+import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.map.IMap;
 import demo.aws.backend.product_search.domain.entity.redis.*;
 import demo.aws.backend.product_search.graphql.filter.FilterField;
 import demo.aws.backend.product_search.graphql.filter.ProductFilter;
@@ -17,7 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class ProductRedisService {
+public class ProductHazelcastService {
     @Autowired
     CountryRedisRepository countryRedisRepository;
     @Autowired
@@ -29,20 +33,21 @@ public class ProductRedisService {
     @Autowired
     CategoryRedisRepository categoryRedisRepository;
 
+    @Autowired
+    ClientConfig clientConfig;
+
     public List<ProductGraphql> productsWithFilter(ProductFilter filter) {
         List<ProductGraphql> response = new ArrayList<>();
         int categoryId = filter.getCategoryId();
         int limit = filter.getPageSize();
         int offset = filter.getPageNumber() * limit;
         CategoryRedis categoryRedis = categoryRedisRepository.findById(categoryId).get();
-//        List<ProductRedis> targetProducts = IteratorUtils.toList(productRedisRepository.findAllById(categoryRedis.getProductIds().stream().limit(limit).toList()).iterator())
-//                .stream()
-//                .filter(buildFilter(filter))
-//                .sorted(Comparator.comparing(o -> o.getPrice()))
-//                .skip(offset)
-//                .limit(limit)
-//                .collect(Collectors.toList());
-        List<ProductRedis> targetProducts = productRedisRepository.findProductRedisByCategoryId(categoryId)
+
+        HazelcastInstance client = HazelcastClient.newHazelcastClient(clientConfig);
+        IMap<Long, ProductRedis> mapProducts = client.getMap("products"); //creates the map proxy
+        Map<Long, ProductRedis> productRedisMap = mapProducts.getAll(categoryRedis.getProductIds().stream().limit(limit).collect(Collectors.toSet()));
+
+        List<ProductRedis> targetProducts = productRedisMap.values()
                 .stream()
                 .filter(buildFilter(filter))
                 .sorted(Comparator.comparing(o -> o.getPrice()))
@@ -69,6 +74,7 @@ public class ProductRedisService {
             }
             response.add(getProductGraphqlFromProduct(product, categoryGraphql, storeGraphqls));
         });
+        client.shutdown();
         return response;
     }
 

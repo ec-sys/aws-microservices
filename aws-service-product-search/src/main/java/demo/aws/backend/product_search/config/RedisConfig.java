@@ -46,6 +46,40 @@ public class RedisConfig {
         return new LettuceConnectionFactory(masterReplicaConfiguration, clientConfig);
     }
 
+//    /**
+//     * Lettuce
+//     */
+//    @Bean
+//    public RedisConnectionFactory lettuceConnectionFactory() {
+//        RedisSentinelConfiguration sentinelConfig = new RedisSentinelConfiguration()
+//                .master("mymaster");
+//        List<RedisNode> sentinelNodes = new ArrayList<>();
+//        this.getSlaves().forEach(slave -> {
+//            RedisNode redisNode = new RedisNode(slave.getHost(), slave.getPort());
+//            sentinelNodes.add(redisNode);
+//        });
+//        sentinelConfig.setSentinels(sentinelNodes);
+//        sentinelConfig.setPassword(this.master.getPassword());
+//        return new LettuceConnectionFactory(sentinelConfig);
+//    }
+//
+//    /**
+//     * Jedis
+//     */
+//    @Bean
+//    public RedisConnectionFactory jedisConnectionFactory() {
+//        RedisSentinelConfiguration sentinelConfig = new RedisSentinelConfiguration()
+//                .master("mymaster");
+//        List<RedisNode> sentinelNodes = new ArrayList<>();
+//        this.getSlaves().forEach(slave -> {
+//            RedisNode redisNode = new RedisNode(slave.getHost(), slave.getPort());
+//            sentinelNodes.add(redisNode);
+//        });
+//        sentinelConfig.setSentinels(sentinelNodes);
+//        sentinelConfig.setPassword(this.master.getPassword());
+//        return new JedisConnectionFactory(sentinelConfig);
+//    }
+
     private static class RedisInstance {
 
         private String host;

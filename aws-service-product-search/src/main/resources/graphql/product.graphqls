@@ -25,7 +25,7 @@ input ProductFilter {
     color: FilterField
     material: FilterField
     isDetail: Boolean
-    isCache: Boolean
+    sourceFrom: Int # 0: from mysql, 1: from cache, 2: from redis
 }
 
 input FilterField {

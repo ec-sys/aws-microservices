@@ -1,26 +1,24 @@
 package demo.aws.backend.product_search.service;
 
+import com.google.common.collect.Lists;
+import com.hazelcast.client.HazelcastClient;
+import com.hazelcast.client.config.ClientConfig;
+import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.map.IMap;
 import demo.aws.backend.product.domain.entity.*;
 import demo.aws.backend.product_search.domain.entity.elasticsearch.ProductELS;
-import demo.aws.backend.product_search.domain.entity.redis.CityRedis;
-import demo.aws.backend.product_search.domain.entity.redis.CountryRedis;
-import demo.aws.backend.product_search.domain.entity.redis.ProductRedis;
-import demo.aws.backend.product_search.domain.entity.redis.StoreRedis;
+import demo.aws.backend.product_search.domain.entity.redis.*;
 import demo.aws.backend.product_search.repository.*;
 import demo.aws.backend.product_search.repository.elasticsearch.ProductELSRepository;
-import demo.aws.backend.product_search.repository.redis.CityRedisRepository;
-import demo.aws.backend.product_search.repository.redis.CountryRedisRepository;
-import demo.aws.backend.product_search.repository.redis.ProductRedisRepository;
-import demo.aws.backend.product_search.repository.redis.StoreRedisRepository;
+import demo.aws.backend.product_search.repository.redis.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -50,7 +48,11 @@ public class ProductDataService {
     CityRedisRepository cityRedisRepository;
     @Autowired
     StoreRedisRepository storeRedisRepository;
+    @Autowired
+    CategoryRedisRepository categoryRedisRepository;
 
+    @Autowired
+    ClientConfig clientConfig;
     public void upsertProductFromDBToELS() {
         int totalRecord = (int) productRepository.count();
         int limit = 5000;
@@ -83,17 +85,15 @@ public class ProductDataService {
     }
 
     public void upsertProductFromDBToRedis() {
-        Map<Integer, Category> categoryMap = categoryRepository.findAll()
-                .stream()
-                .collect(Collectors.toMap(Category::getId, item -> item, (oldValue, newValue) -> newValue));
+        // productRepository.deleteAll();
         int totalRecord = (int) productRepository.count();
-        int limit = 5000;
+        int limit = 2000;
         int pageSize = totalRecord / limit;
         if(pageSize * limit < totalRecord) {
             pageSize++;
         }
         log.info("TOTAL PAGE {}, LIMIT {}", pageSize, limit);
-        for (int i = 0; i < pageSize; i++) {
+        for (int i = 433; i < pageSize; i++) {
             log.info("START GET IDS");
             List<Long> productIds = productRepository.findAllIdPagination(limit, i * limit);
             log.info("DONE GET IDS");
@@ -106,14 +106,10 @@ public class ProductDataService {
                 productRedis.setName(product.getName());
                 productRedis.setPrice(product.getPrice());
                 productRedis.setColor(product.getColor());
+                productRedis.setImage(product.getImage());
                 productRedis.setMaterial(productRedis.getMaterial());
                 productRedis.setDescription(product.getDescription());
-
-                Category category = categoryMap.get(product.getCategoryId());
-                if(Objects.nonNull(category)) {
-                    productRedis.setCategoryId(category.getId());
-                    productRedis.setCategoryName(category.getName());
-                }
+                productRedis.setCategoryId(product.getCategoryId());
                 productRedis.setStoreIds(productStoreRepository.findStoreIdOfProduct(product.getId()));
                 productRedisList.add(productRedis);
             }
@@ -164,5 +160,78 @@ public class ProductDataService {
             storeRedisList.add(storeRedis);
         }
         storeRedisRepository.saveAll(storeRedisList);
+    }
+
+    public void upsertCategoryFromDBToRedis() {
+        categoryRedisRepository.deleteAll();
+        List<Category> allCategories = categoryRepository.findAll();
+        List<CategoryRedis> categoryRedisList = new ArrayList<>();
+        for (Category category : allCategories) {
+            CategoryRedis categoryRedis = new CategoryRedis();
+            categoryRedis.setId(category.getId());
+            categoryRedis.setName(category.getName());
+            categoryRedis.setDescription(category.getDescription());
+            categoryRedis.setParentId(category.getParentId());
+            categoryRedis.setProductIds(productRepository.findProductIdsByCategory(category.getId()));
+            categoryRedisList.add(categoryRedis);
+        }
+        List<List<CategoryRedis>> lists = Lists.partition(categoryRedisList, 2000);
+        for (List<CategoryRedis> items : lists) {
+            categoryRedisRepository.saveAll(items);
+        }
+    }
+
+    public void upsertContryFromDBToHazelcast() {
+        HazelcastInstance client = HazelcastClient.newHazelcastClient(clientConfig);
+        IMap<Integer, CountryRedis> mapCountries = client.getMap("countries"); //creates the map proxy
+        mapCountries.destroy();
+        List<Country> allCoutries = countryRepository.findAll();
+        Map<Integer, CountryRedis> countryRedisMap = new HashMap<>();
+        for (Country contry : allCoutries) {
+            CountryRedis countryRedis = new CountryRedis();
+            countryRedis.setId(contry.getId());
+            countryRedis.setName(contry.getName());
+            countryRedisMap.put(contry.getId(), countryRedis);
+        }
+        mapCountries.putAll(countryRedisMap);
+        client.shutdown();
+    }
+
+    public void upsertProductFromDBToHazelcast() {
+        HazelcastInstance client = HazelcastClient.newHazelcastClient(clientConfig);
+        IMap<Long, ProductRedis> mapProducts = client.getMap("products"); //creates the map proxy
+
+        int totalRecord = (int) productRepository.count();
+        int limit = 2000;
+        int pageSize = totalRecord / limit;
+        if(pageSize * limit < totalRecord) {
+            pageSize++;
+        }
+        log.info("TOTAL PAGE {}, LIMIT {}", pageSize, limit);
+        for (int i = 363; i < pageSize; i++) {
+            log.info("START GET IDS");
+            List<Long> productIds = productRepository.findAllIdPagination(limit, i * limit);
+            log.info("DONE GET IDS");
+            List<Product> products = productRepository.findAllById(productIds);
+            log.info("DONE GET RECORDS");
+
+            Map<Long, ProductRedis> productRedisMap = new HashMap<>();
+            for (Product product : products) {
+                ProductRedis productRedis = new ProductRedis();
+                productRedis.setId(product.getId());
+                productRedis.setName(product.getName());
+                productRedis.setPrice(product.getPrice());
+                productRedis.setColor(product.getColor());
+                productRedis.setImage(product.getImage());
+                productRedis.setMaterial(productRedis.getMaterial());
+                productRedis.setDescription(product.getDescription());
+                productRedis.setCategoryId(product.getCategoryId());
+                productRedis.setStoreIds(productStoreRepository.findStoreIdOfProduct(product.getId()));
+                productRedisMap.put(product.getId(), productRedis);
+            }
+            mapProducts.putAll(productRedisMap);
+            log.info("DONE PAGE {}", i);
+        }
+        client.shutdown();
     }
 }

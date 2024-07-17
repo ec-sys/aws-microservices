@@ -3,7 +3,9 @@ package demo.aws.backend.product_search.graphql.resolver;
 import demo.aws.backend.product_search.graphql.filter.ProductFilter;
 import demo.aws.backend.product_search.graphql.response.ProductGraphql;
 import demo.aws.backend.product_search.service.ProductCacheService;
+import demo.aws.backend.product_search.service.ProductHazelcastService;
 import demo.aws.backend.product_search.service.ProductMySqlService;
+import demo.aws.backend.product_search.service.ProductRedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
@@ -15,6 +17,10 @@ public class ProductController {
     ProductMySqlService productMySqlService;
     @Autowired
     ProductCacheService productCacheService;
+    @Autowired
+    ProductRedisService productRedisService;
+    @Autowired
+    ProductHazelcastService productHazelcastService;
 
     @QueryMapping
     public ProductGraphql product(@Argument Long id) {
@@ -23,10 +29,17 @@ public class ProductController {
 
     @QueryMapping
     public Iterable<ProductGraphql> productsWithFilter(@Argument ProductFilter filter) {
-        if(filter.getIsCache()) {
-            return productCacheService.productsWithFilter(filter);
-        } else {
-            return productMySqlService.productsWithFilter(filter);
+        switch (filter.getSourceFrom()) {
+            case 0:
+                return productMySqlService.productsWithFilter(filter);
+            case 1:
+                return productCacheService.productsWithFilter(filter);
+            case 2:
+                return productRedisService.productsWithFilter(filter);
+            case 3:
+                return productHazelcastService.productsWithFilter(filter);
+            default:
+                throw new IllegalArgumentException("Invalid Source From: " + filter.getSourceFrom());
         }
     }
 }

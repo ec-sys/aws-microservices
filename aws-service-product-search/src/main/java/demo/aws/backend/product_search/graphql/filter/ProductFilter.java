@@ -13,5 +13,5 @@ public class ProductFilter {
     private int pageNumber;
     private int pageSize;
     private Boolean isDetail;
-    private Boolean isCache;
+    private int sourceFrom;
 }
