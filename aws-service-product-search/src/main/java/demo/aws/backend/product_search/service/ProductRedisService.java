@@ -3,7 +3,7 @@ package demo.aws.backend.product_search.service;
 import demo.aws.backend.product_search.domain.entity.redis.*;
 import demo.aws.backend.product_search.graphql.filter.FilterField;
 import demo.aws.backend.product_search.graphql.filter.ProductFilter;
-import demo.aws.backend.product_search.graphql.response.*;
+import demo.aws.core.common_util.graphql.product.*;
 import demo.aws.backend.product_search.repository.redis.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;

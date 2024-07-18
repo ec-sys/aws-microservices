@@ -1,4 +1,4 @@
-package demo.aws.backend.product_search.graphql.response;
+package demo.aws.core.common_util.graphql.product;
 
 import lombok.Data;
 

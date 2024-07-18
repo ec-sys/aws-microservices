@@ -50,6 +50,7 @@
         <!-- for learning about mysql-replicas, redis replicas-cluster, elastic search -->
         <module>aws-service-product</module>
         <module>aws-service-product-search</module>
+        <module>aws-service-product-cache</module>
 
         <!-- for learning about graphql -->
         <module>sample-graphql</module>

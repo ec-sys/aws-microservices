@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: local-service-post
+spec:
+  type: ClusterIP
+  clusterIP: None
+  selector:
+    component: service-post-pod
+  ports:
+    - port: 8080
+      protocol: TCP
+      name: rest-port
+      targetPort: 8080
+    - port: 8085
+      protocol: TCP
+      name: grpc-port
+      targetPort: 8085
+
+---
+# envoy proxy
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-post
+spec:
+  type: ClusterIP
+  selector:
+    app: post-envoy-proxy-pod
+  ports:
+    # Service only exposes the Envoy container
+    - name: rest-envoy-port
+      protocol: TCP
+      port: 8080
+      targetPort: rest-envoy-port
+    - name: grpc-envoy-port
+      protocol: TCP
+      port: 8085
+      targetPort: grpc-envoy-port

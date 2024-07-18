@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+option java_package = "demo.aws.core.autogen.grpc.product_cache";
+option java_multiple_files = true;
+
+package product;
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "common.proto";
+import "master.proto";
+
+
+
+service ProductCache {
+
+}
+
+message PRCCountryGraphql {
+  int32 id = 1;
+  string name = 2;
+  repeated PRCCityGraphql cities = 3;
+}
+
+message PRCCityGraphql {
+  int32 id = 1;
+  string name = 2;
+  int32 countryId = 3;
+}
+
+message PRCCategoryGraphql {
+  int32 id = 1;
+  int32 parentId = 2;
+  string name = 3;
+  string description = 4;
+}
+
+message PRCStoreGraphql {
+}
+
+message PCProductGraphql {
+  int64 id = 1;
+  string name = 2;
+  string image = 3;
+  int32 price = 4;
+  string color = 5;
+  string material = 6;
+  string description = 7;
+
+  repeated PRCCategoryGraphql category = 8;
+  repeated PRCStoreGraphql stores = 9;
+}

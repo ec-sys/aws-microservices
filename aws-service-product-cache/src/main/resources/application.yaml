@@ -1,0 +1,34 @@
+
+server:
+  port: ${REST_SERVER_PORT:9104}
+
+spring:
+  profiles:
+    active: ${ACTIVE_PROFILE:local}
+  application:
+    name: service-product-cache
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: none
+  output:
+    ansi:
+      enabled: always
+  cache:
+    type: caffeine
+db:
+  driverClassName: com.mysql.cj.jdbc.Driver
+  slave:
+    url: ${MYSQL_SLAVE_URL:jdbc:mysql:loadbalance://localhost:3307,localhost:3308/db_product}?allowPublicKeyRetrieval=true&useSSL=false&loadBalanceConnectionGroup=first&ha.enableJMX=true
+    username: ${MYSQL_SLAVE_USERNAME:tit}
+    password: ${MYSQL_SLAVEPASSWORD:dangtit90}
+
+
+#grpc
+grpc:
+  server:
+    port: ${GRPC_SERVER_PORT:1505}
+
+eureka:
+  client:
+    enabled: false

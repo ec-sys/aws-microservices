@@ -3,15 +3,18 @@ package demo.aws.backend.product_search.service;
 import demo.aws.backend.product.domain.entity.Product;
 import demo.aws.backend.product_search.graphql.filter.FilterField;
 import demo.aws.backend.product_search.graphql.filter.ProductFilter;
-import demo.aws.backend.product_search.graphql.response.CategoryGraphql;
-import demo.aws.backend.product_search.graphql.response.ProductGraphql;
-import demo.aws.backend.product_search.graphql.response.StoreGraphql;
+import demo.aws.backend.product_search.rest.ProductCacheClient;
+import demo.aws.core.common_util.graphql.product.*;
 import demo.aws.backend.product_search.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -40,26 +43,36 @@ public class ProductCacheService {
     @Autowired
     CacheManager cacheManager;
 
+    @Autowired
+    ProductCacheClient productCacheClient;
+
     public List<ProductGraphql> productsWithFilter(ProductFilter filter) {
         List<ProductGraphql> response = new ArrayList<>();
-        int categoryId = filter.getCategoryId();
-        Cache cache = cacheManager.getCache("productGraphqlsByCategory");
-        String cacheKey = "cate_" + categoryId;
-        List<ProductGraphql> productGraphqls = new ArrayList<>();
-        if(Objects.isNull(cache.get(cacheKey))) {
-            productGraphqls = getProductGraphqlsByCategory(filter.getCategoryId());
-            cache.put(cacheKey, productGraphqls);
+        if(filter.getIsDetail()) {
+            int limit = filter.getPageSize();
+            int offset = filter.getPageNumber() * limit;
+            List<Long> productIds = productRepository.findProductIdsByFilter(filter.getCategoryId(), Integer.parseInt(filter.getPrice().getValue()), limit, offset);
+            return productCacheClient.findByIds(productIds);
         } else {
-            productGraphqls = (List<ProductGraphql>) cache.get(cacheKey).get();
+            int categoryId = filter.getCategoryId();
+            Cache cache = cacheManager.getCache("productGraphqlsByCategory");
+            String cacheKey = "cate_" + categoryId;
+            List<ProductGraphql> productGraphqls = new ArrayList<>();
+            if (Objects.isNull(cache.get(cacheKey))) {
+                productGraphqls = getProductGraphqlsByCategory(filter.getCategoryId());
+                cache.put(cacheKey, productGraphqls);
+            } else {
+                productGraphqls = (List<ProductGraphql>) cache.get(cacheKey).get();
+            }
+            int limit = filter.getPageSize();
+            int offset = filter.getPageNumber() * limit;
+            response = productGraphqls.stream().filter(buildFilter(filter))
+                    .sorted(Comparator.comparing(o -> o.getPrice()))
+                    .skip(offset)
+                    .limit(limit)
+                    .collect(Collectors.toList());
+            return response;
         }
-        int limit = filter.getPageSize();
-        int offset = filter.getPageNumber() * limit;
-        response = productGraphqls.stream().filter(buildFilter(filter))
-                .sorted(Comparator.comparing(o -> o.getPrice()))
-                .skip(offset)
-                .limit(limit)
-                .collect(Collectors.toList());
-        return response;
     }
 
     private Predicate<ProductGraphql> buildFilter(ProductFilter filter) {
