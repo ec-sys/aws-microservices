@@ -39,7 +39,7 @@ public class ProductDataService {
             pageSize++;
         }
         log.info("TOTAL PAGE {}, LIMIT {}", pageSize, limit);
-        for (int i = 0; i < pageSize; i++) {
+        for (int i = 0; i < 1; i++) {
             log.info("START PAGE {}", i);
 
             List<Long> productIds = productRepository.findAllIdPagination(limit, i * limit);
