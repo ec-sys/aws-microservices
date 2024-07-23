@@ -1,11 +1,12 @@
 package demo.aws.backend.product_search.graphql.resolver;
 
 import demo.aws.backend.product_search.graphql.filter.ProductFilter;
-import demo.aws.backend.product_search.graphql.response.ProductGraphql;
+import demo.aws.backend.product_search.rest.ProductCacheClient;
 import demo.aws.backend.product_search.service.ProductCacheService;
 import demo.aws.backend.product_search.service.ProductHazelcastService;
 import demo.aws.backend.product_search.service.ProductMySqlService;
 import demo.aws.backend.product_search.service.ProductRedisService;
+import demo.aws.core.common_util.graphql.product.ProductGraphql;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
@@ -22,9 +23,13 @@ public class ProductController {
     @Autowired
     ProductHazelcastService productHazelcastService;
 
+    @Autowired
+    ProductCacheClient productCacheClient;
+
     @QueryMapping
     public ProductGraphql product(@Argument Long id) {
-        return productMySqlService.getProductGraphqlById(id);
+        // return productMySqlService.getProductGraphqlById(id);
+        return productCacheClient.findById(id);
     }
 
     @QueryMapping

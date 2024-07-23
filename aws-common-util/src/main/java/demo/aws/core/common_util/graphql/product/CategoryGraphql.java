@@ -1,6 +1,9 @@
-package demo.aws.backend.product_search.graphql.response;
+package demo.aws.core.common_util.graphql.product;
 
 import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class CategoryGraphql {
@@ -8,4 +11,5 @@ public class CategoryGraphql {
     private int parentId;
     private String name;
     private String description;
+    List<ProductGraphql> products;
 }

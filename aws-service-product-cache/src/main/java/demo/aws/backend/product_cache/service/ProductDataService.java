@@ -1,18 +1,21 @@
-package demo.aws.backend.product_search.service;
+package demo.aws.backend.product_cache.service;
 
 import demo.aws.backend.product.domain.entity.*;
-import demo.aws.backend.product_search.graphql.filter.FilterField;
+import demo.aws.backend.product_cache.repository.*;
 import demo.aws.core.common_util.graphql.product.*;
-import demo.aws.backend.product_search.repository.*;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Component;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Component
-public class ProductSearchCommon {
+@Service
+@Slf4j
+public class ProductDataService {
     @Autowired
     ProductRepository productRepository;
     @Autowired
@@ -26,18 +29,68 @@ public class ProductSearchCommon {
     @Autowired
     CountryRepository countryRepository;
 
-    private Specification<Product> byCategory(int categoryId) {
-        FilterField filterField = new FilterField("eq", String.valueOf(categoryId));
-        return (root, query, builder) -> filterField.generateCriteria(builder, root.get("categoryId"));
+    @Autowired
+    CacheManager cacheManager;
+    public void upsertProductToCache() {
+        int totalRecord = (int) productRepository.count();
+        int limit = 2000;
+        int pageSize = totalRecord / limit;
+        if(pageSize * limit < totalRecord) {
+            pageSize++;
+        }
+        log.info("TOTAL PAGE {}, LIMIT {}", pageSize, limit);
+        for (int i = 0; i < 1; i++) {
+            log.info("START PAGE {}", i);
+
+            List<Long> productIds = productRepository.findAllIdPagination(limit, i * limit);
+            log.info("DONE GET IDS");
+
+            List<Product> products = productRepository.findAllById(productIds);
+            log.info("DONE GET RECORDS");
+
+            List<ProductGraphql> productGraphqls = getProductGraphqls(products);
+            log.info("DONE GET ProductGraphql");
+
+            Cache cache = cacheManager.getCache("productGraphqls");
+            productGraphqls.forEach(item -> {
+                cache.put(item.getId(), item);
+            });
+            log.info("DONE PAGE {}", i);
+        }
     }
-    private Specification<Product> byPrice(FilterField filterField) {
-        return (root, query, builder) -> filterField.generateCriteria(builder, root.get("price"));
+
+    public ProductGraphql getProductGraphqls(long productId) {
+        Product product = productRepository.findById(productId).get();
+        return getProductGraphqls(product);
     }
-    private Specification<Product> byColor(FilterField filterField) {
-        return (root, query, builder) -> filterField.generateCriteria(builder, root.get("color"));
+
+    public ProductGraphql getProductGraphqls(Product product) {
+        if(Objects.isNull(product)) {
+            return new ProductGraphql();
+        }
+        List<ProductGraphql> productGraphqls = getProductGraphqls(Arrays.asList(product));
+        if(CollectionUtils.isNotEmpty(productGraphqls)) {
+            return productGraphqls.get(0);
+        } else {
+            return new ProductGraphql();
+        }
     }
-    private Specification<Product> byMaterial(FilterField filterField) {
-        return (root, query, builder) -> filterField.generateCriteria(builder, root.get("material"));
+
+    public List<ProductGraphql> getProductGraphqls(List<Product> products) {
+        List<ProductGraphql> response = new ArrayList<>();
+        Set<Long> productIds = products.stream().map(Product::getId).collect(Collectors.toSet());
+        Set<Integer> categoryIds = products.stream().map(Product::getCategoryId).collect(Collectors.toSet());
+
+        // store
+        Map<Long, List<StoreGraphql>> mapProductAndStoreGraphqls = getStoreGraphqls(productIds);
+
+        // category
+        Map<Integer, CategoryGraphql> mapIdAndCategoryGraphql = getCategoryGraphqls(categoryIds);
+
+        for (Product product : products) {
+            response.add(getProductGraphqlFromProduct(product, mapIdAndCategoryGraphql.get(product.getCategoryId()), mapProductAndStoreGraphqls.get(product.getId())));
+        }
+        return response;
     }
 
     public ProductGraphql getProductGraphqlFromProduct(Product product, CategoryGraphql categoryGraphql, List<StoreGraphql> storeGraphqls) {
@@ -51,6 +104,20 @@ public class ProductSearchCommon {
         response.setPrice(product.getPrice());
         response.setStores(storeGraphqls);
         response.setCategory(categoryGraphql);
+        return response;
+    }
+
+    public Map<Integer, CategoryGraphql> getCategoryGraphqls(Set<Integer> categoryIds) {
+        Map<Integer, CategoryGraphql> response = new HashMap<>();
+        List<Category> categoryList = categoryRepository.findAllById(categoryIds);
+        categoryList.forEach(category -> {
+            CategoryGraphql categoryGraphql = new CategoryGraphql();
+            categoryGraphql.setId(category.getId());
+            categoryGraphql.setParentId(category.getParentId());
+            categoryGraphql.setDescription(category.getDescription());
+            categoryGraphql.setName(category.getName());
+            response.put(category.getId(), categoryGraphql);
+        });
         return response;
     }
 

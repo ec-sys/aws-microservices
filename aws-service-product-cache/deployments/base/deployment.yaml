@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-post
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      component: service-post-pod
+  template:
+    metadata:
+      labels:
+        component: service-post-pod
+    spec:
+      containers:
+        - name: service-post-ctn
+          image: longdd90jp/aws-service-post
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              name: rest-port
+            - containerPort: 8085
+              name: grpc-port
+          envFrom:
+            - configMapRef:
+                name: env-config
+            - configMapRef:
+                name: service-post-envs
+            - secretRef:
+                name: env-secret
+          env:
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+
+---
+# envoy proxy
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: post-envoy-proxy
+  labels:
+    app: post-envoy-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: post-envoy-proxy-pod
+  template:
+    metadata:
+      labels:
+        app: post-envoy-proxy-pod
+    # The imp stuff
+    spec:
+      # Deployment has 1 container!
+      containers:
+        - name: post-envoy-proxy-ctn
+          image: envoyproxy/envoy:distroless-dev
+          imagePullPolicy: IfNotPresent
+          command:
+            - "/usr/local/bin/envoy"
+          args:
+            - "-c /etc/envoy/envoy.yaml"
+          ports:
+            - containerPort: 5199
+              name: rest-envoy-port
+            - containerPort: 5195
+              name: grpc-envoy-port
+          volumeMounts:
+            - name: configs
+              mountPath: /etc/envoy
+      volumes:
+        - name: configs
+          configMap:
+            name: service-post-files
