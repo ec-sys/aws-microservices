@@ -1,5 +1,6 @@
 package demo.aws.backend.payment.config;
 
+
 import demo.aws.core.framework.security.JwtAuthenticationFilter;
 import io.micrometer.core.instrument.binder.grpc.ObservationGrpcClientInterceptor;
 import io.micrometer.observation.ObservationRegistry;
