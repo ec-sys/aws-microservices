@@ -2,6 +2,7 @@ package demo.aws.backend.product_cache;
 
 import demo.aws.backend.product_cache.service.ProductDataService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -13,6 +14,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableCaching
 @EnableScheduling
+@EnableBatchProcessing
 public class ProductCacheApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
