@@ -52,6 +52,9 @@
         <module>aws-service-product-search</module>
         <module>aws-service-product-cache</module>
 
+        <!-- for learning about transaction, clean architecture -->
+        <module>aws-service-payment</module>
+
         <!-- for learning about graphql -->
         <module>sample-graphql</module>
 
