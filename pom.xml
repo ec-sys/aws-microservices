@@ -23,7 +23,7 @@
     </properties>
 
     <modules>
-        <!-- for learning about coomon tech like: api-gateway, grpc, jwt -->
+        <!-- for learning about common tech like: api-gateway, grpc, jwt -->
         <module>aws-common-util</module>
         <module>aws-service-framework</module>
         <module>aws-protobuf</module>
