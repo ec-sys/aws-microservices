@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/product-cache/product-graphqls")
 @Slf4j
-public class ProductCacheGraphqlController {
+public class ProductCacheController {
     @Autowired
     ProductCacheService cacheService;
 

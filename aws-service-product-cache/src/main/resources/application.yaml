@@ -16,6 +16,9 @@ spring:
       enabled: always
   cache:
     type: caffeine
+  batch:
+    jdbc:
+      isolation-level-for-create: default
 db:
   driverClassName: com.mysql.cj.jdbc.Driver
   slave:

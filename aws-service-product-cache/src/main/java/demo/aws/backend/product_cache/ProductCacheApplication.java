@@ -2,7 +2,11 @@ package demo.aws.backend.product_cache;
 
 import demo.aws.backend.product_cache.service.ProductDataService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
+import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -20,12 +24,27 @@ public class ProductCacheApplication implements CommandLineRunner {
     @Autowired
     ProductDataService productDataService;
 
+    @Autowired
+    private JobLauncher jobLauncher;
+    @Autowired
+    Job productCacheUpdateJob;
+
     public static void main(String[] args) {
         SpringApplication.run(ProductCacheApplication.class, args);
     }
 
     @Override
     public void run(String... args) throws Exception {
-        productDataService.upsertProductToCache();
+        // productDataService.upsertProductToCache();
+        updateProductCacheJob();
+    }
+
+    public void updateProductCacheJob() throws Exception {
+        log.info("Start Job {}", productCacheUpdateJob.getName());
+        JobExecution execution = jobLauncher.run(
+                productCacheUpdateJob,
+                new JobParametersBuilder().toJobParameters()
+        );
+        log.info("Exit status: {}", execution.getStatus());
     }
 }
