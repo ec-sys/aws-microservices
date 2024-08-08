@@ -1,4 +1,4 @@
-package demo.aws.backend.product_cache.api.controller;
+package demo.aws.backend.product_cache.api.rest.controller;
 
 import demo.aws.backend.product_cache.service.ProductCacheService;
 import demo.aws.core.common_util.graphql.product.ProductGraphql;

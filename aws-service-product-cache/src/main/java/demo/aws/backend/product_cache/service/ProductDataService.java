@@ -31,11 +31,12 @@ public class ProductDataService {
 
     @Autowired
     CacheManager cacheManager;
+
     public void upsertProductToCache() {
         int totalRecord = (int) productRepository.count();
         int limit = 2000;
         int pageSize = totalRecord / limit;
-        if(pageSize * limit < totalRecord) {
+        if (pageSize * limit < totalRecord) {
             pageSize++;
         }
         log.info("TOTAL PAGE {}, LIMIT {}", pageSize, limit);
@@ -65,15 +66,20 @@ public class ProductDataService {
     }
 
     public ProductGraphql getProductGraphqls(Product product) {
-        if(Objects.isNull(product)) {
+        if (Objects.isNull(product)) {
             return new ProductGraphql();
         }
         List<ProductGraphql> productGraphqls = getProductGraphqls(Arrays.asList(product));
-        if(CollectionUtils.isNotEmpty(productGraphqls)) {
+        if (CollectionUtils.isNotEmpty(productGraphqls)) {
             return productGraphqls.get(0);
         } else {
             return new ProductGraphql();
         }
+    }
+
+    public List<ProductGraphql> getProductGraphqlByIds(List<Long> productIds) {
+        List<Product> products = productRepository.findAllById(productIds);
+        return getProductGraphqls(products);
     }
 
     public List<ProductGraphql> getProductGraphqls(List<Product> products) {
@@ -124,7 +130,7 @@ public class ProductDataService {
     public CategoryGraphql getCategoryGraphql(int id) {
         CategoryGraphql response = new CategoryGraphql();
         Optional<Category> categoryOptional = categoryRepository.findById(id);
-        if(categoryOptional.isPresent()) {
+        if (categoryOptional.isPresent()) {
             Category category = categoryOptional.get();
             response.setId(category.getId());
             response.setParentId(category.getParentId());
@@ -208,6 +214,6 @@ public class ProductDataService {
             countryGraphql.setName(country.getName());
             response.put(id, countryGraphql);
         });
-        return  response;
+        return response;
     }
 }

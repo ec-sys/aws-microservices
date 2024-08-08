@@ -1,5 +1,6 @@
 package demo.aws.backend.product_cache.service;
 
+import demo.aws.backend.product_cache.domain.constant.CacheNameConstant;
 import demo.aws.core.common_util.graphql.product.ProductGraphql;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
@@ -18,9 +19,9 @@ public class ProductCacheService {
     ProductDataService productDataService;
 
     public ProductGraphql getByProductId(long productId) {
-        Cache cache = cacheManager.getCache("productGraphqls");
+        Cache cache = cacheManager.getCache(CacheNameConstant.PRODUCT_GRAPHQL);
         ProductGraphql productGraphql = cache.get(productId, ProductGraphql.class);
-        if(Objects.isNull(productGraphql)) {
+        if (Objects.isNull(productGraphql)) {
             productGraphql = productDataService.getProductGraphqls(productId);
             cache.put(productId, productGraphql);
         }
@@ -29,11 +30,15 @@ public class ProductCacheService {
 
     public List<ProductGraphql> getByProductId(List<Long> productIds) {
         List<ProductGraphql> response = new ArrayList<>();
-        Cache cache = cacheManager.getCache("productGraphqls");
+        Cache cache = cacheManager.getCache(CacheNameConstant.PRODUCT_GRAPHQL);
         productIds.forEach(id -> {
             ProductGraphql productGraphql = cache.get(id, ProductGraphql.class);
-            if(Objects.nonNull(productGraphql)) response.add(productGraphql);
+            if (Objects.nonNull(productGraphql)) response.add(productGraphql);
         });
         return response;
+    }
+
+    public void updateToCache(List<ProductGraphql> productGraphqls) {
+
     }
 }

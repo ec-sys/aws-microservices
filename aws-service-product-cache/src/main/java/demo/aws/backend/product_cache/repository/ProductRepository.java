@@ -12,10 +12,15 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product>, ProductRepositoryCustom {
+    @Query(value = "SELECT p.id FROM products p", nativeQuery = true)
+    List<Long> findAllId();
+
     @Query(value = "SELECT p.id FROM Product p ORDER BY p.id ASC")
     Page<Integer> findAllIdPagination(Pageable pageable);
+
     @Query(value = "SELECT p.id FROM products p ORDER BY p.id ASC LIMIT ?1 OFFSET ?2", nativeQuery = true)
     List<Long> findAllIdPagination(int limit, int offset);
+
     List<Product> findByCategoryId(int categoryId);
 
     @Query(value = "SELECT p.id FROM Product p WHERE p.categoryId = ?1")

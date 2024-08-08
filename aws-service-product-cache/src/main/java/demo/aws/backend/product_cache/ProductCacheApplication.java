@@ -17,12 +17,12 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableBatchProcessing
 public class ProductCacheApplication implements CommandLineRunner {
 
+    @Autowired
+    ProductDataService productDataService;
+
     public static void main(String[] args) {
         SpringApplication.run(ProductCacheApplication.class, args);
     }
-
-    @Autowired
-    ProductDataService productDataService;
 
     @Override
     public void run(String... args) throws Exception {
