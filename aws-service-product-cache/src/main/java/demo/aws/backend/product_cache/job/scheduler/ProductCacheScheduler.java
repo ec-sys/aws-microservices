@@ -17,9 +17,9 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class ProductCacheScheduler {
     @Autowired
-    private JobLauncher jobLauncher;
-    @Autowired
     Job productCacheUpdateJob;
+    @Autowired
+    private JobLauncher jobLauncher;
 
     // https://stackoverflow.com/questions/26147044/spring-cron-expression-for-every-day-101am
     // second, minute, hour, day of month, month, day(s) of week

@@ -11,6 +11,10 @@ spring:
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: none
+  datasource:
+    url: ${MYSQL_MASTER_URL:jdbc:mysql:loadbalance://localhost:3307,localhost:3308/db_product}?allowPublicKeyRetrieval=true&useSSL=false&loadBalanceConnectionGroup=first&ha.enableJMX=true
+    username: ${MYSQL_MASTER_USERNAME:tit}
+    password: ${MYSQL_MASTER_PASSWORD:dangtit90}
   output:
     ansi:
       enabled: always
@@ -18,14 +22,22 @@ spring:
     type: caffeine
   batch:
     jdbc:
-      isolation-level-for-create: default
+      initialize-schema: always
+
 db:
   driverClassName: com.mysql.cj.jdbc.Driver
-  slave:
-    url: ${MYSQL_SLAVE_URL:jdbc:mysql:loadbalance://localhost:3307,localhost:3308/db_product}?allowPublicKeyRetrieval=true&useSSL=false&loadBalanceConnectionGroup=first&ha.enableJMX=true
-    username: ${MYSQL_SLAVE_USERNAME:tit}
-    password: ${MYSQL_SLAVEPASSWORD:dangtit90}
+  for-batch:
+    url: ${MYSQL_FOR_BATCH_URL:jdbc:mysql://localhost:3309/db_product_batch}?allowPublicKeyRetrieval=true&useSSL=false
+    username: ${MYSQL_FOR_BATCH_USERNAME:root}
+    password: ${MYSQL_FOR_BATCH_PASSWORD:root123}
+  for-read:
+    url: ${MYSQL_FOR_DATA_URL:jdbc:mysql:loadbalance://localhost:3307,localhost:3308/db_product}?allowPublicKeyRetrieval=true&useSSL=false&loadBalanceConnectionGroup=first&ha.enableJMX=true
+    username: ${MYSQL_FOR_DATA_USERNAME:tit}
+    password: ${MYSQL_FOR_DATA_PASSWORD:dangtit90}
 
+job:
+  product-cache-update:
+      chuck-size: ${JOB-CHUCK-SIZE:3}
 
 #grpc
 grpc:

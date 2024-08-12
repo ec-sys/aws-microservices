@@ -16,8 +16,14 @@ public class ProductCacheUpdateWriter implements ItemWriter<List<ProductGraphql>
     public ProductCacheUpdateWriter(CacheManager cacheManager) {
         this.cacheManager = cacheManager;
     }
+
     @Override
     public void write(Chunk<? extends List<ProductGraphql>> chunk) throws Exception {
         Cache cache = cacheManager.getCache(CacheNameConstant.PRODUCT_GRAPHQL);
+        for (List<ProductGraphql> items : chunk.getItems()) {
+            for (ProductGraphql item : items) {
+                cache.put(item.getId(), item);
+            }
+        }
     }
 }

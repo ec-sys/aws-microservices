@@ -1,5 +1,6 @@
 package demo.aws.backend.product_cache.job;
 
+import demo.aws.backend.product_cache.domain.constant.JobNameConstant;
 import demo.aws.backend.product_cache.job.listener.ProductCacheUpdateListener;
 import demo.aws.backend.product_cache.job.model.ProductCacheUpdateItem;
 import demo.aws.backend.product_cache.job.processor.ProductCacheUpdateProcessor;
@@ -17,6 +18,7 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -26,6 +28,9 @@ import java.util.List;
 
 @Component
 public class ProductCacheUpdateJobConfig {
+
+    @Value("${job.product-cache-update.chuck-size}")
+    int chuckSize;
 
     @Autowired
     ProductRepository productRepository;
@@ -53,7 +58,7 @@ public class ProductCacheUpdateJobConfig {
     public Step step1(JobRepository jobRepository, PlatformTransactionManager transactionManager,
                       ItemReader<ProductCacheUpdateItem> reader, ProductCacheUpdateProcessor processor, ItemWriter<List<ProductGraphql>> writer) {
         return new StepBuilder("step1", jobRepository)
-                .<ProductCacheUpdateItem, List<ProductGraphql>>chunk(3, transactionManager)
+                .<ProductCacheUpdateItem, List<ProductGraphql>>chunk(chuckSize, transactionManager)
                 .reader(reader)
                 .processor(processor)
                 .writer(writer)
@@ -61,8 +66,8 @@ public class ProductCacheUpdateJobConfig {
     }
 
     @Bean
-    public Job productCacheUpdateJob(JobRepository jobRepository,Step step1, ProductCacheUpdateListener listener) {
-        return new JobBuilder("productCacheUpdateJob", jobRepository)
+    public Job productCacheUpdateJob(JobRepository jobRepository, Step step1, ProductCacheUpdateListener listener) {
+        return new JobBuilder(JobNameConstant.PRODUCT_CACHE_UPDATE_JOB, jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .listener(listener)
                 .flow(step1)

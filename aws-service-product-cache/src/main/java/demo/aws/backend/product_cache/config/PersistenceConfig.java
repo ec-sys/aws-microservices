@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
@@ -26,6 +27,7 @@ public class PersistenceConfig {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
+    @Qualifier("readDataSource")
     @Autowired
     DataSource dataSource;
 
@@ -43,8 +45,8 @@ public class PersistenceConfig {
     }
 
     @Bean
-    public PlatformTransactionManager transactionManager() {
-        return new JpaTransactionManager(entityManagerFactory());
+    public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+        return new JpaTransactionManager(entityManagerFactory);
     }
 
     @Bean

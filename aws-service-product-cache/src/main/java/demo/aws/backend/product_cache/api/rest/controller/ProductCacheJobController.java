@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class ProductCacheJobController {
     @Autowired
-    private JobLauncher jobLauncher;
-    @Autowired
     Job productCacheUpdateJob;
+    @Autowired
+    private JobLauncher jobLauncher;
 
     @GetMapping("/update-product-cache")
     @ResponseStatus(value = HttpStatus.OK)

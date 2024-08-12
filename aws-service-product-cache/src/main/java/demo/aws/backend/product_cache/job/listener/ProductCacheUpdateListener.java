@@ -14,7 +14,7 @@ public class ProductCacheUpdateListener implements JobExecutionListener {
 
     @Override
     public void afterJob(JobExecution jobExecution) {
-        if(jobExecution.getStatus() == BatchStatus.COMPLETED) {
+        if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
             log.info("!!! JOB FINISHED! Time to verify the results");
         } else {
             log.error("!!! JOB ERROR!");

@@ -23,11 +23,10 @@ public class ProductCacheApplication implements CommandLineRunner {
 
     @Autowired
     ProductDataService productDataService;
-
-    @Autowired
-    private JobLauncher jobLauncher;
     @Autowired
     Job productCacheUpdateJob;
+    @Autowired
+    private JobLauncher jobLauncher;
 
     public static void main(String[] args) {
         SpringApplication.run(ProductCacheApplication.class, args);
@@ -43,7 +42,9 @@ public class ProductCacheApplication implements CommandLineRunner {
         log.info("Start Job {}", productCacheUpdateJob.getName());
         JobExecution execution = jobLauncher.run(
                 productCacheUpdateJob,
-                new JobParametersBuilder().toJobParameters()
+                new JobParametersBuilder()
+                        .addLong("timestamp", System.currentTimeMillis())
+                        .toJobParameters()
         );
         log.info("Exit status: {}", execution.getStatus());
     }

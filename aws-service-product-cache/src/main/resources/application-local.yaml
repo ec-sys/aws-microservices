@@ -16,6 +16,6 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8061/eureka/
-    enabled: true
+    enabled: false
   instance:
     instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
