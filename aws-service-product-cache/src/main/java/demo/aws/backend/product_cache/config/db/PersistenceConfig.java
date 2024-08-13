@@ -18,6 +18,7 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager;
 import org.springframework.orm.jpa.persistenceunit.PersistenceUnitManager;
+import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -30,7 +31,7 @@ import java.util.Properties;
         basePackages = {"demo.aws.backend.product_cache.repository"}
 )
 @EnableTransactionManagement
-@EnableJpaAuditing(auditorAwareRef="auditorProvider", dateTimeProviderRef="auditorDateTimeProvider")
+@EnableJpaAuditing(auditorAwareRef = "auditorProvider", dateTimeProviderRef = "auditorDateTimeProvider")
 public class PersistenceConfig {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
@@ -46,7 +47,10 @@ public class PersistenceConfig {
     public EntityManagerFactory entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
         factoryBean.setPersistenceUnitManager(persistenceUnitManager());
-        factoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+
+        HibernateJpaVendorAdapter va = new HibernateJpaVendorAdapter();
+        factoryBean.setJpaVendorAdapter(va);
+
         factoryBean.setJpaProperties(hibernateProperties);
         factoryBean.afterPropertiesSet();
         return factoryBean.getNativeEntityManagerFactory();
@@ -54,7 +58,9 @@ public class PersistenceConfig {
 
     @Bean
     public PlatformTransactionManager transactionManager() {
-        return new JpaTransactionManager(entityManagerFactory());
+        JpaTransactionManager transactionManager = new JpaTransactionManager(entityManagerFactory());
+        transactionManager.setJpaDialect(new HibernateJpaDialect());
+        return transactionManager;
     }
 
     @Bean

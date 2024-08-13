@@ -5,6 +5,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -32,19 +33,27 @@ public class DataSourceConfig {
     @Bean
     public Properties hibernateProperties() {
         Properties hibernateProp = new Properties();
-        hibernateProp.put("hibernate.hbm2ddl.auto", "update");
-        hibernateProp.put("hibernate.show_sql", true);
+        hibernateProp.put("hibernate.hbm2ddl.auto", "none");
+        hibernateProp.put("hibernate.show_sql", false);
         hibernateProp.put("hibernate.physical_naming_strategy", "org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy");
+        hibernateProp.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
         return hibernateProp;
     }
+
 
     @Bean(name = "batchDataSource")
     public DataSource batchDataSource() {
         return createDataSource(DbType.FOR_BATCH);
     }
 
+    @Primary
     @Bean(name = "appDataSource")
     public DataSource appDataSource() {
+        return createDataSource(DbType.FOR_APP);
+    }
+
+    @Bean(name = "dataSource")
+    public DataSource dataSource() {
         return createDataSource(DbType.FOR_APP);
     }
 
