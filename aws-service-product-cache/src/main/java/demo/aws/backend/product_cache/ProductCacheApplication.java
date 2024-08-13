@@ -16,9 +16,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Slf4j
 @SpringBootApplication
-@EnableCaching
-@EnableScheduling
-@EnableBatchProcessing
 public class ProductCacheApplication implements CommandLineRunner {
 
     @Autowired

@@ -11,10 +11,20 @@ spring:
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: none
-  datasource:
-    url: ${MYSQL_MASTER_URL:jdbc:mysql:loadbalance://localhost:3307,localhost:3308/db_product}?allowPublicKeyRetrieval=true&useSSL=false&loadBalanceConnectionGroup=first&ha.enableJMX=true
-    username: ${MYSQL_MASTER_USERNAME:tit}
-    password: ${MYSQL_MASTER_PASSWORD:dangtit90}
+#  datasource:
+#    url: ${MYSQL_MASTER_URL:jdbc:mysql:loadbalance://localhost:3307,localhost:3308/db_product}?allowPublicKeyRetrieval=true&useSSL=false&loadBalanceConnectionGroup=first&ha.enableJMX=true
+#    username: ${MYSQL_MASTER_USERNAME:tit}
+#    password: ${MYSQL_MASTER_PASSWORD:dangtit90}
+#    for-batch:
+#      url: ${MYSQL_FOR_BATCH_URL:jdbc:mysql://localhost:3309/db_product_batch}?allowPublicKeyRetrieval=true&useSSL=false
+#      username: ${MYSQL_FOR_BATCH_USERNAME:root}
+#      password: ${MYSQL_FOR_BATCH_PASSWORD:root123}
+#      driverClassName: com.mysql.cj.jdbc.Driver
+#    for-app:
+#      url: ${MYSQL_FOR_APP_URL:jdbc:mysql:loadbalance://localhost:3307,localhost:3308/db_product}?allowPublicKeyRetrieval=true&useSSL=false&loadBalanceConnectionGroup=first&ha.enableJMX=true
+#      username: ${MYSQL_FOR_APP_USERNAME:tit}
+#      password: ${MYSQL_FOR_APP_PASSWORD:dangtit90}
+#      driverClassName: com.mysql.cj.jdbc.Driver
   output:
     ansi:
       enabled: always
@@ -23,17 +33,30 @@ spring:
   batch:
     jdbc:
       initialize-schema: always
-
+#
+#spring:
+#  datasource:
+#    todos:
+#      url: ...
+#      username: ...
+#      password: ...
+#      driverClassName: ...
+#    topics:
+#      url: ...
+#      username: ...
+#      password: ...
+#      driverClassName: ...
+#
 db:
   driverClassName: com.mysql.cj.jdbc.Driver
   for-batch:
     url: ${MYSQL_FOR_BATCH_URL:jdbc:mysql://localhost:3309/db_product_batch}?allowPublicKeyRetrieval=true&useSSL=false
     username: ${MYSQL_FOR_BATCH_USERNAME:root}
     password: ${MYSQL_FOR_BATCH_PASSWORD:root123}
-  for-read:
-    url: ${MYSQL_FOR_DATA_URL:jdbc:mysql:loadbalance://localhost:3307,localhost:3308/db_product}?allowPublicKeyRetrieval=true&useSSL=false&loadBalanceConnectionGroup=first&ha.enableJMX=true
-    username: ${MYSQL_FOR_DATA_USERNAME:tit}
-    password: ${MYSQL_FOR_DATA_PASSWORD:dangtit90}
+  for-app:
+    url: ${MYSQL_FOR_APP_URL:jdbc:mysql:loadbalance://localhost:3307,localhost:3308/db_product}?allowPublicKeyRetrieval=true&useSSL=false&loadBalanceConnectionGroup=first&ha.enableJMX=true
+    username: ${MYSQL_FOR_APP_USERNAME:tit}
+    password: ${MYSQL_FOR_APP_PASSWORD:dangtit90}
 
 job:
   product-cache-update:

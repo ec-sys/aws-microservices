@@ -2,16 +2,11 @@ package demo.aws.backend.product_cache.config.db;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 
 import javax.sql.DataSource;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
 @Configuration
@@ -27,12 +22,12 @@ public class DataSourceConfig {
     @Value("${db.for-batch.password}")
     private String passwordBatch;
 
-    @Value("${db.for-read.url}")
-    private String urlData;
-    @Value("${db.for-read.username}")
-    private String usernameData;
-    @Value("${db.for-read.password}")
-    private String passworData;
+    @Value("${db.for-app.url}")
+    private String urlApp;
+    @Value("${db.for-app.username}")
+    private String usernameApp;
+    @Value("${db.for-app.password}")
+    private String passworApp;
 
     @Bean
     public Properties hibernateProperties() {
@@ -48,9 +43,9 @@ public class DataSourceConfig {
         return createDataSource(DbType.FOR_BATCH);
     }
 
-    @Bean(name = "readDataSource")
-    public DataSource readDataSource() {
-        return createDataSource(DbType.FOR_READ);
+    @Bean(name = "appDataSource")
+    public DataSource appDataSource() {
+        return createDataSource(DbType.FOR_APP);
     }
 
     private DataSource createDataSource(DbType dbType) {
@@ -77,9 +72,9 @@ public class DataSourceConfig {
             hikariConfig.setUsername(usernameBatch);
             hikariConfig.setPassword(passwordBatch);
         } else {
-            hikariConfig.setJdbcUrl(urlData);
-            hikariConfig.setUsername(usernameData);
-            hikariConfig.setPassword(passworData);
+            hikariConfig.setJdbcUrl(urlApp);
+            hikariConfig.setUsername(usernameApp);
+            hikariConfig.setPassword(passworApp);
         }
 
         hikariConfig.setMaximumPoolSize(5);
