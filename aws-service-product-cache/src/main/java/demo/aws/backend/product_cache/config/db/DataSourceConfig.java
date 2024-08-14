@@ -52,11 +52,6 @@ public class DataSourceConfig {
         return createDataSource(DbType.FOR_APP);
     }
 
-    @Bean(name = "dataSource")
-    public DataSource dataSource() {
-        return createDataSource(DbType.FOR_APP);
-    }
-
     private DataSource createDataSource(DbType dbType) {
         try {
             HikariConfig hikariConfig = getHikariConfig(dbType);
