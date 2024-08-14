@@ -36,7 +36,7 @@ public class ProductCacheUpdateReader implements ItemReader<ProductCacheUpdateIt
         if (pageSize * limit < totalRecord) {
             pageSize++;
         }
-        pageSize = 7;
+        // pageSize = 300;
         for (int i = 0; i < pageSize; i++) {
             ProductCacheUpdateItem item = new ProductCacheUpdateItem();
             item.setProductIds(productRepository.findAllIdPagination(limit, i * limit));
