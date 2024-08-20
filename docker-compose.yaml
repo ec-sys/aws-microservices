@@ -107,12 +107,11 @@ services:
 
   keycloak:
     image: keycloak/keycloak:25.0
-    command: ["start-dev", "--import-realm"]
+    command: ["start-dev"]
     restart: unless-stopped
     environment:
       KC_DB: dev-file
-
-      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
-      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KEYCLOAK_ADMIN: root
+      KEYCLOAK_ADMIN_PASSWORD: root123
     ports:
       - 8086:8080

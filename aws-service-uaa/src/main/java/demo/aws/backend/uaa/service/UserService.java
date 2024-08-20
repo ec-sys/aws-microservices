@@ -43,7 +43,7 @@ public class UserService {
     }
 
     @Transactional
-    private void updateUserInfo(User targetUser) {
+    public void updateUserInfo(User targetUser) {
         userRepository.save(targetUser);
     }
 }

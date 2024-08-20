@@ -1,5 +1,6 @@
 package demo.aws.backend.uaa;
 
+import demo.aws.backend.uaa.service.FakerDataService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -18,9 +19,12 @@ public class UaaApplication implements CommandLineRunner {
         SpringApplication.run(UaaApplication.class, args);
     }
 
+    @Autowired
+    FakerDataService fakerDataService;
     @Override
     public void run(String... args) throws Exception {
         showEnvironmentVars();
+        fakerDataService.updatePasswordSalt();
     }
 
     private void showEnvironmentVars() {

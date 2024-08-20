@@ -11,7 +11,7 @@
  Target Server Version : 80035 (8.0.35)
  File Encoding         : 65001
 
- Date: 22/12/2023 22:47:45
+ Date: 20/08/2024 08:34:18
 */
 
 SET NAMES utf8mb4;
@@ -33,7 +33,7 @@ CREATE TABLE `comments`  (
   `last_modified_date` datetime(6) NULL DEFAULT NULL,
   `last_modified_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of comments
@@ -56,7 +56,7 @@ CREATE TABLE `post_tags`  (
   `last_modified_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `last_modified_date` datetime(6) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of post_tags
@@ -78,7 +78,7 @@ CREATE TABLE `posts`  (
   `last_modified_date` datetime(6) NULL DEFAULT NULL,
   `last_modified_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of posts
@@ -98,7 +98,7 @@ CREATE TABLE `roles`  (
   `last_modified_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `last_modified_date` datetime(6) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of roles
@@ -119,7 +119,7 @@ CREATE TABLE `tags`  (
   `last_modified_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `last_modified_date` datetime(6) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 162 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 162 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tags
@@ -283,7 +283,7 @@ CREATE TABLE `user_roles`  (
   `last_modified_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `last_modified_date` datetime(6) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user_roles
@@ -299,6 +299,7 @@ CREATE TABLE `users`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `login_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `password_salt` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `last_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `first_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
@@ -310,12 +311,12 @@ CREATE TABLE `users`  (
   `last_modified_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `last_modified_date` datetime(6) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES (1, 'admin', '$2a$10$/kiOmNgtVknPr/uRJAeaYe7nGP6/tGygdzuvANBNdChrEy6I7nFca', 'admin123@zen.com', 'long', 'dang', '2023-12-16 20:25:06.000000', 'Ha Noi', '0973551935', '0', '2023-01-11 13:59:52.044000', '0', '2023-01-11 13:59:52.044000');
-INSERT INTO `users` VALUES (2, 'longdd', '$2a$10$/kiOmNgtVknPr/uRJAeaYe7nGP6/tGygdzuvANBNdChrEy6I7nFca', 'longdd@zen.com', 'long', 'dang', '2023-12-16 20:25:06.000000', 'Ha Noi', '0973551935', '0', '2023-01-11 13:59:52.044000', '0', '2023-01-11 13:59:52.044000');
+INSERT INTO `users` VALUES (1, 'admin', '$2a$10$rLgWsROMK/5MHVAJwhAnsuc.I7HNlq2NJAAtbQ39USlamSZUI7w3e', 'a1b6dz', 'admin123@zen.com', 'long', 'dang', '2023-12-16 20:25:06.000000', 'Ha Noi', '0973551935', '0', '2023-01-11 13:59:52.044000', '0', '2024-08-20 08:33:52.038000');
+INSERT INTO `users` VALUES (2, 'longdd', '$2a$10$otRsG0vbmEceEWZc3dpNh.5ysPrBQI68vYTYnFxz26G2HXhWJf4ii', '5d2i9o', 'longdd@zen.com', 'long', 'dang', '2023-12-16 20:25:06.000000', 'Ha Noi', '0973551935', '0', '2023-01-11 13:59:52.044000', '0', '2024-08-20 08:33:52.044000');
 
 SET FOREIGN_KEY_CHECKS = 1;
