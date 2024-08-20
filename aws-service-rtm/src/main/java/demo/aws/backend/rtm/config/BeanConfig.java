@@ -1,7 +1,7 @@
 package demo.aws.backend.rtm.config;
 
 import demo.aws.core.common_util.JwtService;
-import demo.aws.core.framework.security.JwtAuthenticationFilter;
+import demo.aws.core.framework.security.JwtAuthFilter;
 import io.micrometer.core.instrument.binder.grpc.ObservationGrpcClientInterceptor;
 import io.micrometer.observation.ObservationRegistry;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class BeanConfig {
     @Bean
-    public JwtAuthenticationFilter jwtAuthFilter() {
-        return new JwtAuthenticationFilter();
+    public JwtAuthFilter jwtAuthFilter() {
+        return new JwtAuthFilter();
     }
 
     @Bean

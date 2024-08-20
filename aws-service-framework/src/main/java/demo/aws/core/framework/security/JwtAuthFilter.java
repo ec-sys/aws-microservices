@@ -8,6 +8,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,11 +17,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
@@ -29,15 +29,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         String authInfo = request.getHeader(CommonConstant.HEADER_AUTH_INFO);
         if(Objects.isNull(authInfo) || authInfo.trim().isEmpty()) {
-            filterChain.doFilter(request, response);
-            return;
+            throw new AccessDeniedException("Access denied, auth-header is empty");
         }
 
         ObjectMapper mapper = new ObjectMapper();
         AuthInfo authObj = mapper.readValue(authInfo, AuthInfo.class);
         if(Objects.isNull(authObj)) {
-            filterChain.doFilter(request, response);
-            return;
+            throw new AccessDeniedException("Access denied, auth-header is invalid");
         }
 
         List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
