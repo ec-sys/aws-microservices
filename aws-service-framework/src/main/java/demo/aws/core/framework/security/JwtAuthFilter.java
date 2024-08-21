@@ -29,13 +29,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         String authInfo = request.getHeader(CommonConstant.HEADER_AUTH_INFO);
         if(Objects.isNull(authInfo) || authInfo.trim().isEmpty()) {
-            throw new AccessDeniedException("Access denied, auth-header is empty");
+            filterChain.doFilter(request, response);
+            return;
         }
 
         ObjectMapper mapper = new ObjectMapper();
         AuthInfo authObj = mapper.readValue(authInfo, AuthInfo.class);
         if(Objects.isNull(authObj)) {
-            throw new AccessDeniedException("Access denied, auth-header is invalid");
+            filterChain.doFilter(request, response);
+            return;
         }
 
         List<SimpleGrantedAuthority> authorityList = new ArrayList<>();

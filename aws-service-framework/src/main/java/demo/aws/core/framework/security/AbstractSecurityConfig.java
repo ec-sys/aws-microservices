@@ -1,8 +1,10 @@
 package demo.aws.core.framework.security;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
@@ -17,8 +19,11 @@ public class AbstractSecurityConfig {
     private String[] WHITE_LIST_URL = {
             "/auth/login", "/actuator/**"
     };
+    @Autowired
+    private JwtAuthFilter jwtAuthFilter;
+
     protected void addWhiteListUrl(List<String> whiteListUrls) {
-        if(CollectionUtils.isNotEmpty(whiteListUrls)) {
+        if (CollectionUtils.isNotEmpty(whiteListUrls)) {
             List<String> newUrls = new ArrayList<>();
             newUrls.addAll(whiteListUrls);
             for (String url : WHITE_LIST_URL) {
@@ -28,23 +33,39 @@ public class AbstractSecurityConfig {
         }
     }
 
-    @Autowired
-    private JwtAuthFilter jwtAuthFilter;
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        // Enable CORS and disable CSRF
+        http.cors(Customizer.withDefaults()).csrf(AbstractHttpConfigurer::disable);
+
+        // Set session management to stateless
+        http.sessionManagement(session -> session.sessionCreationPolicy(STATELESS));
+
+        // Set unauthorized requests exception handler
         http
-                .csrf(AbstractHttpConfigurer::disable)
+                .exceptionHandling((exception) -> exception.authenticationEntryPoint(
+                        (request, response, ex) -> {
+                            response.sendError(
+                                    HttpServletResponse.SC_UNAUTHORIZED,
+                                    ex.getMessage()
+                            );
+                        }));
+
+        // Set permissions on endpoints
+        http
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(WHITE_LIST_URL)
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
                 )
-                .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
         ;
 
+        // Add JWT token filter
+        http.addFilterBefore(
+                jwtAuthFilter,
+                UsernamePasswordAuthenticationFilter.class
+        );
         return http.build();
     }
 }
