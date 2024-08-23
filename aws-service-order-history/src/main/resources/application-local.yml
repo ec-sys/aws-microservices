@@ -1,0 +1,11 @@
+management:
+  cloudwatch:
+    metrics:
+      export:
+        enabled: false
+
+logging:
+  level:
+    io:
+      awspring:
+        cloud: error
