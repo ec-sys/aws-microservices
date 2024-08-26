@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/order-process")
+@RequestMapping("/order-creation")
 @Slf4j
-public class OrderController {
+public class OrderCreationController {
 
     @Autowired
     OrderProcessService orderProcessService;
 
-    @PostMapping("/create-order")
+    @PostMapping
     public ResponseEntity<OrderCreateResponse> createOrder(@RequestBody OrderCreateRequest request) throws Exception {
         return new ResponseEntity<>(orderProcessService.createOrder(request), HttpStatus.OK);
     }

@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 public class OrderCreateResponse {
-    private String orderId;
+    private Long orderId;
     private OrderStatus status;
 }

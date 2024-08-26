@@ -1,20 +1,22 @@
 package demo.aws.backend.order.domain.entity;
 
-import demo.aws.backend.order.domain.constant.OrderProcessStep;
-import demo.aws.backend.order.domain.model.OrderErrorCode;
 import demo.aws.core.framework.auditing.Auditable;
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "order-steps")
-public class OrderStepResult  extends Auditable<String> {
+@Table(name = "order-recipients")
+public class OrderRecipient extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long orderId;
-    private OrderProcessStep step;
-    private OrderErrorCode errorCode;
+    private String userName;
+    private String phoneNumber;
+    private String email;
+    private int proviceId;
+    private int districtId;
+    private int wardId;
     private String detail;
 }

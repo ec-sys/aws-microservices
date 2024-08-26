@@ -1,15 +1,17 @@
-package demo.aws.backend.order;
+package demo.aws.batch.order_outbox;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Slf4j
 @SpringBootApplication
-public class OrderApplication {
+@EnableScheduling
+public class OrderOutboxApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(OrderApplication.class, args);
+        SpringApplication.run(OrderOutboxApplication.class, args);
     }
  }
       

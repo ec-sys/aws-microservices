@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Data
 public class OrderProcessResponseDto implements Serializable {
     private static final long serialVersionUID = 1L;
-    private String orderId;
+    private Long orderId;
     private OrderStatus orderStatus;
     private OrderErrorCode errorCode;
     private OrderProcessStep processStep;

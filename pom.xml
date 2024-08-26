@@ -44,6 +44,7 @@
 
         <!-- for learning about messaging, transaction (ex:kafka, rabbit-mq, aws sqs, aws sns, localstack for aws development) -->
         <module>aws-service-order</module>
+        <module>aws-batch-order-outbox</module>
         <!-- beacause service-order need ACID then using RDBS, for scaling order list then use to order-history -->
         <module>aws-service-order-history</module>
         <module>aws-orchestrator-order</module>

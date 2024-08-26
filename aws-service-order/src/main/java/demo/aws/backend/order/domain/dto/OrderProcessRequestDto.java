@@ -1,7 +1,7 @@
 package demo.aws.backend.order.domain.dto;
 
-import demo.aws.backend.order.domain.model.OrderItem;
-import demo.aws.backend.order.domain.model.OrderRecipient;
+import demo.aws.backend.order.domain.entity.OrderItem;
+import demo.aws.backend.order.domain.entity.OrderRecipient;
 import demo.aws.backend.order.domain.model.OrderStatus;
 import lombok.Data;
 
@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 public class OrderProcessRequestDto implements Serializable {
     private static final long serialVersionUID = 1L;
-    private String orderId;
+    private long orderId;
     private long customerId;
     private OrderStatus status;
     private List<OrderItem> items;

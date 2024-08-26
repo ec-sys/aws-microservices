@@ -10,11 +10,11 @@
     </parent>
 
     <groupId>demo.aws.backend</groupId>
-    <artifactId>service-order-data</artifactId>
+    <artifactId>service-order-outbox-data</artifactId>
     <version>0.1</version>
     <packaging>jar</packaging>
 
-    <name>service-order-data</name>
+    <name>service-order-outbox-data</name>
     <description>Order Service Module Data</description>
 
     <properties>

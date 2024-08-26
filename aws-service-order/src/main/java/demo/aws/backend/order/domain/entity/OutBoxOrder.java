@@ -1,16 +1,25 @@
 package demo.aws.backend.order.domain.entity;
 
+import demo.aws.backend.order.domain.model.OutBoxOrderEventStatus;
 import demo.aws.backend.order.domain.model.OutBoxOrderEventType;
+import demo.aws.core.framework.auditing.Auditable;
+import jakarta.persistence.*;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.stereotype.Indexed;
 
+@Entity
 @Data
-@Document(collection = "outbox_orders")
-public class OutBoxOrder {
+@Table(name = "OUT-BOX-ORDERS", indexes = {
+        @Index(name = "idx_order", columnList = "orderId", unique = true),
+        @Index(name = "idx_target_date_status", columnList = "targetDate, eventStatus DESC")
+})
+public class OutBoxOrder extends Auditable<String> {
     @Id
-    private String id;
-    private String orderId;
-    private Order beforeOrder;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private Long orderId;
+    private String targetDate;
     private OutBoxOrderEventType eventType;
+    private OutBoxOrderEventStatus eventStatus;
+    private String eventPayload;
 }
