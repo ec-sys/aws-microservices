@@ -1,0 +1,27 @@
+http://localhost:8000//api/order/order-process/create-order
+
+{
+  "customerId": "1000",
+  "items": [
+    {
+        "productId": 1,
+        "productPrice": 5,
+        "quantity": 2
+    },
+    {
+        "productId": 5,
+        "productPrice": 10,
+        "quantity": 1
+    }
+  ],
+  "recipient": {
+    "name": "longdd90",
+    "phoneNumber": "0973551465",
+    "address": {
+        "proviceId": 1,
+        "districtId": 2,
+        "wardId": 3,
+        "detail": "B3105"
+    }
+  }
+}

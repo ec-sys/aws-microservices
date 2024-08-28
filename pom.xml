@@ -63,6 +63,8 @@
 
         <!-- for test load balancing at local -->
         <module>aws-eureka-server</module>
+		
+		<module>aws-service-near-by</module>
     </modules>
 
     <dependencyManagement>

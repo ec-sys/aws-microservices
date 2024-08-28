@@ -1,4 +1,4 @@
-package demo.aws.backend.rtm.config.ws;
+package demo.aws.backend.near_by.config.ws;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

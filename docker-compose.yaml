@@ -35,6 +35,7 @@ services:
     networks:
       - app-tier
     ports:
+      - '61613:61613'
       - '5672:5672'
       - '5673:5673'
 #  app:

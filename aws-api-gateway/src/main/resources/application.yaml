@@ -78,6 +78,12 @@ spring:
             - Path=/api/product-search/**
           filters:
             - StripPrefix=2
+        - id: near-by-ws
+          uri: ${SERVICE_NEAR_BY_WS_URL:ws://localhost:9017/}
+          predicates:
+            - Path=/ws/near-by/**
+          filters:
+            - StripPrefix=2
   data:
     redis:
       host: ${REDIS_HOST:localhost}

@@ -23,8 +23,8 @@ public class UaaApplication implements CommandLineRunner {
     FakerDataService fakerDataService;
     @Override
     public void run(String... args) throws Exception {
-        showEnvironmentVars();
-        fakerDataService.updatePasswordSalt();
+        // showEnvironmentVars();
+        // fakerDataService.updatePasswordSalt();
     }
 
     private void showEnvironmentVars() {

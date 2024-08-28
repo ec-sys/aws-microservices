@@ -8,15 +8,16 @@
         <version>0.1</version>
     </parent>
 
-    <artifactId>service-uaa</artifactId>
+    <artifactId>service-near-by</artifactId>
     <version>0.1</version>
-    <name>service-uaa</name>
-    <description>Module Service Uaa</description>
+    <name>service-near-by</name>
+    <description>Module Service Near By</description>
 
     <properties>
-        <grpc.server.version>3.1.0.RELEASE</grpc.server.version>
-        <grpc.client.version>3.1.0.RELEASE</grpc.client.version>
+        <grpc.server.version>2.15.0.RELEASE</grpc.server.version>
+        <grpc.client.version>2.15.0.RELEASE</grpc.client.version>
     </properties>
+
     <dependencies>
         <!-- springframework -->
         <dependency>
@@ -29,12 +30,22 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <!-- ws -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-reactor-netty</artifactId>
+        </dependency>
+        <!-- redis -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
@@ -42,6 +53,11 @@
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
+        </dependency>
+        <!-- mysql-jpa -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <dependency>
             <groupId>com.mysql</groupId>
@@ -51,34 +67,20 @@
 
         <!-- tracing -->
         <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-observation</artifactId>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-exporter-zipkin</artifactId>
         </dependency>
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-tracing-bridge-brave</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.zipkin.brave</groupId>
+            <artifactId>brave-instrumentation-grpc</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.zipkin.reporter2</groupId>
             <artifactId>zipkin-reporter-brave</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-registry-prometheus</artifactId>
-        </dependency>
-
-        <!-- grpc -->
-        <dependency>
-            <groupId>net.devh</groupId>
-            <artifactId>grpc-server-spring-boot-starter</artifactId>
-            <version>${grpc.server.version}</version>
-        </dependency>
-
-        <!-- logging -->
-        <dependency>
-            <groupId>com.github.loki4j</groupId>
-            <artifactId>loki-logback-appender</artifactId>
-            <version>1.4.1</version>
         </dependency>
 
         <!-- core -->
@@ -92,18 +94,20 @@
             <artifactId>service-framework</artifactId>
             <version>0.1</version>
         </dependency>
+
+        <!-- domain-data -->
         <dependency>
             <groupId>demo.aws.core</groupId>
             <artifactId>protobuf-gen</artifactId>
             <version>0.1</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>demo.aws.core</groupId>-->
-<!--            <artifactId>service-framework</artifactId>-->
-<!--            <version>0.1</version>-->
-<!--            <scope>system</scope>-->
-<!--            <systemPath>D:\sefl_git\aws-microservices\aws-service-framework\target\service-framework-0.1.jar</systemPath>-->
-<!--        </dependency>-->
+
+        <!-- grpc -->
+        <dependency>
+            <groupId>net.devh</groupId>
+            <artifactId>grpc-client-spring-boot-starter</artifactId>
+            <version>${grpc.client.version}</version>
+        </dependency>
 
         <!-- test -->
         <dependency>

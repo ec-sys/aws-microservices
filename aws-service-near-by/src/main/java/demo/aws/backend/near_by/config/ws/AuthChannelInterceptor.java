@@ -1,6 +1,6 @@
-package demo.aws.backend.rtm.config.ws;
+package demo.aws.backend.near_by.config.ws;
 
-import demo.aws.backend.rtm.service.TokenService;
+import demo.aws.backend.near_by.service.TokenService;
 import demo.aws.core.common_util.constant.URLConstant;
 import demo.aws.core.common_util.dto.JWTPayloadDto;
 import demo.aws.core.common_util.model.AuthInfo;
