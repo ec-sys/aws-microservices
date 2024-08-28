@@ -49,7 +49,7 @@ public class OrderManageService {
         String body = originalMessage.body();
         if(StringUtils.isNotBlank(body)) {
             OrderProcessRequestDto requestDto = AwsUtil.getObjectFromSqsMessage(body, OrderProcessRequestDto.class);
-            kafkaTemplate.send(OrderProcessConstant.TOPIC_ORDER_CREATE, requestDto.getOrderId(), requestDto);
+            kafkaTemplate.send(OrderProcessConstant.TOPIC_ORDER_CREATE, String.valueOf(requestDto.getOrderId()), requestDto);
         }
     }
 
@@ -84,7 +84,7 @@ public class OrderManageService {
     public OrderProcessResponseDto confirm(OrderProcessResponseDto resultInventory, OrderProcessResponseDto resultCustomer) {
         log.info("{}", resultInventory);
         log.info("{}", resultCustomer);
-        String orderId = resultInventory.getOrderId();
+        Long orderId = resultInventory.getOrderId();
         Optional<Order> orderOpt = orderRepository.findById(orderId);
 
         OrderProcessResponseDto resultSummarize = new OrderProcessResponseDto();

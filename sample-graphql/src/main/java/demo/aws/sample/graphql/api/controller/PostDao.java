@@ -1,6 +1,6 @@
 package demo.aws.sample.graphql.api.controller;
 
-import demo.aws.backend.product_search.domain.model.Post;
+import demo.aws.sample.graphql.domain.model.Post;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

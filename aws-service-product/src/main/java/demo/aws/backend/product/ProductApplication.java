@@ -19,6 +19,6 @@ public class ProductApplication implements CommandLineRunner {
     FakerProductService fakerProductService;
     @Override
     public void run(String... args) throws Exception {
-        // fakerProductService.updateStoreToProduct();
+        fakerProductService.updateStoreToProduct();
     }
 }

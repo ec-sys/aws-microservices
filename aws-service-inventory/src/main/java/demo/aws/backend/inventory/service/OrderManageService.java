@@ -38,7 +38,7 @@ public class OrderManageService {
         responseDto.setOrderStatus(requestDto.getStatus());
         responseDto.setProcessStep(OrderProcessStep.INVENTORY);
         responseDto.setErrorCode(OrderErrorCode.NONE);
-        kafkaTemplate.send(OrderProcessConstant.TOPIC_ORDER_INVENTORY, requestDto.getOrderId(), responseDto);
+        kafkaTemplate.send(OrderProcessConstant.TOPIC_ORDER_INVENTORY, String.valueOf(requestDto.getOrderId()), responseDto);
         log.info("Sent: {}", responseDto);
     }
 

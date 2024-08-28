@@ -34,6 +34,11 @@ public class DataSourceConfig {
     @Value("${db.slave.password}")
     private String passwordSlave;
 
+    @Value("${spring.jpa.show-sql}")
+    private boolean showSql;
+    @Value("${spring.jpa.hibernate.ddl-auto}")
+    private String ddlAuto;
+
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
@@ -42,8 +47,8 @@ public class DataSourceConfig {
     @Bean
     public Properties hibernateProperties() {
         Properties hibernateProp = new Properties();
-        hibernateProp.put("hibernate.hbm2ddl.auto", "update");
-        hibernateProp.put("hibernate.show_sql", true);
+        hibernateProp.put("hibernate.hbm2ddl.auto", ddlAuto);
+        hibernateProp.put("hibernate.show_sql", showSql);
         hibernateProp.put("hibernate.physical_naming_strategy", "org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy");
         return hibernateProp;
     }
