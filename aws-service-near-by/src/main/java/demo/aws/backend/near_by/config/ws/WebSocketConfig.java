@@ -63,7 +63,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     }
 
     private String[] getStompEndpoints() {
-        return new String[]{"/ws-chat", "/ws-system", "/ws-group", "/ws-user"};
+        return new String[]{"/ws-location", "/ws-system", "/ws-group", "/ws-user"};
     }
 
     /**

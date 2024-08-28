@@ -5,36 +5,37 @@ networks:
     driver: bridge
 
 services:
-  mysql:
-    image: 'bitnami/mysql:8.0'
-    environment:
-      - MYSQL_ROOT_USER=root
-      - MYSQL_ROOT_PASSWORD=root123
-      - MYSQL_DATABASE=db_zenblog
-    networks:
-      - app-tier
-    ports:
-      - 3306:3306
-  redis:
-    image: 'bitnami/redis:6.2'
-    environment:
-      - REDIS_PASSWORD=root123
-    networks:
-      - app-tier
-    ports:
-      - 6379:6379
-  zipkin:
-    image: 'openzipkin/zipkin:2'
-    networks:
-      - app-tier
-    ports:
-      - 9411:9411
+#  mysql:
+#    image: 'bitnami/mysql:8.0'
+#    environment:
+#      - MYSQL_ROOT_USER=root
+#      - MYSQL_ROOT_PASSWORD=root123
+#      - MYSQL_DATABASE=db_zenblog
+#    networks:
+#      - app-tier
+#    ports:
+#      - 3306:3306
+#  redis:
+#    image: 'bitnami/redis:6.2'
+#    environment:
+#      - REDIS_PASSWORD=root123
+#    networks:
+#      - app-tier
+#    ports:
+#      - 6379:6379
+#  zipkin:
+#    image: 'openzipkin/zipkin:2'
+#    networks:
+#      - app-tier
+#    ports:
+#      - 9411:9411
   #  rabbitmq
   rabbitmq:
     image: 'longdd90jp/rabbitmq:1.0'
     networks:
       - app-tier
     ports:
+      - '15672:15672'
       - '61613:61613'
       - '5672:5672'
       - '5673:5673'
@@ -59,60 +60,60 @@ services:
 #    image: "willfarrell/ping:latest"
 #    container_name: willfarrell
 
-  loki:
-    image: grafana/loki:3.0.0
-    ports:
-      - "3100:3100"
-    command: -config.file=/etc/loki/local-config.yaml
-    networks:
-      - app-tier
-
-  grafana:
-    environment:
-      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
-      - GF_AUTH_ANONYMOUS_ENABLED=true
-      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
-    entrypoint:
-      - sh
-      - -euc
-      - |
-        mkdir -p /etc/grafana/provisioning/datasources
-        cat <<EOF > /etc/grafana/provisioning/datasources/ds.yaml
-        apiVersion: 1
-        datasources:
-        - name: Loki
-          type: loki
-          access: proxy
-          orgId: 1
-          url: http://loki:3100
-          basicAuth: false
-          isDefault: true
-          version: 1
-          editable: false
-        EOF
-        /run.sh
-    image: grafana/grafana:11.0.0
-    ports:
-      - "3000:3000"
-    networks:
-      - app-tier
-
-  prometheus:
-    image: prom/prometheus:v2.52.0
-    volumes:
-      - ./k8s/env/prometheus.yml:/etc/prometheus/prometheus.yml
-    ports:
-      - 9090:9090
-    networks:
-      - app-tier
-
-  keycloak:
-    image: keycloak/keycloak:25.0
-    command: ["start-dev"]
-    restart: unless-stopped
-    environment:
-      KC_DB: dev-file
-      KEYCLOAK_ADMIN: root
-      KEYCLOAK_ADMIN_PASSWORD: root123
-    ports:
-      - 8086:8080
+#  loki:
+#    image: grafana/loki:3.0.0
+#    ports:
+#      - "3100:3100"
+#    command: -config.file=/etc/loki/local-config.yaml
+#    networks:
+#      - app-tier
+#
+#  grafana:
+#    environment:
+#      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+#      - GF_AUTH_ANONYMOUS_ENABLED=true
+#      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+#    entrypoint:
+#      - sh
+#      - -euc
+#      - |
+#        mkdir -p /etc/grafana/provisioning/datasources
+#        cat <<EOF > /etc/grafana/provisioning/datasources/ds.yaml
+#        apiVersion: 1
+#        datasources:
+#        - name: Loki
+#          type: loki
+#          access: proxy
+#          orgId: 1
+#          url: http://loki:3100
+#          basicAuth: false
+#          isDefault: true
+#          version: 1
+#          editable: false
+#        EOF
+#        /run.sh
+#    image: grafana/grafana:11.0.0
+#    ports:
+#      - "3000:3000"
+#    networks:
+#      - app-tier
+#
+#  prometheus:
+#    image: prom/prometheus:v2.52.0
+#    volumes:
+#      - ./k8s/env/prometheus.yml:/etc/prometheus/prometheus.yml
+#    ports:
+#      - 9090:9090
+#    networks:
+#      - app-tier
+#
+#  keycloak:
+#    image: keycloak/keycloak:25.0
+#    command: ["start-dev"]
+#    restart: unless-stopped
+#    environment:
+#      KC_DB: dev-file
+#      KEYCLOAK_ADMIN: root
+#      KEYCLOAK_ADMIN_PASSWORD: root123
+#    ports:
+#      - 8086:8080

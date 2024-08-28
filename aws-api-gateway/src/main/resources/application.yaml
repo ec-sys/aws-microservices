@@ -79,7 +79,7 @@ spring:
           filters:
             - StripPrefix=2
         - id: near-by-ws
-          uri: ${SERVICE_NEAR_BY_WS_URL:ws://localhost:9017/}
+          uri: ${SERVICE_NEAR_BY_WS_URL:ws://localhost:9107/}
           predicates:
             - Path=/ws/near-by/**
           filters:

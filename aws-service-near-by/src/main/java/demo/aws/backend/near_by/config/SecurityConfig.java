@@ -12,6 +12,6 @@ import java.util.Arrays;
 public class SecurityConfig extends AbstractSecurityConfig {
     @PostConstruct
     public void initialize() {
-        this.addWhiteListUrl(Arrays.asList("/ws-chat", "/ws-system", "/ws-group", "/ws-user"));
+        this.addWhiteListUrl(Arrays.asList("/ws-location", "/ws-system", "/ws-group", "/ws-user"));
     }
 }
