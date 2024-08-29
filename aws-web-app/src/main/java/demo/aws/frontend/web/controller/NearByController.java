@@ -8,8 +8,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("near-by")
 public class NearByController {
     @GetMapping("/home")
-    public String showLoginForm() {
+    public String showHomePage() {
         return getTemplate("home");
+    }
+    @GetMapping("/sample")
+    public String showSamplePage() {
+        return getTemplate("sample");
+    }
+
+    @GetMapping("/user")
+    public String showUserPage() {
+        return getTemplate("user");
     }
 
     private String getTemplate(String name) {

@@ -31,7 +31,7 @@
     $(document).ready(function () {
         let user = Util.getUserProfile();
         if(!Util.isUndefined(user)) {
-            $("#greeting").text("Hello: " + user.fullName + ", User Id: " + user.userId);
+            $("#greeting").text("Hello: " + user.fullName)
         }
         STOMP_NEAR_BY.activate();
     });
@@ -55,10 +55,6 @@
         STOMP_NEAR_BY.subscribe('/users/queue/messages', function(message) {
             $("#message").text(message.body);
         });
-        let payload = {
-            'location': 1
-        }
-        // STOMP_NEAR_BY.publish({destination: '/app/bind_location', body: JSON.stringify(payload)});
     };
 
     STOMP_NEAR_BY.onWebSocketError = (error) => {
@@ -76,9 +72,9 @@
         });
         $("#send").click(function() {
             let payload = {
-                'location': $("#name").val()
+                'toUser': $("#name").val()
             }
-            STOMP_NEAR_BY.publish({destination: '/app/send_location', body: JSON.stringify(payload)});
+            STOMP_NEAR_BY.publish({destination: '/app/greeting', body: JSON.stringify(payload) });
         });
     });
 </script>

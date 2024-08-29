@@ -9,30 +9,23 @@
 <div id="app" class="container">
     <div id="main-content">
         <div>
-            <div>
-                <label id="greeting"></label>
-            </div>
             <form>
                 <div>
-                    <label>User will received message</label>
-                    <input type="text" id="name" placeholder="User will receive the message...">
+                    <label>What is your name?</label>
+                    <input type="text" id="name" placeholder="Your name here...">
                 </div>
                 <button id="send" type="submit">Send</button>
             </form>
         </div>
     </div>
     <div>
-        <label>Message from someone: </label><span id="message"></span>
+        <label>Message from server: </label><span id="message"></span>
     </div>
 </div>
 </body>
 <div th:replace="~{fragments/footer}"></div>
 <script type="text/javascript">
     $(document).ready(function () {
-        let user = Util.getUserProfile();
-        if(!Util.isUndefined(user)) {
-            $("#greeting").text("Hello: " + user.fullName + ", User Id: " + user.userId);
-        }
         STOMP_NEAR_BY.activate();
     });
 
@@ -52,13 +45,9 @@
 
     STOMP_NEAR_BY.onConnect = (frame) => {
         console.log('Connected: ' + frame);
-        STOMP_NEAR_BY.subscribe('/users/queue/messages', function(message) {
+        STOMP_NEAR_BY.subscribe('/topic/messages', function(message) {
             $("#message").text(message.body);
         });
-        let payload = {
-            'location': 1
-        }
-        // STOMP_NEAR_BY.publish({destination: '/app/bind_location', body: JSON.stringify(payload)});
     };
 
     STOMP_NEAR_BY.onWebSocketError = (error) => {
@@ -75,10 +64,8 @@
             e.preventDefault();
         });
         $("#send").click(function() {
-            let payload = {
-                'location': $("#name").val()
-            }
-            STOMP_NEAR_BY.publish({destination: '/app/send_location', body: JSON.stringify(payload)});
+            // STOMP_NEAR_BY.send("/app/hello", {}, $("#name").val());
+            STOMP_NEAR_BY.publish({destination: '/app/hello', body: $("#name").val() });
         });
     });
 </script>

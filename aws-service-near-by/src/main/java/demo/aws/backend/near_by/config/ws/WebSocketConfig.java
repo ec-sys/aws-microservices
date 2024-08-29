@@ -50,7 +50,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
             registry.enableSimpleBroker("/topic", "/queue", "/exchange")
                     .setHeartbeatValue(new long[]{15000, 15000});
         }
-        registry.setApplicationDestinationPrefixes("/app", "/chatroom");
+        registry.setApplicationDestinationPrefixes("/app");
+        registry.setUserDestinationPrefix("/users");
     }
 
     /**
