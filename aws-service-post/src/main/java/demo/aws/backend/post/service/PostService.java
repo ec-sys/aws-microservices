@@ -6,7 +6,6 @@ import demo.aws.backend.post.repository.PostRepository;
 import demo.aws.core.autogen.grpc.post.PSTPostResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.net.InetAddress;

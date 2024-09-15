@@ -4,20 +4,15 @@ import demo.aws.core.framework.auditing.Auditable;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.List;
-
 @Entity
 @Data
-@Table(name = "posts")
-public class Post extends Auditable<String> {
+@Table(name = "post_tags")
+public class PostTag extends Auditable<String> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
-    private String content;
-    private boolean isPublic;
-    private String description;
-    private Integer viewCount;
+    private Long tagId;
+    private Long postId;
 }
